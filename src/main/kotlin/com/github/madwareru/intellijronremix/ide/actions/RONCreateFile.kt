@@ -16,7 +16,9 @@ class RONCreateFile : CreateFileFromTemplateAction(
         directory: PsiDirectory,
         builder: CreateFileFromTemplateDialog.Builder
     ) {
-        builder.setTitle(NAME).addKind("Empty file", RONIcons.FILE, "RON File")
+        builder
+            .setTitle(NAME)
+            .addKind("Empty file", RONIcons.FILE, "RON File")
     }
 
     override fun getActionName(

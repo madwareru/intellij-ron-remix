@@ -56,7 +56,7 @@ class RONColorSettingsPage : ColorSettingsPage {
                 ")"
     }
 
-    override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>?{
+    override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? {
         return null
     }
 }

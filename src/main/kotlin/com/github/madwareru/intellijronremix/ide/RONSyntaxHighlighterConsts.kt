@@ -60,30 +60,43 @@ object RONSyntaxHighlighterConsts {
 
     @JvmField
     val COLON_KEYS = arrayOf(COLON)
+
     @JvmField
     val COMMA_KEYS = arrayOf(COMMA)
+
     @JvmField
     val PARENTHESES_KEYS = arrayOf(PARENTHESES)
+
     @JvmField
     val BRACKETS_KEYS = arrayOf(BRACKETS)
+
     @JvmField
     val BRACES_KEYS = arrayOf(BRACES)
+
     @JvmField
     val BOOLEAN_KEYS = arrayOf(BOOLEAN)
+
     @JvmField
     val NUMBER_KEYS = arrayOf(NUMBER)
+
     @JvmField
     val STRING_KEYS = arrayOf(STRING)
+
     @JvmField
     val OPTION_KEYS = arrayOf(OPTION)
+
     @JvmField
     val EXTENSION_KEYS = arrayOf(EXTENSION)
+
     @JvmField
     val IDENT_KEYS = arrayOf(IDENT)
+
     @JvmField
     val COMMENT_KEYS = arrayOf(COMMENT)
+
     @JvmField
     val BAD_CHAR_KEYS = arrayOf(BAD_CHAR)
+
     @JvmField
     val EMPTY_KEYS = arrayOfNulls<TextAttributesKey>(0)
 }
