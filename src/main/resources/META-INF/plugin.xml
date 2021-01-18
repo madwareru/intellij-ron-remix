@@ -26,6 +26,14 @@
         <colorSettingsPage
                 implementation="com.github.madwareru.intellijronremix.language.RONColorSettingsPage"
         />
+        <lang.commenter
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONCommenter"
+        />
+        <lang.braceMatcher
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONBraceMatcher"
+        />
 
     </extensions>
     <actions>
