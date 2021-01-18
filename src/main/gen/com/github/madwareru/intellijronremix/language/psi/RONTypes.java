@@ -31,6 +31,7 @@ public interface RONTypes {
   IElementType FLOAT = new RONTokenType("FLOAT");
   IElementType IDENT = new RONTokenType("IDENT");
   IElementType INTEGER = new RONTokenType("INTEGER");
+  IElementType NONE = new RONTokenType("NONE");
   IElementType PARENTHESISL = new RONTokenType("(");
   IElementType PARENTHESISR = new RONTokenType(")");
   IElementType RAW_STRING = new RONTokenType("RAW STRING");

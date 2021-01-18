@@ -338,16 +338,27 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SOME PARENTHESISL value PARENTHESISR
+  // SOME PARENTHESISL value PARENTHESISR | NONE
   public static boolean option(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "option")) return false;
-    if (!nextTokenIs(b, SOME)) return false;
+    if (!nextTokenIs(b, "<option>", NONE, SOME)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, OPTION, "<option>");
+    r = option_0(b, l + 1);
+    if (!r) r = consumeToken(b, NONE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // SOME PARENTHESISL value PARENTHESISR
+  private static boolean option_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "option_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, SOME, PARENTHESISL);
     r = r && value(b, l + 1);
     r = r && consumeToken(b, PARENTHESISR);
-    exit_section_(b, m, OPTION, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 

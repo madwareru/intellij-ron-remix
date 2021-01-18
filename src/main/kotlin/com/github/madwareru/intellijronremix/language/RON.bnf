@@ -68,7 +68,7 @@ private string ::= STRING | RAW_STRING;
 private char ::= CHAR;
 
 // Option
-option ::= SOME PARENTHESISL value PARENTHESISR;
+option ::= SOME PARENTHESISL value PARENTHESISR | NONE;
 
 // List
 list ::= BRACKETL [value (COMMA value)* [COMMA]] BRACKETR;

@@ -52,7 +52,7 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
             RONTypes.STRING, RONTypes.RAW_STRING -> {
                 STRING_KEYS
             }
-            RONTypes.SOME -> {
+            RONTypes.SOME, RONTypes.NONE -> {
                 OPTION_KEYS
             }
             RONTypes.EXTENSION -> {

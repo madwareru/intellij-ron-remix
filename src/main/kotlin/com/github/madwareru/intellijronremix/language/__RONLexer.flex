@@ -82,6 +82,7 @@ EXTENSION=#!\[enable\([A-Za-z_]+\)\]
   ":"                  { return COLON; }
   ","                  { return COMMA; }
   "Some"               { return SOME; }
+  "None"               { return NONE; }
 
   "r" #* \"            {
                           yybegin(IN_RAW_STRING);

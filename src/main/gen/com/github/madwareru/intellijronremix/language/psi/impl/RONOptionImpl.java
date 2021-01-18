@@ -28,9 +28,9 @@ public class RONOptionImpl extends ASTWrapperPsiElement implements RONOption {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public RONValue getValue() {
-    return findNotNullChildByClass(RONValue.class);
+    return findChildByClass(RONValue.class);
   }
 
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface RONOption extends PsiElement {
 
-  @NotNull
+  @Nullable
   RONValue getValue();
 
 }
