@@ -16,12 +16,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 
 class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
-    override fun buildLanguageFoldRegions(
-        descriptors: MutableList<FoldingDescriptor>,
-        root: PsiElement,
-        document: Document,
-        quick: Boolean
-    ) {
+    override fun buildLanguageFoldRegions(descriptors: MutableList<FoldingDescriptor>, root: PsiElement, document: Document, quick: Boolean) {
         if (root !is RONFile) return
         val visitor = RONFoldingVisitor(descriptors)
         PsiTreeUtil.processElements(root) {
@@ -40,9 +35,7 @@ class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
     override fun isRegionCollapsedByDefault(node: ASTNode) = false
 }
 
-private class RONFoldingVisitor(
-    private val descriptors: MutableList<FoldingDescriptor>
-) : RONRecursiveVisitor() {
+private class RONFoldingVisitor(private val descriptors: MutableList<FoldingDescriptor>) : RONRecursiveVisitor() {
     override fun visitList(o: RONList) {
         if (o.valueList.isNotEmpty()) {
             fold(o)
