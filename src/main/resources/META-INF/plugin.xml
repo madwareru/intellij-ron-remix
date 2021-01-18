@@ -38,8 +38,13 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.language.RONQuoteHandler"
         />
-
-
+        <indexPatternBuilder
+                implementation="com.github.madwareru.intellijronremix.language.todo.RONTodoIndexPatternBuilder"
+        />
+        <todoIndexer
+                filetype="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.todo.RONTodoIndexer"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.language.RONCreateFile"
