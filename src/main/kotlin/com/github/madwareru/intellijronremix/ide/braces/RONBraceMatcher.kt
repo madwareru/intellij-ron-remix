@@ -13,7 +13,12 @@ class RONBraceMatcher : PairedBraceMatcherAdapter(RONBaseBraceMatcher(), RONLang
     override fun isRBraceToken(iterator: HighlighterIterator, fileText: CharSequence, fileType: FileType): Boolean =
         isBrace(iterator, fileText, fileType, false)
 
-    private fun isBrace(iterator: HighlighterIterator, fileText: CharSequence, fileType: FileType, left: Boolean): Boolean {
+    private fun isBrace(
+        iterator: HighlighterIterator,
+        fileText: CharSequence,
+        fileType: FileType,
+        left: Boolean
+    ): Boolean {
         if (fileType != RONFileType.INSTANCE) return false
         val pair = findPair(left, iterator, fileText, fileType)
         return pair != null

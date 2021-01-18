@@ -1,6 +1,5 @@
 package com.github.madwareru.intellijronremix.ide
 
-import com.github.madwareru.intellijronremix.language.RONLexerAdapter
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.BAD_CHAR_KEYS
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.BOOLEAN_KEYS
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.BRACES_KEYS
@@ -15,6 +14,7 @@ import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.NUMB
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.OPTION_KEYS
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.PARENTHESES_KEYS
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts.STRING_KEYS
+import com.github.madwareru.intellijronremix.language.RONLexerAdapter
 import com.github.madwareru.intellijronremix.language.psi.RONTypes
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.colors.TextAttributesKey
@@ -41,20 +41,13 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
 
     private fun getTokenHighLightsSpecial(tokenType: IElementType): Array<out TextAttributesKey?> {
         return when (tokenType) {
-            RONTypes.PARENTHESISL, RONTypes.PARENTHESISR
-                -> PARENTHESES_KEYS
-            RONTypes.BRACKETL, RONTypes.BRACKETR
-                -> BRACKETS_KEYS
-            RONTypes.BRACEL, RONTypes.BRACER
-                -> BRACES_KEYS
-            RONTypes.INTEGER, RONTypes.FLOAT
-                -> NUMBER_KEYS
-            RONTypes.STRING, RONTypes.RAW_STRING
-                -> STRING_KEYS
-            RONTypes.SOME, RONTypes.NONE
-                -> OPTION_KEYS
-            RONTypes.COMMENT, RONTypes.BLOCK_COMMENT
-                -> COMMENT_KEYS
+            RONTypes.PARENTHESISL, RONTypes.PARENTHESISR -> PARENTHESES_KEYS
+            RONTypes.BRACKETL, RONTypes.BRACKETR -> BRACKETS_KEYS
+            RONTypes.BRACEL, RONTypes.BRACER -> BRACES_KEYS
+            RONTypes.INTEGER, RONTypes.FLOAT -> NUMBER_KEYS
+            RONTypes.STRING, RONTypes.RAW_STRING -> STRING_KEYS
+            RONTypes.SOME, RONTypes.NONE -> OPTION_KEYS
+            RONTypes.COMMENT, RONTypes.BLOCK_COMMENT -> COMMENT_KEYS
             else -> EMPTY_KEYS
         }
     }
