@@ -34,6 +34,11 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.language.RONBraceMatcher"
         />
+        <lang.quoteHandler
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONQuoteHandler"
+        />
+
 
     </extensions>
     <actions>
