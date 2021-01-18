@@ -16,7 +16,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 
 class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
-    @Suppress("ParameterListWrapping")
     override fun buildLanguageFoldRegions(
         descriptors: MutableList<FoldingDescriptor>,
         root: PsiElement,
