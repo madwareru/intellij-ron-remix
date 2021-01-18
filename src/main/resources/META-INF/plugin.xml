@@ -21,34 +21,34 @@
         />
         <lang.syntaxHighlighter
                 language="RON"
-                implementationClass="com.github.madwareru.intellijronremix.language.RONSyntaxHighlighter"
+                implementationClass="com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighter"
         />
         <colorSettingsPage
-                implementation="com.github.madwareru.intellijronremix.language.RONColorSettingsPage"
+                implementation="com.github.madwareru.intellijronremix.ide.colors.RONColorSettingsPage"
         />
         <lang.commenter
                 language="RON"
-                implementationClass="com.github.madwareru.intellijronremix.language.RONCommenter"
+                implementationClass="com.github.madwareru.intellijronremix.ide.RONCommenter"
         />
         <lang.braceMatcher
                 language="RON"
-                implementationClass="com.github.madwareru.intellijronremix.language.RONBraceMatcher"
+                implementationClass="com.github.madwareru.intellijronremix.ide.braces.RONBraceMatcher"
         />
         <lang.quoteHandler
                 language="RON"
-                implementationClass="com.github.madwareru.intellijronremix.language.RONQuoteHandler"
+                implementationClass="com.github.madwareru.intellijronremix.ide.RONQuoteHandler"
         />
         <indexPatternBuilder
-                implementation="com.github.madwareru.intellijronremix.language.todo.RONTodoIndexPatternBuilder"
+                implementation="com.github.madwareru.intellijronremix.ide.todo.RONTodoIndexPatternBuilder"
         />
         <todoIndexer
                 filetype="RON"
-                implementationClass="com.github.madwareru.intellijronremix.language.todo.RONTodoIndexer"
+                implementationClass="com.github.madwareru.intellijronremix.ide.todo.RONTodoIndexer"
         />
     </extensions>
     <actions>
-        <action id="com.github.madwareru.intellijronremix.language.RONCreateFile"
-                class="com.github.madwareru.intellijronremix.language.RONCreateFile"
+        <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
+                class="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
                 text="RON File"
                 description="Create new RON file">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>

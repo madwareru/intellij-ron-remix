@@ -1,5 +1,6 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide.actions
 
+import com.github.madwareru.intellijronremix.ide.icons.RONIcons
 import com.intellij.ide.actions.CreateFileFromTemplateAction
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.openapi.project.Project

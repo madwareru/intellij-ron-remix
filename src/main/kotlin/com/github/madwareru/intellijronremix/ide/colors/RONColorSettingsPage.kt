@@ -1,5 +1,8 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide.colors
 
+import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighter
+import com.github.madwareru.intellijronremix.ide.icons.RONIcons
+import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor

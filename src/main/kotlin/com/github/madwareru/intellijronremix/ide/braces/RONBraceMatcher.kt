@@ -1,5 +1,7 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide.braces
 
+import com.github.madwareru.intellijronremix.language.RONFileType
+import com.github.madwareru.intellijronremix.language.RONLanguage
 import com.intellij.codeInsight.highlighting.PairedBraceMatcherAdapter
 import com.intellij.openapi.editor.highlighter.HighlighterIterator
 import com.intellij.openapi.fileTypes.FileType

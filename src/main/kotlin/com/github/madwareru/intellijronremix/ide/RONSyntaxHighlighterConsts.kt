@@ -1,4 +1,4 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide
 
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors

@@ -1,5 +1,6 @@
 package com.github.madwareru.intellijronremix.language
 
+import com.github.madwareru.intellijronremix.ide.icons.RONIcons
 import com.intellij.openapi.fileTypes.LanguageFileType
 import javax.swing.Icon
 

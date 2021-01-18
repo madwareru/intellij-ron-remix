@@ -1,4 +1,4 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide.icons
 
 import com.intellij.openapi.util.IconLoader
 

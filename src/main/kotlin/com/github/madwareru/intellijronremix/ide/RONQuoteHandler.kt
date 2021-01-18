@@ -1,4 +1,4 @@
-package com.github.madwareru.intellijronremix.language
+package com.github.madwareru.intellijronremix.ide
 
 import com.github.madwareru.intellijronremix.language.psi.RONTypes
 import com.intellij.codeInsight.editorActions.SimpleTokenSetQuoteHandler

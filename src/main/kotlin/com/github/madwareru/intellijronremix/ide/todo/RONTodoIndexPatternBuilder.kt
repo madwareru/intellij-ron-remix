@@ -1,4 +1,4 @@
-package com.github.madwareru.intellijronremix.language.todo
+package com.github.madwareru.intellijronremix.ide.todo
 
 import com.github.madwareru.intellijronremix.language.RONLexerAdapter
 import com.github.madwareru.intellijronremix.language.psi.RONFile
