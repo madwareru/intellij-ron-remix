@@ -1,5 +1,7 @@
 # intellij-ron-remix
 
+![Build](https://github.com/madwareru/intellij-ron-remix/workflows/Build/badge.svg)
+
 This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
 
 Plugin adds support for Rusty Object Notation files.
