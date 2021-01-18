@@ -15,11 +15,44 @@ import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
   }
 %}
 
+%{
+  private int zzShaStride = -1;
+
+  private int zzPostponedMarkedPos = -1;
+%}
+
+%{
+  IElementType imbueRawLiteral() {
+    yybegin(YYINITIAL);
+
+    zzStartRead = zzPostponedMarkedPos;
+    zzShaStride = -1;
+    zzPostponedMarkedPos = -1;
+
+    return RAW_STRING;
+  }
+
+  IElementType imbueBlockComment() {
+    yybegin(YYINITIAL);
+
+    zzStartRead = zzPostponedMarkedPos;
+    zzPostponedMarkedPos = -1;
+
+    return BLOCK_COMMENT;
+  }
+%}
+
 %public
 %class __RONLexer
 %implements FlexLexer
 %function advance
 %type IElementType
+
+%s IN_RAW_STRING
+%s IN_RAW_STRING_SUFFIX
+
+%s IN_BLOCK_COMMENT
+
 %unicode
 
 EOL=\R
@@ -50,6 +83,12 @@ EXTENSION=#!\[enable\([A-Za-z_]+\)\]
   ","                  { return COMMA; }
   "Some"               { return SOME; }
 
+  "r" #* \"            {
+                          yybegin(IN_RAW_STRING);
+                          zzPostponedMarkedPos = zzStartRead;
+                          zzShaStride = yylength() - 2;
+                       }
+
   {COMMENT}            { return COMMENT; }
   {BOOLEAN}            { return BOOLEAN; }
   {IDENT}              { return IDENT; }
@@ -59,6 +98,36 @@ EXTENSION=#!\[enable\([A-Za-z_]+\)\]
   {STRING}             { return STRING; }
   {EXTENSION}          { return EXTENSION; }
 
+  "/*"                 {
+                         yybegin(IN_BLOCK_COMMENT);
+                         yypushback(2);
+                       }
+}
+
+<IN_RAW_STRING> {
+  \" #*                {
+                          int shaExcess = yylength() - 1 - zzShaStride;
+                          if (shaExcess >= 0) {
+                              yybegin(IN_RAW_STRING_SUFFIX);
+                              yypushback(shaExcess);
+                          }
+                       }
+  [^]                  { }
+  <<EOF>>              { return imbueRawLiteral(); }
+}
+
+<IN_RAW_STRING_SUFFIX> {
+  [^]                  {
+                          yypushback(1);
+                          return imbueRawLiteral();
+                       }
+  <<EOF>>              { return imbueRawLiteral(); }
+}
+
+<IN_BLOCK_COMMENT> {
+  "*/"                 { return imbueBlockComment(); }
+  <<EOF>>              { return imbueBlockComment(); }
+  [^]                  { }
 }
 
 [^] { return BAD_CHARACTER; }
