@@ -1,6 +1,11 @@
 package com.github.madwareru.intellijronremix.ide.folding
 
-import com.github.madwareru.intellijronremix.language.psi.*
+import com.github.madwareru.intellijronremix.language.psi.RONFile
+import com.github.madwareru.intellijronremix.language.psi.RONList
+import com.github.madwareru.intellijronremix.language.psi.RONObjectBody
+import com.github.madwareru.intellijronremix.language.psi.RONMap
+import com.github.madwareru.intellijronremix.language.psi.RONTypes
+import com.github.madwareru.intellijronremix.language.psi.RONRecursiveVisitor
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.CustomFoldingBuilder
 import com.intellij.lang.folding.FoldingDescriptor

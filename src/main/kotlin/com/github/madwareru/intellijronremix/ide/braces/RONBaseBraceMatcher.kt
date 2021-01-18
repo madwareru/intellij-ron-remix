@@ -1,6 +1,6 @@
 package com.github.madwareru.intellijronremix.ide.braces
 
-import com.github.madwareru.intellijronremix.language.psi.RONTypes.*
+import com.github.madwareru.intellijronremix.language.psi.RONTypes
 import com.github.madwareru.intellijronremix.language.psi.RON_COMMENTS
 import com.github.madwareru.intellijronremix.language.psi.tokenSetOf
 import com.intellij.lang.BracePair
@@ -20,20 +20,20 @@ class RONBaseBraceMatcher : PairedBraceMatcher {
 
     companion object {
         private val PAIRS = arrayOf(
-            BracePair(BRACEL, BRACER, true),
-            BracePair(BRACKETL, BRACKETR, true),
-            BracePair(PARENTHESISL, PARENTHESISR, true)
+            BracePair(RONTypes.BRACEL, RONTypes.BRACER, true),
+            BracePair(RONTypes.BRACKETL, RONTypes.BRACKETR, true),
+            BracePair(RONTypes.PARENTHESISL, RONTypes.PARENTHESISR, true)
         )
 
         private val InsertPairBraceBefore = TokenSet.orSet(
             RON_COMMENTS,
             tokenSetOf(
                 TokenType.WHITE_SPACE,
-                COMMA,
-                PARENTHESISR,
-                BRACKETR,
-                BRACER,
-                BRACEL
+                RONTypes.COMMA,
+                RONTypes.PARENTHESISR,
+                RONTypes.BRACKETR,
+                RONTypes.BRACER,
+                RONTypes.BRACEL
             )
         )
     }
