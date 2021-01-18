@@ -1,0 +1,84 @@
+{
+    parserClass = "com.github.madwareru.intellijronremix.language.parser._RONParser"
+    parserUtilClass = "com.github.madwareru.intellijronremix.language.psi.RONParserUtil"
+
+    extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix = "RON"
+    psiImplClassSuffix = "Impl"
+    psiPackage = "com.github.madwareru.intellijronremix.language.psi"
+    psiImplPackage = "com.github.madwareru.intellijronremix.language.psi.impl"
+
+    elementTypeHolderClass = "com.github.madwareru.intellijronremix.language.psi.RONTypes"
+    elementTypeClass = "com.github.madwareru.intellijronremix.language.psi.RONElementType"
+    tokenTypeClass = "com.github.madwareru.intellijronremix.language.psi.RONTokenType"
+
+    psiImplUtilClass = "com.github.madwareru.intellijronremix.language.psi.impl.RONPsiImplUtil"
+
+    tokens = [
+        COMMENT = "regexp://.*"
+        BLOCK_COMMENT = "BLOCK COMMENT"
+
+        BOOLEAN = "regexp:true|false"
+
+        IDENT = "regexp:[A-Za-z_]+"
+
+        INTEGER = "regexp:[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|((0[bo]?)?[0-9][0-9_]*))"
+        FLOAT = "regexp:([+-]?[0-9]+\.[0-9]*([Ee][0-9]+)?)|(\.[0-9]+([Ee][0-9]+)?)"
+
+        CHAR = "regexp:'([ -&(-\[\]-~])|(\\')|(\\\\)'"
+        STRING = "regexp:\"([^\r\n\"]|(\\[\S]))*\""
+        RAW_STRING = "RAW STRING"
+
+        EXTENSION = "regexp:#!\[enable\([A-Za-z_]+\)\]"
+        PARENTHESISL = "("
+        PARENTHESISR = ")"
+        BRACKETL = "["
+        BRACKETR = "]"
+        BRACEL = "{"
+        BRACER = "}"
+        COLON = ":"
+        COMMA = ","
+        SOME = "Some"
+    ]
+}
+
+// RON File
+RON ::= [extension+] value;
+
+// Extension
+private extension ::= EXTENSION;
+
+// Values
+value ::= bool | integer | float | string | char | option | list | map | named_field | object;
+
+// Bool
+bool ::= BOOLEAN;
+
+// Integer
+private integer ::= INTEGER;
+
+// Float
+private float ::= FLOAT;
+
+// String
+private string ::= STRING | RAW_STRING;
+
+// Char
+private char ::= CHAR;
+
+// Option
+option ::= SOME PARENTHESISL value PARENTHESISR;
+
+// List
+list ::= BRACKETL [value (COMMA value)* [COMMA]] BRACKETR;
+
+// Map
+map ::= BRACEL [map_entry (COMMA map_entry)*  [COMMA]] BRACER
+map_entry ::= value COLON value;
+
+// Named Field for Struct
+named_field ::= IDENT COLON value;
+
+// Tuple + Enum Tuple + Tuple Struct + Struct + Unit Struct + Named Enum
+object ::= [IDENT] PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR | PARENTHESISL PARENTHESISR | IDENT;

@@ -8,12 +8,32 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.madwareru.intellijronremix.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.madwareru.intellijronremix.services.MyProjectService"/>
-    </extensions>
+        <fileType
+                name="RON file"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONFileType"
+                fieldName="INSTANCE"
+                language="RON"
+                extensions="ron"
+        />
+        <lang.parserDefinition
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONParserDefinition"
+        />
+        <lang.syntaxHighlighter
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.language.RONSyntaxHighlighter"
+        />
+        <colorSettingsPage
+                implementation="com.github.madwareru.intellijronremix.language.RONColorSettingsPage"
+        />
 
-    <applicationListeners>
-        <listener class="com.github.madwareru.intellijronremix.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    </extensions>
+    <actions>
+        <action id="com.github.madwareru.intellijronremix.language.RONCreateFile"
+                class="com.github.madwareru.intellijronremix.language.RONCreateFile"
+                text="RON File"
+                description="Create new RON file">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
+        </action>
+    </actions>
 </idea-plugin>
