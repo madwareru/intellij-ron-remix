@@ -29,48 +29,33 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType): Array<out TextAttributesKey?> {
         return when (tokenType) {
-            RONTypes.COLON -> {
-                COLON_KEYS
-            }
-            RONTypes.COMMA -> {
-                COMMA_KEYS
-            }
-            RONTypes.PARENTHESISL, RONTypes.PARENTHESISR -> {
-                PARENTHESES_KEYS
-            }
-            RONTypes.BRACKETL, RONTypes.BRACKETR -> {
-                BRACKETS_KEYS
-            }
-            RONTypes.BRACEL, RONTypes.BRACER -> {
-                BRACES_KEYS
-            }
-            RONTypes.BOOLEAN -> {
-                BOOLEAN_KEYS
-            }
-            RONTypes.INTEGER, RONTypes.FLOAT -> {
-                NUMBER_KEYS
-            }
-            RONTypes.STRING, RONTypes.RAW_STRING -> {
-                STRING_KEYS
-            }
-            RONTypes.SOME, RONTypes.NONE -> {
-                OPTION_KEYS
-            }
-            RONTypes.EXTENSION -> {
-                EXTENSION_KEYS
-            }
-            RONTypes.IDENT -> {
-                IDENT_KEYS
-            }
-            RONTypes.COMMENT, RONTypes.BLOCK_COMMENT -> {
-                COMMENT_KEYS
-            }
-            TokenType.BAD_CHARACTER -> {
-                BAD_CHAR_KEYS
-            }
-            else -> {
-                EMPTY_KEYS
-            }
+            RONTypes.COLON -> COLON_KEYS
+            RONTypes.COMMA -> COMMA_KEYS
+            RONTypes.BOOLEAN -> BOOLEAN_KEYS
+            RONTypes.EXTENSION -> EXTENSION_KEYS
+            RONTypes.IDENT -> IDENT_KEYS
+            TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS
+            else -> getTokenHighLightsSpecial(tokenType)
+        }
+    }
+
+    private fun getTokenHighLightsSpecial(tokenType: IElementType): Array<out TextAttributesKey?> {
+        return when (tokenType) {
+            RONTypes.PARENTHESISL, RONTypes.PARENTHESISR
+                -> PARENTHESES_KEYS
+            RONTypes.BRACKETL, RONTypes.BRACKETR
+                -> BRACKETS_KEYS
+            RONTypes.BRACEL, RONTypes.BRACER
+                -> BRACES_KEYS
+            RONTypes.INTEGER, RONTypes.FLOAT
+                -> NUMBER_KEYS
+            RONTypes.STRING, RONTypes.RAW_STRING
+                -> STRING_KEYS
+            RONTypes.SOME, RONTypes.NONE
+                -> OPTION_KEYS
+            RONTypes.COMMENT, RONTypes.BLOCK_COMMENT
+                -> COMMENT_KEYS
+            else -> EMPTY_KEYS
         }
     }
 }
