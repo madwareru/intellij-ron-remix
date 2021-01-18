@@ -5,22 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface RONValue extends PsiElement {
+public interface RONMapKey extends PsiElement {
 
   @Nullable
   RONBool getBool();
-
-  @Nullable
-  RONList getList();
-
-  @Nullable
-  RONMap getMap();
-
-  @Nullable
-  RONObject getObject();
-
-  @Nullable
-  RONOption getOption();
 
   @Nullable
   PsiElement getChar();

@@ -11,14 +11,14 @@ import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.madwareru.intellijronremix.language.psi.*;
 
-public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
+public class RONMapKeyImpl extends ASTWrapperPsiElement implements RONMapKey {
 
-  public RONValueImpl(@NotNull ASTNode node) {
+  public RONMapKeyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull RONVisitor visitor) {
-    visitor.visitValue(this);
+    visitor.visitMapKey(this);
   }
 
   @Override
@@ -31,30 +31,6 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
   @Nullable
   public RONBool getBool() {
     return findChildByClass(RONBool.class);
-  }
-
-  @Override
-  @Nullable
-  public RONList getList() {
-    return findChildByClass(RONList.class);
-  }
-
-  @Override
-  @Nullable
-  public RONMap getMap() {
-    return findChildByClass(RONMap.class);
-  }
-
-  @Override
-  @Nullable
-  public RONObject getObject() {
-    return findChildByClass(RONObject.class);
-  }
-
-  @Override
-  @Nullable
-  public RONOption getOption() {
-    return findChildByClass(RONOption.class);
   }
 
   @Override

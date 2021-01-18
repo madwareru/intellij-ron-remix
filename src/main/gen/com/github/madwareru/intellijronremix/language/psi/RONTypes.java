@@ -12,8 +12,11 @@ public interface RONTypes {
   IElementType LIST = new RONElementType("LIST");
   IElementType MAP = new RONElementType("MAP");
   IElementType MAP_ENTRY = new RONElementType("MAP_ENTRY");
+  IElementType MAP_KEY = new RONElementType("MAP_KEY");
   IElementType NAMED_FIELD = new RONElementType("NAMED_FIELD");
   IElementType OBJECT = new RONElementType("OBJECT");
+  IElementType OBJECT_BODY = new RONElementType("OBJECT_BODY");
+  IElementType OBJECT_ENTRY = new RONElementType("OBJECT_ENTRY");
   IElementType OPTION = new RONElementType("OPTION");
   IElementType VALUE = new RONElementType("VALUE");
 
@@ -31,7 +34,7 @@ public interface RONTypes {
   IElementType FLOAT = new RONTokenType("FLOAT");
   IElementType IDENT = new RONTokenType("IDENT");
   IElementType INTEGER = new RONTokenType("INTEGER");
-  IElementType NONE = new RONTokenType("NONE");
+  IElementType NONE = new RONTokenType("None");
   IElementType PARENTHESISL = new RONTokenType("(");
   IElementType PARENTHESISR = new RONTokenType(")");
   IElementType RAW_STRING = new RONTokenType("RAW STRING");
@@ -53,11 +56,20 @@ public interface RONTypes {
       else if (type == MAP_ENTRY) {
         return new RONMapEntryImpl(node);
       }
+      else if (type == MAP_KEY) {
+        return new RONMapKeyImpl(node);
+      }
       else if (type == NAMED_FIELD) {
         return new RONNamedFieldImpl(node);
       }
       else if (type == OBJECT) {
         return new RONObjectImpl(node);
+      }
+      else if (type == OBJECT_BODY) {
+        return new RONObjectBodyImpl(node);
+      }
+      else if (type == OBJECT_ENTRY) {
+        return new RONObjectEntryImpl(node);
       }
       else if (type == OPTION) {
         return new RONOptionImpl(node);

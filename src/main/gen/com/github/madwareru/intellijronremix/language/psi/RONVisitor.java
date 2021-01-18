@@ -23,11 +23,23 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMapKey(@NotNull RONMapKey o) {
+    visitPsiElement(o);
+  }
+
   public void visitNamedField(@NotNull RONNamedField o) {
     visitPsiElement(o);
   }
 
   public void visitObject(@NotNull RONObject o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectBody(@NotNull RONObjectBody o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectEntry(@NotNull RONObjectEntry o) {
     visitPsiElement(o);
   }
 

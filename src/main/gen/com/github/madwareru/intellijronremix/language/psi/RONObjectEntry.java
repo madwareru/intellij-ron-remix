@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface RONMapEntry extends PsiElement {
+public interface RONObjectEntry extends PsiElement {
 
-  @NotNull
-  RONMapKey getMapKey();
+  @Nullable
+  RONNamedField getNamedField();
 
-  @NotNull
+  @Nullable
   RONValue getValue();
 
 }

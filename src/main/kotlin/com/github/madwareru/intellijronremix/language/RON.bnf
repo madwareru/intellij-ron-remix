@@ -40,45 +40,40 @@
         COLON = ":"
         COMMA = ","
         SOME = "Some"
+        NONE = "None"
     ]
 }
 
-// RON File
 RON ::= [extension+] value;
 
-// Extension
 private extension ::= EXTENSION;
 
-// Values
-value ::= bool | integer | float | string | char | option | list | map | named_field | object;
+value ::= bool | integer | float | string | char | option | list | map | object;
 
-// Bool
 bool ::= BOOLEAN;
 
-// Integer
 private integer ::= INTEGER;
 
-// Float
 private float ::= FLOAT;
 
-// String
 private string ::= STRING | RAW_STRING;
 
-// Char
 private char ::= CHAR;
 
-// Option
 option ::= SOME PARENTHESISL value PARENTHESISR | NONE;
 
-// List
 list ::= BRACKETL [value (COMMA value)* [COMMA]] BRACKETR;
 
-// Map
-map ::= BRACEL [map_entry (COMMA map_entry)*  [COMMA]] BRACER
-map_entry ::= value COLON value;
+map ::= BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER;
 
-// Named Field for Struct
+map_key ::= bool | integer | float | string | char;
+
+map_entry ::= map_key COLON value;
+
 named_field ::= IDENT COLON value;
 
-// Tuple + Enum Tuple + Tuple Struct + Struct + Unit Struct + Named Enum
-object ::= [IDENT] PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR | PARENTHESISL PARENTHESISR | IDENT;
+object_entry ::= named_field | value;
+
+object_body ::= PARENTHESISL [object_entry (COMMA object_entry)* [COMMA]] PARENTHESISR;
+
+object ::= [IDENT] object_body | IDENT;

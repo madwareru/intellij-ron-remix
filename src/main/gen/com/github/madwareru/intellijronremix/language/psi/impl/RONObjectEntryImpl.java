@@ -11,14 +11,14 @@ import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.madwareru.intellijronremix.language.psi.*;
 
-public class RONObjectImpl extends ASTWrapperPsiElement implements RONObject {
+public class RONObjectEntryImpl extends ASTWrapperPsiElement implements RONObjectEntry {
 
-  public RONObjectImpl(@NotNull ASTNode node) {
+  public RONObjectEntryImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull RONVisitor visitor) {
-    visitor.visitObject(this);
+    visitor.visitObjectEntry(this);
   }
 
   @Override
@@ -29,14 +29,14 @@ public class RONObjectImpl extends ASTWrapperPsiElement implements RONObject {
 
   @Override
   @Nullable
-  public RONObjectBody getObjectBody() {
-    return findChildByClass(RONObjectBody.class);
+  public RONNamedField getNamedField() {
+    return findChildByClass(RONNamedField.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getIdent() {
-    return findChildByType(IDENT);
+  public RONValue getValue() {
+    return findChildByClass(RONValue.class);
   }
 
 }

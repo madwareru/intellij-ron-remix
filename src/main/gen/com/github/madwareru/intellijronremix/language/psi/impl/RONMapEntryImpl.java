@@ -29,8 +29,14 @@ public class RONMapEntryImpl extends ASTWrapperPsiElement implements RONMapEntry
 
   @Override
   @NotNull
-  public List<RONValue> getValueList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, RONValue.class);
+  public RONMapKey getMapKey() {
+    return findNotNullChildByClass(RONMapKey.class);
+  }
+
+  @Override
+  @NotNull
+  public RONValue getValue() {
+    return findNotNullChildByClass(RONValue.class);
   }
 
 }

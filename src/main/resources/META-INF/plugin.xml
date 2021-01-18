@@ -38,6 +38,10 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.RONQuoteHandler"
         />
+        <lang.foldingBuilder
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.folding.RONFoldingBuilder"
+        />
         <indexPatternBuilder
                 implementation="com.github.madwareru.intellijronremix.ide.todo.RONTodoIndexPatternBuilder"
         />
