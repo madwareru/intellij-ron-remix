@@ -3,7 +3,6 @@ package com.github.madwareru.intellijronremix.ide.colors
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighter
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts
 import com.github.madwareru.intellijronremix.ide.icons.RONIcons
-import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
@@ -11,7 +10,7 @@ import com.intellij.openapi.options.colors.ColorSettingsPage
 import javax.swing.Icon
 
 class RONColorSettingsPage : ColorSettingsPage {
-    private val ATTRS = arrayOf(
+    private val attrs = arrayOf(
         AttributesDescriptor("Colon", RONSyntaxHighlighterConsts.COLON),
         AttributesDescriptor("Comma", RONSyntaxHighlighterConsts.COMMA),
         AttributesDescriptor("Parentheses", RONSyntaxHighlighterConsts.PARENTHESES),
@@ -29,12 +28,9 @@ class RONColorSettingsPage : ColorSettingsPage {
         AttributesDescriptor("Bad character", RONSyntaxHighlighterConsts.BAD_CHAR),
     )
 
-    private val ANNOTATOR_TAGS = ATTRS.associateBy(
-        { it.displayName },
-        { it.key }
-    )
+    private val annotatorTags = attrs.associateBy({ it.displayName }, { it.key })
 
-    override fun getAttributeDescriptors() = ATTRS
+    override fun getAttributeDescriptors() = attrs
 
     override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY
 
@@ -44,8 +40,7 @@ class RONColorSettingsPage : ColorSettingsPage {
 
     override fun getHighlighter(): SyntaxHighlighter = RONSyntaxHighlighter()
 
-    override fun getDemoText() =
-        "GameConfig( // optional struct name\n" +
+    override fun getDemoText() = "GameConfig( // optional struct name\n" +
         "    window_size: (800, 600),\n" +
         "    window_title: \"PAC-MAN\",\n" +
         "    fullscreen: false,\n" +
@@ -72,6 +67,5 @@ class RONColorSettingsPage : ColorSettingsPage {
         "    ),\n" +
         ")"
 
-    override fun getAdditionalHighlightingTagToDescriptorMap()
-        = ANNOTATOR_TAGS
+    override fun getAdditionalHighlightingTagToDescriptorMap() = annotatorTags
 }
