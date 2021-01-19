@@ -12,6 +12,7 @@ import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 
@@ -34,6 +35,7 @@ class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
             RONTypes.LIST -> "[...]"
             RONTypes.OBJECT_BODY -> "(...)"
             RONTypes.MAP -> "{...}"
+            RONTypes.BLOCK_COMMENT -> "/*...*/"
             else -> "{...}"
         }
 
@@ -59,6 +61,13 @@ private class RONFoldingVisitor(private val descriptors: MutableList<FoldingDesc
         if (o.mapEntryList.isNotEmpty()) {
             fold(o)
             super.visitMap(o)
+        }
+    }
+
+    override fun visitComment(comment: PsiComment) {
+        if (comment.tokenType == RONTypes.BLOCK_COMMENT) {
+            fold(comment)
+            super.visitComment(comment)
         }
     }
 
