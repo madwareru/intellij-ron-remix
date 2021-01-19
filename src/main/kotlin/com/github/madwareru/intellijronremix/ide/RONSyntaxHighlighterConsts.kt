@@ -49,6 +49,14 @@ object RONSyntaxHighlighterConsts {
         "RON_IDENT",
         DefaultLanguageHighlighterColors.IDENTIFIER
     )
+    val OBJECT_NAME = TextAttributesKey.createTextAttributesKey(
+        "RON_OBJECT_NAME",
+        DefaultLanguageHighlighterColors.CLASS_NAME
+    )
+    val KEY_NAME = TextAttributesKey.createTextAttributesKey(
+        "RON_KEY_NAME",
+        DefaultLanguageHighlighterColors.CONSTANT
+    )
     val COMMENT = TextAttributesKey.createTextAttributesKey(
         "RON_COMMENT",
         DefaultLanguageHighlighterColors.LINE_COMMENT

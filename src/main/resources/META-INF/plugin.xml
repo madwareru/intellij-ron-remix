@@ -53,6 +53,10 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.completion.RONOptionCompletionContributor"
         />
+        <annotator
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.annotator.RONHighlightingAnnotator"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"

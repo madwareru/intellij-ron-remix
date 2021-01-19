@@ -23,7 +23,9 @@ class RONColorSettingsPage : ColorSettingsPage {
             AttributesDescriptor("String", RONSyntaxHighlighterConsts.STRING),
             AttributesDescriptor("Option", RONSyntaxHighlighterConsts.OPTION),
             AttributesDescriptor("Extension", RONSyntaxHighlighterConsts.EXTENSION),
-            AttributesDescriptor("Ident", RONSyntaxHighlighterConsts.IDENT),
+            AttributesDescriptor("Identifier", RONSyntaxHighlighterConsts.IDENT),
+            AttributesDescriptor("Object name", RONSyntaxHighlighterConsts.OBJECT_NAME),
+            AttributesDescriptor("Key", RONSyntaxHighlighterConsts.KEY_NAME),
             AttributesDescriptor("Comment", RONSyntaxHighlighterConsts.COMMENT),
             AttributesDescriptor("Bad character", RONSyntaxHighlighterConsts.BAD_CHAR),
         )
@@ -39,20 +41,31 @@ class RONColorSettingsPage : ColorSettingsPage {
     override fun getHighlighter(): SyntaxHighlighter = RONSyntaxHighlighter()
 
     override fun getDemoText(): String {
-        return "(\n" +
-            "    rocky_tiles_count: 10,\n" +
-            "    randomized_objects: [\n" +
-            "        (owner: None, typename: \"boulder\", line: None, count: 3),\n" +
-            "        (owner: None, typename: \"spike_trap\", line: None, count: 3),\n" +
-            "        (owner: Some((0)), typename: \"swordsman\", line: Some(Front), count: 1),\n" +
-            "        (owner: Some((0)), typename: \"hammerman\", line: Some(Front), count: 1),\n" +
-            "        (owner: Some((0)), typename: \"spearman\", line: Some(Middle), count: 1),\n" +
-            "        (owner: Some((0)), typename: \"alchemist\", line: Some(Middle), count: 1),\n" +
-            "        (owner: Some((1)), typename: \"imp\", line: Some(Front), count: 4),\n" +
-            "        (owner: Some((1)), typename: \"toxic_imp\", line: Some(Middle), count: 1),\n" +
-            "        (owner: Some((1)), typename: \"imp_bomber\", line: Some(Back), count: 1),\n" +
-            "        (owner: Some((1)), typename: \"imp_summoner\", line: Some(Middle), count: 2),\n" +
-            "    ],\n" +
+        return "GameConfig( // optional struct name\n" +
+            "    window_size: (800, 600),\n" +
+            "    window_title: \"PAC-MAN\",\n" +
+            "    fullscreen: false,\n" +
+            "    \n" +
+            "    mouse_sensitivity: 1.4,\n" +
+            "    key_bindings: {\n" +
+            "        \"up\": Up,\n" +
+            "        \"down\": Down,\n" +
+            "        \"left\": Left,\n" +
+            "        \"right\": Right,\n" +
+            "        \n" +
+            "        // Uncomment to enable WASD controls\n" +
+            "        /*\n" +
+            "        \"W\": Up,\n" +
+            "        \"A\": Down,\n" +
+            "        \"S\": Left,\n" +
+            "        \"D\": Right,\n" +
+            "        */\n" +
+            "    },\n" +
+            "    \n" +
+            "    difficulty_options: (\n" +
+            "        start_difficulty: Easy,\n" +
+            "        adaptive: false,\n" +
+            "    ),\n" +
             ")"
     }
 
