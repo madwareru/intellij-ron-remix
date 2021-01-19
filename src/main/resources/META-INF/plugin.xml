@@ -57,6 +57,8 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.annotator.RONHighlightingAnnotator"
         />
+        <additionalTextAttributes scheme="Default" file="colors/RONDefault.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colors/RONDarcula.xml"/>
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"

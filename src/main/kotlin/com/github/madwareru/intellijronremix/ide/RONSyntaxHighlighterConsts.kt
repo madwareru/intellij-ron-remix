@@ -51,7 +51,7 @@ object RONSyntaxHighlighterConsts {
     )
     val OBJECT_NAME = TextAttributesKey.createTextAttributesKey(
         "RON_OBJECT_NAME",
-        DefaultLanguageHighlighterColors.CLASS_NAME
+        TextAttributesKey.createTextAttributesKey("ron.lang.object_name")
     )
     val KEY_NAME = TextAttributesKey.createTextAttributesKey(
         "RON_KEY_NAME",
