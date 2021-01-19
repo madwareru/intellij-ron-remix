@@ -49,6 +49,10 @@
                 filetype="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.todo.RONTodoIndexer"
         />
+        <completion.contributor
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.completion.RONOptionCompletionContributor"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
