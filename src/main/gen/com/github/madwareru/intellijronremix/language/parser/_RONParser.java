@@ -36,7 +36,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [extension+] value
+  // [ext+] value
   static boolean RON(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RON")) return false;
     boolean r;
@@ -47,22 +47,22 @@ public class _RONParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [extension+]
+  // [ext+]
   private static boolean RON_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RON_0")) return false;
     RON_0_0(b, l + 1);
     return true;
   }
 
-  // extension+
+  // ext+
   private static boolean RON_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RON_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = extension(b, l + 1);
+    r = ext(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!extension(b, l + 1)) break;
+      if (!ext(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "RON_0_0", c)) break;
     }
     exit_section_(b, m, null, r);
@@ -89,8 +89,14 @@ public class _RONParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // EXTENSION
-  static boolean extension(PsiBuilder b, int l) {
-    return consumeToken(b, EXTENSION);
+  public static boolean ext(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ext")) return false;
+    if (!nextTokenIs(b, EXTENSION)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EXTENSION);
+    exit_section_(b, m, EXT, r);
+    return r;
   }
 
   /* ********************************************************** */

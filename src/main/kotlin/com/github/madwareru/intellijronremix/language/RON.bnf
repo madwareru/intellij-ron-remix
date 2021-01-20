@@ -44,9 +44,9 @@
     ]
 }
 
-RON ::= [extension+] value;
+RON ::= [ext+] value;
 
-private extension ::= EXTENSION;
+ext ::= EXTENSION;
 
 value ::= bool | integer | float | string | char | option | list | map | object;
 

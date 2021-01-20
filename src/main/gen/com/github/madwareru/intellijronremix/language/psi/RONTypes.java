@@ -9,6 +9,7 @@ import com.github.madwareru.intellijronremix.language.psi.impl.*;
 public interface RONTypes {
 
   IElementType BOOL = new RONElementType("BOOL");
+  IElementType EXT = new RONElementType("EXT");
   IElementType LIST = new RONElementType("LIST");
   IElementType MAP = new RONElementType("MAP");
   IElementType MAP_ENTRY = new RONElementType("MAP_ENTRY");
@@ -46,6 +47,9 @@ public interface RONTypes {
       IElementType type = node.getElementType();
       if (type == BOOL) {
         return new RONBoolImpl(node);
+      }
+      else if (type == EXT) {
+        return new RONExtImpl(node);
       }
       else if (type == LIST) {
         return new RONListImpl(node);

@@ -9,9 +9,10 @@ import com.intellij.psi.PsiElement
 
 class RONHighlightingAnnotator : AnnotatorBase() {
     override fun annotateInternal(element: PsiElement, holder: AnnotationHolder) {
-        if (holder.isBatchMode || element.parent == null) return
+        val parent = element.parent
+        if (holder.isBatchMode || parent == null) return
 
-        when (val parent = element.parent) {
+        when (parent) {
             is RONObject -> if (parent.ident == element) {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
