@@ -36,7 +36,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [ext+] value
+  // [extensions] value
   static boolean RON(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RON")) return false;
     boolean r;
@@ -47,26 +47,11 @@ public class _RONParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [ext+]
+  // [extensions]
   private static boolean RON_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RON_0")) return false;
-    RON_0_0(b, l + 1);
+    extensions(b, l + 1);
     return true;
-  }
-
-  // ext+
-  private static boolean RON_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "RON_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ext(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!ext(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "RON_0_0", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   /* ********************************************************** */
@@ -88,14 +73,31 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EXTENSION
+  // ENABLE_CLAUSEL IDENT ENABLE_CLAUSER
   public static boolean ext(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ext")) return false;
-    if (!nextTokenIs(b, EXTENSION)) return false;
+    if (!nextTokenIs(b, ENABLE_CLAUSEL)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EXTENSION);
+    r = consumeTokens(b, 0, ENABLE_CLAUSEL, IDENT, ENABLE_CLAUSER);
     exit_section_(b, m, EXT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ext+
+  public static boolean extensions(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "extensions")) return false;
+    if (!nextTokenIs(b, ENABLE_CLAUSEL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ext(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!ext(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "extensions", c)) break;
+    }
+    exit_section_(b, m, EXTENSIONS, r);
     return r;
   }
 

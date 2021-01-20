@@ -30,7 +30,6 @@
         STRING = "regexp:\"([^\r\n\"]|(\\[\S]))*\""
         RAW_STRING = "RAW STRING"
 
-        EXTENSION = "regexp:#!\[enable\([A-Za-z_]+\)\]"
         PARENTHESISL = "("
         PARENTHESISR = ")"
         BRACKETL = "["
@@ -41,12 +40,16 @@
         COMMA = ","
         SOME = "Some"
         NONE = "None"
+        ENABLE_CLAUSEL = "#![enable("
+        ENABLE_CLAUSER = ")]"
     ]
 }
 
-RON ::= [ext+] value;
+RON ::= [extensions] value;
 
-ext ::= EXTENSION;
+extensions ::= ext+;
+
+ext ::= ENABLE_CLAUSEL IDENT ENABLE_CLAUSER;
 
 value ::= bool | integer | float | string | char | option | list | map | object;
 

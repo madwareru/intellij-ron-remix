@@ -32,7 +32,6 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
             RONTypes.COLON -> COLON_KEYS
             RONTypes.COMMA -> COMMA_KEYS
             RONTypes.BOOLEAN -> BOOLEAN_KEYS
-            RONTypes.EXTENSION -> EXTENSION_KEYS
             RONTypes.IDENT -> IDENT_KEYS
             TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS
             else -> getTokenHighLightsSpecial(tokenType)
@@ -41,6 +40,7 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
 
     private fun getTokenHighLightsSpecial(tokenType: IElementType): Array<out TextAttributesKey?> {
         return when (tokenType) {
+            RONTypes.ENABLE_CLAUSEL, RONTypes.ENABLE_CLAUSER -> EXTENSION_KEYS
             RONTypes.PARENTHESISL, RONTypes.PARENTHESISR -> PARENTHESES_KEYS
             RONTypes.BRACKETL, RONTypes.BRACKETR -> BRACKETS_KEYS
             RONTypes.BRACEL, RONTypes.BRACER -> BRACES_KEYS

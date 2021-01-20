@@ -65,7 +65,6 @@ INTEGER=[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|((0[bo]?)?[0-9][0-9_]*))
 FLOAT=([+-]?[0-9]+\.[0-9]*([Ee][0-9]+)?)|(\.[0-9]+([Ee][0-9]+)?)
 CHAR='([ -&(-\[\]-~])|(\')|(\\\\)'
 STRING=\"([^\r\n\"]|(\\[\S]))*\"
-EXTENSION=#!\[enable\([A-Za-z_]+\)\]
 
 %%
 <YYINITIAL> {
@@ -83,6 +82,8 @@ EXTENSION=#!\[enable\([A-Za-z_]+\)\]
   ","                  { return COMMA; }
   "Some"               { return SOME; }
   "None"               { return NONE; }
+  "#![enable("         { return ENABLE_CLAUSEL; }
+  ")]"                 { return ENABLE_CLAUSER; }
 
   "r" #* \"            {
                           yybegin(IN_RAW_STRING);
@@ -97,7 +98,6 @@ EXTENSION=#!\[enable\([A-Za-z_]+\)\]
   {FLOAT}              { return FLOAT; }
   {CHAR}               { return CHAR; }
   {STRING}             { return STRING; }
-  {EXTENSION}          { return EXTENSION; }
 
   "/*"                 {
                          yybegin(IN_BLOCK_COMMENT);

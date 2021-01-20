@@ -15,6 +15,10 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitExtensions(@NotNull RONExtensions o) {
+    visitPsiElement(o);
+  }
+
   public void visitList(@NotNull RONList o) {
     visitPsiElement(o);
   }

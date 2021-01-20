@@ -23,6 +23,14 @@ class RONOptionCompletionContributor : CompletionContributor() {
                 ) {
                     resultSet.addElement(
                         LookupElementBuilder
+                            .create("#![enable()]")
+                            .withInsertHandler { ctx, _ ->
+                                val currentOffset = ctx.editor.caretModel.offset
+                                ctx.editor.caretModel.moveToOffset(currentOffset - 2)
+                            }
+                    )
+                    resultSet.addElement(
+                        LookupElementBuilder
                             .create("Some()")
                             .withInsertHandler { ctx, _ ->
                                 val currentOffset = ctx.editor.caretModel.offset

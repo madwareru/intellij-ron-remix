@@ -10,6 +10,7 @@ public interface RONTypes {
 
   IElementType BOOL = new RONElementType("BOOL");
   IElementType EXT = new RONElementType("EXT");
+  IElementType EXTENSIONS = new RONElementType("EXTENSIONS");
   IElementType LIST = new RONElementType("LIST");
   IElementType MAP = new RONElementType("MAP");
   IElementType MAP_ENTRY = new RONElementType("MAP_ENTRY");
@@ -31,7 +32,8 @@ public interface RONTypes {
   IElementType COLON = new RONTokenType(":");
   IElementType COMMA = new RONTokenType(",");
   IElementType COMMENT = new RONTokenType("COMMENT");
-  IElementType EXTENSION = new RONTokenType("EXTENSION");
+  IElementType ENABLE_CLAUSEL = new RONTokenType("#![enable(");
+  IElementType ENABLE_CLAUSER = new RONTokenType(")]");
   IElementType FLOAT = new RONTokenType("FLOAT");
   IElementType IDENT = new RONTokenType("IDENT");
   IElementType INTEGER = new RONTokenType("INTEGER");
@@ -50,6 +52,9 @@ public interface RONTypes {
       }
       else if (type == EXT) {
         return new RONExtImpl(node);
+      }
+      else if (type == EXTENSIONS) {
+        return new RONExtensionsImpl(node);
       }
       else if (type == LIST) {
         return new RONListImpl(node);
