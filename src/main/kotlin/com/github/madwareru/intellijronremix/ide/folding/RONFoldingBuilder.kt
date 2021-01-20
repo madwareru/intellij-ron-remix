@@ -1,5 +1,6 @@
 package com.github.madwareru.intellijronremix.ide.folding
 
+import com.github.madwareru.intellijronremix.language.psi.RONExtensions
 import com.github.madwareru.intellijronremix.language.psi.RONFile
 import com.github.madwareru.intellijronremix.language.psi.RONList
 import com.github.madwareru.intellijronremix.language.psi.RONMap
@@ -36,6 +37,7 @@ class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
             RONTypes.OBJECT_BODY -> "(...)"
             RONTypes.MAP -> "{...}"
             RONTypes.BLOCK_COMMENT -> "/*...*/"
+            RONTypes.EXTENSIONS -> "#![...]"
             else -> "{...}"
         }
 
@@ -48,6 +50,11 @@ private class RONFoldingVisitor(private val descriptors: MutableList<FoldingDesc
             fold(o)
             super.visitList(o)
         }
+    }
+
+    override fun visitExtensions(o: RONExtensions) {
+        fold(o)
+        super.visitExtensions(o)
     }
 
     override fun visitObjectBody(o: RONObjectBody) {
