@@ -2,19 +2,15 @@
 
 ![Build](https://github.com/madwareru/intellij-ron-remix/workflows/Build/badge.svg)
 
-This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
-
-Plugin adds support for Rusty Object Notation files.
 
 ## Template ToDo list (what I haven't done yet)
 - [ ] [Publish a plugin manually](https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/publishing_plugin.html) for the first time.
 - [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
 
 <!-- Plugin description -->
+This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+Plugin adds support for Rusty Object Notation files.
 <!-- Plugin description end -->
 
 ## Installation

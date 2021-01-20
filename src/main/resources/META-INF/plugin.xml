@@ -3,6 +3,12 @@
     <name>intellij-ron-remix</name>
     <vendor>madwareru</vendor>
 
+    <description><![CDATA[
+    This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
+
+    Plugin adds support for Rusty Object Notation files.
+    ]]></description>
+
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
