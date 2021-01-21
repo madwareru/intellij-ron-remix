@@ -30,6 +30,9 @@
         STRING = "regexp:\"([^\r\n\"]|(\\[\S]))*\""
         RAW_STRING = "RAW STRING"
 
+        EXT_PREFIX = "#!["
+        ENABLE_KEYWORD = "enable"
+
         PARENTHESISL = "("
         PARENTHESISR = ")"
         BRACKETL = "["
@@ -40,8 +43,6 @@
         COMMA = ","
         SOME = "Some"
         NONE = "None"
-        ENABLE_CLAUSEL = "#![enable("
-        ENABLE_CLAUSER = ")]"
     ]
 }
 
@@ -49,7 +50,7 @@ RON ::= [extensions] value;
 
 extensions ::= ext+;
 
-ext ::= ENABLE_CLAUSEL IDENT ENABLE_CLAUSER;
+ext ::= EXT_PREFIX ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR BRACKETR;
 
 value ::= bool | integer | float | string | char | option | list | map | object;
 

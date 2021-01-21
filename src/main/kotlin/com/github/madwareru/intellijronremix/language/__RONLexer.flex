@@ -82,8 +82,8 @@ STRING=\"([^\r\n\"]|(\\[\S]))*\"
   ","                  { return COMMA; }
   "Some"               { return SOME; }
   "None"               { return NONE; }
-  "#![enable("         { return ENABLE_CLAUSEL; }
-  ")]"                 { return ENABLE_CLAUSER; }
+  "#!["                { return EXT_PREFIX; }
+  "enable"             { return ENABLE_KEYWORD; }
 
   "r" #* \"            {
                           yybegin(IN_RAW_STRING);

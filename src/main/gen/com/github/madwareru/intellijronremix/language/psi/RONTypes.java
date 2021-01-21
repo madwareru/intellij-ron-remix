@@ -32,8 +32,8 @@ public interface RONTypes {
   IElementType COLON = new RONTokenType(":");
   IElementType COMMA = new RONTokenType(",");
   IElementType COMMENT = new RONTokenType("COMMENT");
-  IElementType ENABLE_CLAUSEL = new RONTokenType("#![enable(");
-  IElementType ENABLE_CLAUSER = new RONTokenType(")]");
+  IElementType ENABLE_KEYWORD = new RONTokenType("enable");
+  IElementType EXT_PREFIX = new RONTokenType("#![");
   IElementType FLOAT = new RONTokenType("FLOAT");
   IElementType IDENT = new RONTokenType("IDENT");
   IElementType INTEGER = new RONTokenType("INTEGER");

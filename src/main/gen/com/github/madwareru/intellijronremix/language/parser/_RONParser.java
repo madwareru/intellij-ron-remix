@@ -73,13 +73,13 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ENABLE_CLAUSEL IDENT ENABLE_CLAUSER
+  // EXT_PREFIX ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR BRACKETR
   public static boolean ext(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ext")) return false;
-    if (!nextTokenIs(b, ENABLE_CLAUSEL)) return false;
+    if (!nextTokenIs(b, EXT_PREFIX)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, ENABLE_CLAUSEL, IDENT, ENABLE_CLAUSER);
+    r = consumeTokens(b, 0, EXT_PREFIX, ENABLE_KEYWORD, PARENTHESISL, IDENT, PARENTHESISR, BRACKETR);
     exit_section_(b, m, EXT, r);
     return r;
   }
@@ -88,7 +88,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
   // ext+
   public static boolean extensions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "extensions")) return false;
-    if (!nextTokenIs(b, ENABLE_CLAUSEL)) return false;
+    if (!nextTokenIs(b, EXT_PREFIX)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = ext(b, l + 1);

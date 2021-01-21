@@ -1,6 +1,7 @@
 package com.github.madwareru.intellijronremix.ide.annotator
 
 import com.github.madwareru.intellijronremix.ide.RONSyntaxHighlighterConsts
+import com.github.madwareru.intellijronremix.language.psi.RONExt
 import com.github.madwareru.intellijronremix.language.psi.RONNamedField
 import com.github.madwareru.intellijronremix.language.psi.RONObject
 import com.intellij.lang.annotation.AnnotationHolder
@@ -13,6 +14,12 @@ class RONHighlightingAnnotator : AnnotatorBase() {
         if (holder.isBatchMode || parent == null) return
 
         when (parent) {
+            is RONExt -> if (parent.ident != element) {
+                holder
+                    .newSilentAnnotation(HighlightSeverity.INFORMATION)
+                    .textAttributes(RONSyntaxHighlighterConsts.EXTENSION)
+                    .create()
+            }
             is RONObject -> if (parent.ident == element) {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)

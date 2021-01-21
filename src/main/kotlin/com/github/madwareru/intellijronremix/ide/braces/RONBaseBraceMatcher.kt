@@ -23,7 +23,7 @@ class RONBaseBraceMatcher : PairedBraceMatcher {
             BracePair(RONTypes.BRACEL, RONTypes.BRACER, true),
             BracePair(RONTypes.BRACKETL, RONTypes.BRACKETR, true),
             BracePair(RONTypes.PARENTHESISL, RONTypes.PARENTHESISR, true),
-            BracePair(RONTypes.ENABLE_CLAUSEL, RONTypes.ENABLE_CLAUSER, false)
+            BracePair(RONTypes.EXT_PREFIX, RONTypes.BRACKETR, false)
         )
 
         private val InsertPairBraceBefore = TokenSet.orSet(
