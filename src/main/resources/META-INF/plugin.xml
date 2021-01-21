@@ -1,12 +1,12 @@
 <idea-plugin>
     <id>com.github.madwareru.intellijronremix</id>
-    <name>intellij-ron-remix</name>
+    <name>RON Extended Support</name>
     <vendor>madwareru</vendor>
 
     <description><![CDATA[
-    This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
-
     Plugin adds support for Rusty Object Notation files.
+
+    This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
     ]]></description>
 
     <!-- Product and plugin compatibility requirements -->

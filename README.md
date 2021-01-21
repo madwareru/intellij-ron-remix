@@ -1,4 +1,4 @@
-# intellij-ron-remix
+# RON Extended Support
 
 ![Build](https://github.com/madwareru/intellij-ron-remix/workflows/Build/badge.svg)
 
@@ -12,7 +12,7 @@ This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ro
 
 - Using IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intellij-ron-remix"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "RON Extended Support"</kbd> >
   <kbd>Install Plugin</kbd>
   
 - Manually:

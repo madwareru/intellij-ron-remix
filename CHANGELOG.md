@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# intellij-ron-remix Changelog
+# RON Extended Support Changelog
 
 ## [Unreleased]
 

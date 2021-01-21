@@ -1,1 +1,1 @@
-rootProject.name = "intellij-ron-remix"
+rootProject.name = "RON Extended Support"
