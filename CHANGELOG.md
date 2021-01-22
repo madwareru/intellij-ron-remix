@@ -3,6 +3,18 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [unspecified]
 ### Fixed
 - Color highlighting options are now annotates demo text as expected
 
