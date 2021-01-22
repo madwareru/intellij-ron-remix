@@ -113,7 +113,13 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes(
             closure {
-                changelog.getLatest().toHTML()
+                val changeLogText = changelog
+                    .getLatest()
+                    .toText()
+
+                val fullLog = "[Full Changelog](https://github.com/madwareru/intellij-ron-remix/blob/main/CHANGELOG.md)"
+
+                markdownToHTML("$changeLogText\n\n$fullLog")
             }
         )
     }

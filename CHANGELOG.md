@@ -3,22 +3,13 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ### Security
-## [unspecified]
+## [0.1.7] 2021-01-22
 ### Fixed
 - Got rid of compatibility problems
 
-## [0.1.6]
+## [0.1.6] 2021-01-22
 ### Fixed
 - Color highlighting options are now annotates demo text as expected
 
