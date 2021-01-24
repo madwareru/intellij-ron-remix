@@ -6,6 +6,16 @@
 Plugin adds support for Rusty Object Notation files.
 
 This is initially a fork of [intellij-ron](https://github.com/ron-rs/intellij-ron).
+
+Features included:
+ - Code highlighting
+ - Color settings where you could customize highliting to better suit your experience
+ - Comment/uncomment line hotkey
+ - Code folding
+ - Structural braces matching
+ - Basic autocompletion for options and extensions
+ - Semantic highlighting to differentiate object key and name identifiers
+
 <!-- Plugin description end -->
 
 ## Installation
