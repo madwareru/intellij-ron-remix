@@ -3,6 +3,8 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Added
+- New settings panel for code style
 
 ### Security
 ## [0.1.7] 2021-01-22
