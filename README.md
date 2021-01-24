@@ -2,6 +2,8 @@
 
 ![Build](https://github.com/madwareru/intellij-ron-remix/workflows/Build/badge.svg)
 
+<iframe frameborder="none" width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/15878"></iframe>
+
 <!-- Plugin description -->
 Plugin adds support for Rusty Object Notation files.
 
