@@ -66,6 +66,9 @@
         />
         <additionalTextAttributes scheme="Default" file="colors/RONDefault.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colors/RONDarcula.xml"/>
+        <langCodeStyleSettingsProvider
+                implementation="com.github.madwareru.intellijronremix.ide.codeStyle.RONLanguageCodeStyleSettingsProvider"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
