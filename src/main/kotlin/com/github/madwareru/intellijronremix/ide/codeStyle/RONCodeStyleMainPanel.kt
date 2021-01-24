@@ -1,4 +1,4 @@
-package com.github.madwareru.intellijronremix.ide.codeStyle
+package com.github.madwareru.intellijronremix.ide.codestyle
 
 import com.github.madwareru.intellijronremix.language.RONLanguage
 import com.intellij.application.options.GenerationCodeStylePanel
