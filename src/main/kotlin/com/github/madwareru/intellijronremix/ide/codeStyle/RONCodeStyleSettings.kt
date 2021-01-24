@@ -7,4 +7,3 @@ class RONCodeStyleSettings(settings: CodeStyleSettings?) : CustomCodeStyleSettin
     "RONCodeStyleSettings",
     settings
 )
-

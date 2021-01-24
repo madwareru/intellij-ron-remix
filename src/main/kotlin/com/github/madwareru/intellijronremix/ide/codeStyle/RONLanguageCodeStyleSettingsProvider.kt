@@ -3,9 +3,9 @@ package com.github.madwareru.intellijronremix.ide.codeStyle
 import com.github.madwareru.intellijronremix.language.RONLanguage
 import com.intellij.application.options.CodeStyleAbstractConfigurable
 import com.intellij.application.options.SmartIndentOptionsEditor
+import com.intellij.psi.codeStyle.CodeStyleConfigurable
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable
-import com.intellij.psi.codeStyle.CodeStyleConfigurable
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
 
@@ -53,7 +53,7 @@ class RONLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
         commonSettings: CommonCodeStyleSettings,
         indentOptions: CommonCodeStyleSettings.IndentOptions
     ) {
-        commonSettings.RIGHT_MARGIN = 100
+        commonSettings.RIGHT_MARGIN = DEFAULT_RIGHT_MARGIN
 
         commonSettings.LINE_COMMENT_AT_FIRST_COLUMN = false
         commonSettings.LINE_COMMENT_ADD_SPACE = true
@@ -62,7 +62,7 @@ class RONLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
         indentOptions.CONTINUATION_INDENT_SIZE = indentOptions.INDENT_SIZE
     }
 
-    override fun getCodeSample(settingsType: SettingsType) = (
+    override fun getCodeSample(settingsType: SettingsType) =
 """Scene( // class name is optional
     materials: { // this is a map
         "metal": (
@@ -82,5 +82,9 @@ class RONLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
             material: "plastic",
         ),
     ],
-)""").trim()
+)"""
+
+    companion object {
+        const val DEFAULT_RIGHT_MARGIN = 100
+    }
 }
