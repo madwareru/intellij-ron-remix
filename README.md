@@ -1,6 +1,7 @@
 # RON Extended Support
 
 ![Build](https://github.com/madwareru/intellij-ron-remix/workflows/Build/badge.svg)
+[![download-img](https://img.shields.io/badge/Download-from_marketplace-green)](https://plugins.jetbrains.com/plugin/15878-ron-extended-support)
 
 <!-- Plugin description -->
 Plugin adds support for Rusty Object Notation files.
