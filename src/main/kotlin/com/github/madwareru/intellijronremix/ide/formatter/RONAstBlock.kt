@@ -1,21 +1,14 @@
 package com.github.madwareru.intellijronremix.ide.formatter
 
-import com.github.madwareru.intellijronremix.language.psi.RONTypes
 import com.github.madwareru.intellijronremix.language.RONLanguage
-import com.intellij.formatting.ASTBlock
-import com.intellij.formatting.Alignment
-import com.intellij.formatting.Block
-import com.intellij.formatting.ChildAttributes
-import com.intellij.formatting.Indent
-import com.intellij.formatting.Spacing
-import com.intellij.formatting.SpacingBuilder
-import com.intellij.formatting.Wrap
+import com.github.madwareru.intellijronremix.language.psi.RONTypes
+import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.TokenType
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings
 import com.intellij.psi.formatter.FormatterUtil
-import com.intellij.psi.TokenType
 
 class RONAstBlock(
     private val node: ASTNode,
