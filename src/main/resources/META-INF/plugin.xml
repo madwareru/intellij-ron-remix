@@ -64,6 +64,10 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.annotator.RONHighlightingAnnotator"
         />
+        <annotator
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.annotator.checkers.RONObjectCheckerAnnotator"
+        />
         <additionalTextAttributes scheme="Default" file="colors/RONDefault.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colors/RONDarcula.xml"/>
         <langCodeStyleSettingsProvider
