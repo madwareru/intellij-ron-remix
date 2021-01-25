@@ -16,6 +16,8 @@ Features included:
  - Structural braces matching
  - Basic autocompletion for options and extensions
  - Semantic highlighting to differentiate object key and name identifiers
+ - Automatic code formatting (such as identation)
+ - Checkers for dictionaries and objects (key uniquenes and more)
 
 <!-- Plugin description end -->
 
