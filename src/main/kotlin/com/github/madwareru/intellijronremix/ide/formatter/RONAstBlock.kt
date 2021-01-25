@@ -5,6 +5,7 @@ import com.github.madwareru.intellijronremix.language.psi.RONTypes
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.TokenType
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings
@@ -43,7 +44,12 @@ class RONAstBlock(
 
     override fun isIncomplete(): Boolean = myIsIncomplete
 
-    private val myIsIncomplete: Boolean by lazy { FormatterUtil.isIncomplete(node) }
+    private val myIsIncomplete: Boolean by lazy {
+        node.getChildren(null).any {
+            it.elementType is PsiErrorElement
+        }
+        || FormatterUtil.isIncomplete(node)
+    }
 
     private val mySubBlocks: List<Block> by lazy { buildChildren() }
 }
@@ -69,11 +75,11 @@ fun createSpacingBuilder(commonSettings: CommonCodeStyleSettings): SpacingBuilde
         .after(RONTypes.BRACKETL).spaceIf(false)
         .before(RONTypes.BRACKETR).spaceIf(false)
         // { }
-        .after(RONTypes.BRACEL).spaceIf(true)
-        .before(RONTypes.BRACER).spaceIf(true)
+        .after(RONTypes.BRACEL).spaceIf(false)
+        .before(RONTypes.BRACER).spaceIf(false)
         // ( )
-        .after(RONTypes.PARENTHESISL).spaceIf(true)
-        .before(RONTypes.PARENTHESISR).spaceIf(true)
+        .after(RONTypes.PARENTHESISL).spaceIf(false)
+        .before(RONTypes.PARENTHESISR).spaceIf(false)
 
 private fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RONFormatterContext): Spacing? {
     return ctx.spacingBuilder.getSpacing(this, child1, child2)
@@ -81,12 +87,22 @@ private fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RONFormatte
 
 private fun ASTNode?.isWhitespaceOrEmpty() = this == null || textLength == 0 || elementType == TokenType.WHITE_SPACE
 
-private fun RONAstBlock.computeIndent(child: ASTNode): Indent? = when (node.elementType) {
-    RONTypes.OBJECT_BODY, RONTypes.MAP, RONTypes.LIST -> when (child.elementType) {
-        RONTypes.COMMA -> Indent.getNoneIndent()
-        else -> Indent.getNormalIndent()
+private fun RONAstBlock.computeIndent(child: ASTNode): Indent? {
+    return when (node.elementType) {
+        RONTypes.OBJECT_BODY -> when (child.elementType) {
+            RONTypes.COMMA, RONTypes.PARENTHESISL, RONTypes.PARENTHESISR -> Indent.getNoneIndent()
+            else -> Indent.getNormalIndent()
+        }
+        RONTypes.MAP -> when (child.elementType) {
+            RONTypes.COMMA, RONTypes.BRACEL, RONTypes.BRACER -> Indent.getNoneIndent()
+            else -> Indent.getNormalIndent()
+        }
+        RONTypes.LIST -> when (child.elementType) {
+            RONTypes.COMMA, RONTypes.BRACKETL, RONTypes.BRACKETR -> Indent.getNoneIndent()
+            else -> Indent.getNormalIndent()
+        }
+        else -> Indent.getNoneIndent()
     }
-    else -> Indent.getNoneIndent()
 }
 
 private fun RONAstBlock.buildChildren(): List<Block> {

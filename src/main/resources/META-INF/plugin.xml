@@ -69,6 +69,10 @@
         <langCodeStyleSettingsProvider
                 implementation="com.github.madwareru.intellijronremix.ide.codestyle.RONLanguageCodeStyleSettingsProvider"
         />
+        <lang.formatter
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.formatter.RONFormattingModelBuilder"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
