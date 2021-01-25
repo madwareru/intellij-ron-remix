@@ -29,3 +29,4 @@ abstract class AnnotatorBase : Annotator {
         }
     }
 }
+
