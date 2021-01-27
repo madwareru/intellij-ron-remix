@@ -1,9 +1,6 @@
 package com.github.madwareru.intellijronremix.ide.annotator.checkers
 
-import com.github.madwareru.intellijronremix.language.psi.RONObjectBody
-import com.github.madwareru.intellijronremix.language.psi.RONObjectEntry
-import com.github.madwareru.intellijronremix.language.psi.isTuple
-import com.github.madwareru.intellijronremix.language.psi.keyText
+import com.github.madwareru.intellijronremix.language.psi.*
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.psi.PsiElement
 
@@ -25,7 +22,7 @@ class RONObjectCheckerAnnotator : CheckerAnnotator()  {
             .asSequence()
             .filterNot { it == objectEntry }
 
-        val duplicatesFound = filteredEntries.any { it.keyText != null && it.keyText == objectEntry.keyText }
+        val duplicatesFound = filteredEntries.any { it.keyTextMatches(objectEntry.keyText) }
 
         return if (duplicatesFound) {
             CheckerAnnotatorResult.Error(

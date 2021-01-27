@@ -3,6 +3,7 @@ package com.github.madwareru.intellijronremix.ide.annotator.checkers
 import com.github.madwareru.intellijronremix.language.psi.RONMap
 import com.github.madwareru.intellijronremix.language.psi.RONMapEntry
 import com.github.madwareru.intellijronremix.language.psi.keyAsText
+import com.github.madwareru.intellijronremix.language.psi.keyAsTextMatches
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.psi.PsiElement
 
@@ -23,7 +24,7 @@ class RONMapCheckerAnnotator : CheckerAnnotator()  {
             .asSequence()
             .filterNot { it == mapEntry }
 
-        val duplicatesFound = filteredEntries.any { it.keyAsText != null && it.keyAsText == mapEntry.keyAsText }
+        val duplicatesFound = filteredEntries.any { mapEntry.keyAsTextMatches(it.keyAsText) }
 
         return if (duplicatesFound) {
             CheckerAnnotatorResult.Error(
