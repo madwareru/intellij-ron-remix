@@ -88,17 +88,10 @@ private fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RONFormatte
 private fun ASTNode?.isWhitespaceOrEmpty() = this == null || textLength == 0 || elementType == TokenType.WHITE_SPACE
 
 private fun RONAstBlock.computeIndent(child: ASTNode): Indent? {
+    val isCornerChild = node.firstChildNode == child || node.lastChildNode == child
     return when (node.elementType) {
-        RONTypes.OBJECT_BODY -> when (child.elementType) {
-            RONTypes.COMMA, RONTypes.PARENTHESISL, RONTypes.PARENTHESISR -> Indent.getNoneIndent()
-            else -> Indent.getNormalIndent()
-        }
-        RONTypes.MAP -> when (child.elementType) {
-            RONTypes.COMMA, RONTypes.BRACEL, RONTypes.BRACER -> Indent.getNoneIndent()
-            else -> Indent.getNormalIndent()
-        }
-        RONTypes.LIST -> when (child.elementType) {
-            RONTypes.COMMA, RONTypes.BRACKETL, RONTypes.BRACKETR -> Indent.getNoneIndent()
+        RONTypes.OBJECT_BODY, RONTypes.MAP, RONTypes.LIST -> when {
+            isCornerChild || child.elementType == RONTypes.COMMA -> Indent.getNoneIndent()
             else -> Indent.getNormalIndent()
         }
         else -> Indent.getNoneIndent()
