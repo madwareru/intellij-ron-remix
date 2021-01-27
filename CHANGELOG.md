@@ -8,7 +8,6 @@
 - Code formatting
 - Error checkers for dictionaries and objects (key uniquenes and more)
 
-### Security
 ## [0.1.7] 2021-01-22
 ### Fixed
 - Got rid of compatibility problems
