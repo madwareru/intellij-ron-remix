@@ -28,7 +28,7 @@ class RONFoldingBuilder : CustomFoldingBuilder(), DumbAware {
     override fun getLanguagePlaceholderText(node: ASTNode, range: TextRange) =
         when (node.elementType) {
             RONTypes.LIST -> "[...]"
-            RONTypes.OBJECT_BODY -> "(...)"
+            RONTypes.OBJECT_BODY, RONTypes.TUPLE_BODY -> "(...)"
             RONTypes.MAP -> "{...}"
             RONTypes.BLOCK_COMMENT -> "/*...*/"
             RONTypes.EXTENSIONS -> "#![...]"
@@ -55,6 +55,13 @@ private class RONFoldingVisitor(private val descriptors: MutableList<FoldingDesc
         if (o.objectEntryList.isNotEmpty()) {
             fold(o)
             super.visitObjectBody(o)
+        }
+    }
+
+    override fun visitTupleBody(o: RONTupleBody) {
+        if (o.valueList.isNotEmpty()) {
+            fold(o)
+            super.visitTupleBody(o)
         }
     }
 

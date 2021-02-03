@@ -76,8 +76,10 @@ map_entry ::= map_key COLON value;
 
 named_field ::= IDENT COLON value;
 
-object_entry ::= named_field | value;
+object_entry ::= named_field;
 
 object_body ::= PARENTHESISL [object_entry (COMMA object_entry)* [COMMA]] PARENTHESISR;
 
-object ::= [IDENT] object_body | IDENT;
+tuple_body ::= PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR;
+
+object ::= [IDENT] (object_body | tuple_body) | IDENT;

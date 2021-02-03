@@ -10,7 +10,6 @@ class RONObjectCheckerAnnotator : CheckerAnnotator()  {
             CheckerAnnotatorResult.Ok
         } else {
             when (element) {
-                is RONObjectBody -> checkObjectBody(element)
                 is RONObjectEntry -> checkObjectEntry(element)
                 else -> CheckerAnnotatorResult.Ok
             }
@@ -33,28 +32,5 @@ class RONObjectCheckerAnnotator : CheckerAnnotator()  {
             CheckerAnnotatorResult.Ok
         }
     }
-
-    private fun checkObjectBody(objectBody: RONObjectBody): CheckerAnnotatorResult {
-        val head = objectBody.objectEntryList.firstOrNull()
-        val tail = objectBody.objectEntryList.asSequence().drop(1)
-        return when {
-            head == null || tail.count() == 0 -> CheckerAnnotatorResult.Ok
-            else -> checkObjectBodyImpl(head, tail)
-        }
-    }
-
-    private fun checkObjectBodyImpl(head: RONObjectEntry, tail: Sequence<RONObjectEntry>) =
-        if (head.isTuple) {
-            when(val found = tail.find { !it.isTuple }) {
-                null -> CheckerAnnotatorResult.Ok
-                else -> CheckerAnnotatorResult.Error("Tuple object has non-tuple elements", found.textRange)
-            }
-        }
-        else {
-            when(val found = tail.find { it.isTuple }) {
-                null -> CheckerAnnotatorResult.Ok
-                else -> CheckerAnnotatorResult.Error("Non-tuple object has tuple elements", found.textRange)
-            }
-        }
 }
 

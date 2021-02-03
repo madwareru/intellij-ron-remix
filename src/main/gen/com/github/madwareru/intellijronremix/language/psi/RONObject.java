@@ -11,6 +11,9 @@ public interface RONObject extends PsiElement {
   RONObjectBody getObjectBody();
 
   @Nullable
+  RONTupleBody getTupleBody();
+
+  @Nullable
   PsiElement getIdent();
 
 }

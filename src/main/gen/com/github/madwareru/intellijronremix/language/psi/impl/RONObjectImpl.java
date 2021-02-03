@@ -35,6 +35,12 @@ public class RONObjectImpl extends ASTWrapperPsiElement implements RONObject {
 
   @Override
   @Nullable
+  public RONTupleBody getTupleBody() {
+    return findChildByClass(RONTupleBody.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getIdent() {
     return findChildByType(IDENT);
   }

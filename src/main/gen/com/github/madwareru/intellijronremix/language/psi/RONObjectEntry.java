@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface RONObjectEntry extends PsiElement {
 
-  @Nullable
+  @NotNull
   RONNamedField getNamedField();
-
-  @Nullable
-  RONValue getValue();
 
 }

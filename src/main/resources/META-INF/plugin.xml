@@ -81,6 +81,10 @@
                 language="RON"
                 implementationClass="com.github.madwareru.intellijronremix.ide.formatter.RONFormattingModelBuilder"
         />
+        <lang.smartEnterProcessor
+                language="RON"
+                implementationClass="com.github.madwareru.intellijronremix.ide.assist.fixers.RONSmartEnterProcessor"
+        />
     </extensions>
     <actions>
         <action id="com.github.madwareru.intellijronremix.ide.actions.RONCreateFile"
