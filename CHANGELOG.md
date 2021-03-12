@@ -7,6 +7,9 @@
 - New settings panel for code style
 - Code formatting
 - Error checkers for dictionaries and objects (key uniquenes and more)
+### Fixed
+- Added an ability to use enums as keys in dictionaries
+- Fixed an issue with identifiers containing numeric literals not being parsed as it intended
 
 ## [0.1.7] 2021-01-22
 ### Fixed

@@ -11,6 +11,10 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEnum(@NotNull RONEnum o) {
+    visitPsiElement(o);
+  }
+
   public void visitExt(@NotNull RONExt o) {
     visitPsiElement(o);
   }

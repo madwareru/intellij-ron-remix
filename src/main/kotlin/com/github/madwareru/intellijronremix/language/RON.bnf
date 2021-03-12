@@ -21,7 +21,7 @@
 
         BOOLEAN = "regexp:true|false"
 
-        IDENT = "regexp:[A-Za-z_]+"
+        IDENT = "regexp:[A-Za-z_][A-Za-z0-9_]*"
 
         INTEGER = "regexp:[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|((0[bo]?)?[0-9][0-9_]*))"
         FLOAT = "regexp:([+-]?[0-9]+\.[0-9]*([Ee][0-9]+)?)|(\.[0-9]+([Ee][0-9]+)?)"
@@ -52,7 +52,7 @@ extensions ::= ext+;
 
 ext ::= EXT_PREFIX ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR BRACKETR;
 
-value ::= bool | integer | float | string | char | option | list | map | object;
+value ::= bool | integer | float | string | char | option | list | map | object | enum;
 
 bool ::= BOOLEAN;
 
@@ -70,7 +70,7 @@ list ::= BRACKETL [value (COMMA value)* [COMMA]] BRACKETR;
 
 map ::= BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER;
 
-map_key ::= bool | integer | float | string | char;
+map_key ::= bool | integer | float | string | char | enum;
 
 map_entry ::= map_key COLON value;
 
@@ -82,4 +82,6 @@ object_body ::= PARENTHESISL [object_entry (COMMA object_entry)* [COMMA]] PARENT
 
 tuple_body ::= PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR;
 
-object ::= [IDENT] (object_body | tuple_body) | IDENT;
+enum ::= IDENT;
+
+object ::= [IDENT] (object_body | tuple_body);

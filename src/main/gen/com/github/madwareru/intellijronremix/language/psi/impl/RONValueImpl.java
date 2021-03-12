@@ -35,6 +35,12 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
 
   @Override
   @Nullable
+  public RONEnum getEnum() {
+    return findChildByClass(RONEnum.class);
+  }
+
+  @Override
+  @Nullable
   public RONList getList() {
     return findChildByClass(RONList.class);
   }

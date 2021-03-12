@@ -11,6 +11,9 @@ public interface RONValue extends PsiElement {
   RONBool getBool();
 
   @Nullable
+  RONEnum getEnum();
+
+  @Nullable
   RONList getList();
 
   @Nullable
