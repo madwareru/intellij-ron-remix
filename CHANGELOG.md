@@ -3,6 +3,10 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed incompatibility with old versions of IDEs
+
+## [0.2.1] 2021-03-12
 ### Added
 - New settings panel for code style
 - Code formatting
@@ -10,6 +14,7 @@
 ### Fixed
 - Added an ability to use enums as keys in dictionaries
 - Fixed an issue with identifiers containing numeric literals not being parsed as it intended
+
 
 ## [0.1.7] 2021-01-22
 ### Fixed

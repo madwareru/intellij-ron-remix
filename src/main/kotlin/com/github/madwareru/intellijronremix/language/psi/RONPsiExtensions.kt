@@ -8,6 +8,7 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.prevLeaf
 import com.intellij.util.SmartList
 
 val RONObjectEntry?.keyText get() = this?.namedField?.ident?.text
@@ -60,7 +61,7 @@ val PsiElement.stubParent: PsiElement?
     }
 
 val PsiElement.leftLeaves: Sequence<PsiElement>
-    get() = generateSequence(this, PsiTreeUtil::prevLeaf).drop(1)
+    get() = generateSequence(this){ it.prevLeaf() }.drop(1)
 
 val PsiElement.rightSiblings: Sequence<PsiElement>
     get() = generateSequence(this.nextSibling) { it.nextSibling }
