@@ -3,6 +3,18 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [unspecified]
 ### Fixed
 - Fixed incompatibility with old versions of IDEs
 
