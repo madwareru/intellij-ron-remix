@@ -3,6 +3,8 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+
+## [0.2.2] 2021-03-13
 ### Fixed
 - Fixed incompatibility with old versions of IDEs
 
