@@ -12,9 +12,10 @@ class RONFormattingModelBuilder : FormattingModelBuilder {
     ): TextRange? = null
 
     override fun createModel(
-        element: com.intellij.psi.PsiElement,
-        settings: com.intellij.psi.codeStyle.CodeStyleSettings
+        formattingContext: FormattingContext
     ): FormattingModel {
+        val settings = formattingContext.codeStyleSettings
+        val element = formattingContext.psiElement
         val ctx = RONFormatterContext.create(settings)
         val block = createBlock(element.node, null, Indent.getNoneIndent(), null, ctx)
         return FormattingModelProvider.createFormattingModelForPsiFile(element.containingFile, block, settings)
