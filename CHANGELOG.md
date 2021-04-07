@@ -3,6 +3,18 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [unspecified]
 ### Fixed
 - Updated plugin to support new versions of IDE
 - Got rid of deprecated API usage
