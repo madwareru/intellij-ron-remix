@@ -26,7 +26,7 @@ class RONObjectCheckerAnnotator : CheckerAnnotator()  {
         return if (duplicatesFound) {
             CheckerAnnotatorResult.Error(
                 "Duplicate keys found in an object",
-                objectEntry.namedField!!.ident.textRange
+                objectEntry.namedField.ident.textRange
             )
         } else {
             CheckerAnnotatorResult.Ok
