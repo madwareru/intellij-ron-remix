@@ -39,10 +39,10 @@ intellij {
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
 
-changelog {
-    version = properties("pluginVersion")
-    groups = emptyList()
-}
+//changelog {
+//    version = properties("pluginVersion")
+//    groups = emptyList()
+//}
 
 tasks.buildSearchableOptions {
     enabled = false
