@@ -16,14 +16,12 @@ plugins {
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
+val pluginName_ = properties("pluginName")
 
 // Configure project's dependencies
 repositories {
     mavenCentral()
     jcenter()
-}
-dependencies {
-
 }
 
 sourceSets["main"].java.srcDirs("src/main/gen")
