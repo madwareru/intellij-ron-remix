@@ -7,7 +7,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.tree.LeafPsiElement
-import org.rust.lang.core.psi.ext.getPrevNonCommentSibling
 
 class CommaFixer : SmartEnterProcessorWithFixers.Fixer<RONSmartEnterProcessor>() {
     override fun apply(editor: Editor, processor: RONSmartEnterProcessor, element: PsiElement) {
