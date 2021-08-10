@@ -3,6 +3,7 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+## [0.2.5]
 ### Fixed
 - Fixed incorrect parsing of binary and octal literals (an incorrect literals where considered fine 
 so user experience where bad when serde refused to parse a file)
