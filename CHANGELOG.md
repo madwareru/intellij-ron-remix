@@ -3,6 +3,9 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Fixed
+- Updated plugin to support new versions of IDE
+
 ## [0.2.5]
 ### Fixed
 - Fixed incorrect parsing of binary and octal literals (an incorrect literals where considered fine 
