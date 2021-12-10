@@ -34,7 +34,7 @@ class RONParserDefinition : ParserDefinition {
 
     companion object {
         val COMMENTS = TokenSet.create(RONTypes.COMMENT, RONTypes.BLOCK_COMMENT)
-        val STRING_LITERALS = TokenSet.create(RONTypes.STRING)
+        val STRING_LITERALS = TokenSet.create(RONTypes.STRING, RONTypes.RAW_STRING)
         val FILE = IFileElementType(RONLanguage.INSTANCE)
     }
 }

@@ -65,12 +65,6 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
 
   @Override
   @Nullable
-  public PsiElement getChar() {
-    return findChildByType(CHAR);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getFloat() {
     return findChildByType(FLOAT);
   }
@@ -79,12 +73,6 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
   @Nullable
   public PsiElement getInteger() {
     return findChildByType(INTEGER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
   }
 
 }

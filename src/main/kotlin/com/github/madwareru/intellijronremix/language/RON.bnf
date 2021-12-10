@@ -26,8 +26,8 @@
         INTEGER = "regexp:[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|((0[bo]?)?[0-9][0-9_]*))"
         FLOAT = "regexp:([+-]?[0-9]+\.[0-9]*([Ee][0-9]+)?)|(\.[0-9]+([Ee][0-9]+)?)"
 
-        CHAR = "regexp:'([ -&(-\[\]-~])|(\\')|(\\\\)'"
-        STRING = "regexp:\"([^\r\n\"]|(\\[\S]))*\""
+        CHAR = "CHAR"
+        STRING = "STRING"
         RAW_STRING = "RAW STRING"
 
         EXT_PREFIX = "#!["
