@@ -3,6 +3,7 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+## [0.2.7]
 ### Fixed
 - Fixed char literal parsing. Now we support simple char literals.
 
