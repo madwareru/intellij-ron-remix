@@ -26,15 +26,9 @@ public interface RONValue extends PsiElement {
   RONOption getOption();
 
   @Nullable
-  PsiElement getChar();
-
-  @Nullable
   PsiElement getFloat();
 
   @Nullable
   PsiElement getInteger();
-
-  @Nullable
-  PsiElement getString();
 
 }

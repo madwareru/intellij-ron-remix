@@ -35,7 +35,7 @@ class RONSyntaxHighlighter : SyntaxHighlighterBase() {
             RONTypes.BRACKETL, RONTypes.BRACKETR -> RONColor.BRACKETS
             RONTypes.BRACEL, RONTypes.BRACER -> RONColor.BRACES
             RONTypes.INTEGER, RONTypes.FLOAT -> RONColor.NUMBER
-            RONTypes.STRING, RONTypes.RAW_STRING -> RONColor.STRING
+            RONTypes.STRING, RONTypes.RAW_STRING, RONTypes.CHAR -> RONColor.STRING
             RONTypes.SOME, RONTypes.NONE -> RONColor.OPTION
             RONTypes.COMMENT, RONTypes.BLOCK_COMMENT -> RONColor.COMMENT
             else -> null

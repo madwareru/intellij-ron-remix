@@ -41,12 +41,6 @@ public class RONMapKeyImpl extends ASTWrapperPsiElement implements RONMapKey {
 
   @Override
   @Nullable
-  public PsiElement getChar() {
-    return findChildByType(CHAR);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getFloat() {
     return findChildByType(FLOAT);
   }
@@ -55,12 +49,6 @@ public class RONMapKeyImpl extends ASTWrapperPsiElement implements RONMapKey {
   @Nullable
   public PsiElement getInteger() {
     return findChildByType(INTEGER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
   }
 
 }

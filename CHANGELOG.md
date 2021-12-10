@@ -3,6 +3,9 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed char literal parsing. Now we support simple char literals.
+
 ## [0.2.6]
 ### Fixed
 - Updated plugin to support new versions of IDE

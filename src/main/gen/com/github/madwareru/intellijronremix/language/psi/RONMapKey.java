@@ -14,15 +14,9 @@ public interface RONMapKey extends PsiElement {
   RONEnum getEnum();
 
   @Nullable
-  PsiElement getChar();
-
-  @Nullable
   PsiElement getFloat();
 
   @Nullable
   PsiElement getInteger();
-
-  @Nullable
-  PsiElement getString();
 
 }
