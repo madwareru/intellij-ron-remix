@@ -4,7 +4,11 @@
 
 ## [Unreleased]
 ### Fixed
-- Updated plugin to support new versions of IDE
+- Updated plugin to support new versions of IDE.
+
+## [0.2.8]
+### Fixed
+- Updated plugin to support new versions of IDE.
 
 ## [0.2.7]
 ### Fixed

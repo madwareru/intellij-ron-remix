@@ -23,7 +23,7 @@ class RONLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
             modelSettings,
             configurableDisplayName
         ) {
-            override fun createPanel(settings: CodeStyleSettings?) = RONCodeStyleMainPanel(currentSettings, settings)
+            override fun createPanel(settings: CodeStyleSettings) = RONCodeStyleMainPanel(currentSettings, settings)
         }
     }
 
