@@ -3,6 +3,8 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+
+## [0.2.9]
 ### Fixed
 - Updated plugin to support new versions of IDE.
 
@@ -41,10 +43,10 @@ so user experience where bad when serde refused to parse a file)
 - New settings panel for code style
 - Code formatting
 - Error checkers for dictionaries and objects (key uniquenes and more)
+
 ### Fixed
 - Added an ability to use enums as keys in dictionaries
 - Fixed an issue with identifiers containing numeric literals not being parsed as it intended
-
 
 ## [0.1.7] 2021-01-22
 ### Fixed
