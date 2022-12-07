@@ -3,6 +3,8 @@
 # RON Extended Support Changelog
 
 ## [Unreleased]
+
+## [0.2.10]
 ### Fixed
 - Updated plugin to support new versions of IDE.
 
