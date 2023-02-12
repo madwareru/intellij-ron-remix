@@ -10,7 +10,7 @@ plugins {
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "1.13.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.0.0"
 }
 
 group = properties("pluginGroup")
@@ -78,9 +78,7 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes.set(
             provider {
-                val changeLogText = changelog
-                    .getLatest()
-                    .toText()
+                val changeLogText = changelog.run { renderItem(getLatest()) }
 
                 val fullLog = "[Full Changelog](https://github.com/madwareru/intellij-ron-remix/blob/main/CHANGELOG.md)"
 
