@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface RONNamedField extends PsiElement {
 
   @NotNull
-  RONValue getValue();
+  RONFieldName getFieldName();
 
   @NotNull
-  PsiElement getIdent();
+  RONValue getValue();
 
 }

@@ -33,7 +33,7 @@ class RONHighlightingAnnotator : AnnotatorBase() {
                     .textAttributes(RONColor.OBJECT_NAME.textAttributesKey)
                     .create()
             }
-            is RONNamedField -> if (parent.ident == element) {
+            is RONNamedField -> if (parent.fieldName == element) {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .textAttributes(RONColor.KEY_NAME.textAttributesKey)

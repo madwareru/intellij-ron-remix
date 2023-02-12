@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin;
 import com.github.madwareru.intellijronremix.language.psi.*;
 
-public class RONNamedFieldImpl extends ASTWrapperPsiElement implements RONNamedField {
+public class RONFieldNameImpl extends RONFieldNameMixin implements RONFieldName {
 
-  public RONNamedFieldImpl(@NotNull ASTNode node) {
+  public RONFieldNameImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull RONVisitor visitor) {
-    visitor.visitNamedField(this);
+    visitor.visitFieldName(this);
   }
 
   @Override
@@ -29,14 +29,8 @@ public class RONNamedFieldImpl extends ASTWrapperPsiElement implements RONNamedF
 
   @Override
   @NotNull
-  public RONFieldName getFieldName() {
-    return findNotNullChildByClass(RONFieldName.class);
-  }
-
-  @Override
-  @NotNull
-  public RONValue getValue() {
-    return findNotNullChildByClass(RONValue.class);
+  public PsiElement getIdent() {
+    return findNotNullChildByType(IDENT);
   }
 
 }

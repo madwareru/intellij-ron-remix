@@ -28,21 +28,15 @@ public class RONObjectImpl extends ASTWrapperPsiElement implements RONObject {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public RONObjectBody getObjectBody() {
-    return findChildByClass(RONObjectBody.class);
+    return findNotNullChildByClass(RONObjectBody.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public RONObjectName getObjectName() {
-    return findChildByClass(RONObjectName.class);
-  }
-
-  @Override
-  @Nullable
-  public RONTupleBody getTupleBody() {
-    return findChildByClass(RONTupleBody.class);
+    return findNotNullChildByClass(RONObjectName.class);
   }
 
 }

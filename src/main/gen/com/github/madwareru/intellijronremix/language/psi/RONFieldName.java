@@ -4,10 +4,11 @@ package com.github.madwareru.intellijronremix.language.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.model.psi.PsiExternalReferenceHost;
 
-public interface RONObjectEntry extends PsiElement {
+public interface RONFieldName extends PsiExternalReferenceHost {
 
   @NotNull
-  RONNamedField getNamedField();
+  PsiElement getIdent();
 
 }

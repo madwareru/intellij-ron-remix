@@ -29,8 +29,14 @@ public class RONObjectBodyImpl extends ASTWrapperPsiElement implements RONObject
 
   @Override
   @NotNull
-  public List<RONObjectEntry> getObjectEntryList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, RONObjectEntry.class);
+  public List<RONNamedField> getNamedFieldList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, RONNamedField.class);
+  }
+
+  @Override
+  @NotNull
+  public List<RONValue> getValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, RONValue.class);
   }
 
 }

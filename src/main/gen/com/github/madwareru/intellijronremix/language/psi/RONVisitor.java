@@ -24,6 +24,10 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFieldName(@NotNull RONFieldName o) {
+    visitPsiExternalReferenceHost(o);
+  }
+
   public void visitList(@NotNull RONList o) {
     visitPsiElement(o);
   }
@@ -52,15 +56,15 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitObjectEntry(@NotNull RONObjectEntry o) {
-    visitPsiElement(o);
-  }
-
   public void visitObjectName(@NotNull RONObjectName o) {
     visitPsiExternalReferenceHost(o);
   }
 
   public void visitOption(@NotNull RONOption o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTuple(@NotNull RONTuple o) {
     visitPsiElement(o);
   }
 
