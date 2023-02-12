@@ -84,5 +84,5 @@ tuple_body ::= PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR;
 
 enum ::= IDENT;
 
-object_name ::= IDENT
+object_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONObjectNameMixin"}
 object ::= [object_name] (object_body | tuple_body);

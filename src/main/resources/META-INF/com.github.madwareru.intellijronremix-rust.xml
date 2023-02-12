@@ -1,5 +1,5 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <!-- todo: goto definition and other fellows! -->
+        <psi.referenceContributor implementation="com.github.madwareru.intellijronremix.rust.RustReferenceContributor" language="RON"/>
     </extensions>
 </idea-plugin>

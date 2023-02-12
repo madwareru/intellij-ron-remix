@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.github.madwareru.intellijronremix.language.psi.RONObjectNameMixin;
 import com.github.madwareru.intellijronremix.language.psi.*;
 
-public class RONObjectNameImpl extends ASTWrapperPsiElement implements RONObjectName {
+public class RONObjectNameImpl extends RONObjectNameMixin implements RONObjectName {
 
   public RONObjectNameImpl(@NotNull ASTNode node) {
     super(node);

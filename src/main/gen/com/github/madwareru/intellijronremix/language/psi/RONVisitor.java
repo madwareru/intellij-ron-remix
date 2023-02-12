@@ -4,6 +4,7 @@ package com.github.madwareru.intellijronremix.language.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.model.psi.PsiExternalReferenceHost;
 
 public class RONVisitor extends PsiElementVisitor {
 
@@ -56,7 +57,7 @@ public class RONVisitor extends PsiElementVisitor {
   }
 
   public void visitObjectName(@NotNull RONObjectName o) {
-    visitPsiElement(o);
+    visitPsiExternalReferenceHost(o);
   }
 
   public void visitOption(@NotNull RONOption o) {
@@ -69,6 +70,10 @@ public class RONVisitor extends PsiElementVisitor {
 
   public void visitValue(@NotNull RONValue o) {
     visitPsiElement(o);
+  }
+
+  public void visitPsiExternalReferenceHost(@NotNull PsiExternalReferenceHost o) {
+    visitElement(o);
   }
 
   public void visitPsiElement(@NotNull PsiElement o) {
