@@ -13,7 +13,7 @@ import com.github.madwareru.intellijronremix.language.psi.*;
 
 public class RONObjectNameImpl extends RONObjectNameMixin implements RONObjectName {
 
-  public RONObjectNameImpl(@NotNull ASTNode node) {
+  public RONObjectNameImpl(ASTNode node) {
     super(node);
   }
 

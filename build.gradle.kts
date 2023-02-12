@@ -1,4 +1,6 @@
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -11,6 +13,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.13.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.0.0"
+    // see https://plugins.jetbrains.com/docs/intellij/tools-gradle-grammar-kit-plugin.html
+    id("org.jetbrains.grammarkit") version "2021.2.2"
 }
 
 group = properties("pluginGroup")
@@ -48,7 +52,35 @@ tasks.buildSearchableOptions {
     enabled = false
 }
 
+val generateRonLexer = task<GenerateLexerTask>("generateRonLexer") {
+    // source flex file
+    source.set("src/main/kotlin/com/github/madwareru/intellijronremix/language/__RONLexer.flex")
+
+    // target directory for lexer
+    targetDir.set("src/main/gen/com/github/madwareru/intellijronremix/language/")
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass.set("__RONLexer")
+
+    // if set, plugin will remove a lexer output file before generating new one. Default: false
+    purgeOldFiles.set(true)
+}
+
+val generateRonParser = task<GenerateParserTask>("generateRonParser") {
+    dependsOn(generateRonLexer)
+    source.set("src/main/kotlin/com/github/madwareru/intellijronremix/language/RON.bnf")
+    targetRoot.set("src/main/gen")
+    pathToParser.set("/com/github/madwareru/intellijronremix/language/parser/_RONParser.java")
+    pathToPsiRoot.set("/com/github/madwareru/intellijronremix/language/psi")
+    purgeOldFiles.set(true)
+}
+
 tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+        dependsOn(generateRonParser)
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
