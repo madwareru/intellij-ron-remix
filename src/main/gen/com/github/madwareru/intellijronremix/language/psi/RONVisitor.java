@@ -55,6 +55,10 @@ public class RONVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitObjectName(@NotNull RONObjectName o) {
+    visitPsiElement(o);
+  }
+
   public void visitOption(@NotNull RONOption o) {
     visitPsiElement(o);
   }

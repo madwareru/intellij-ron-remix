@@ -21,7 +21,7 @@ class RONHighlightingAnnotator : AnnotatorBase() {
                     .textAttributes(RONColor.EXTENSION.textAttributesKey)
                     .create()
             }
-            is RONObject -> if (parent.ident == element) {
+            is RONObject -> if (parent.objectName == element) {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .textAttributes(RONColor.OBJECT_NAME.textAttributesKey)

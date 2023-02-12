@@ -20,6 +20,7 @@ public interface RONTypes {
   IElementType OBJECT = new RONElementType("OBJECT");
   IElementType OBJECT_BODY = new RONElementType("OBJECT_BODY");
   IElementType OBJECT_ENTRY = new RONElementType("OBJECT_ENTRY");
+  IElementType OBJECT_NAME = new RONElementType("OBJECT_NAME");
   IElementType OPTION = new RONElementType("OPTION");
   IElementType TUPLE_BODY = new RONElementType("TUPLE_BODY");
   IElementType VALUE = new RONElementType("VALUE");
@@ -84,6 +85,9 @@ public interface RONTypes {
       }
       else if (type == OBJECT_ENTRY) {
         return new RONObjectEntryImpl(node);
+      }
+      else if (type == OBJECT_NAME) {
+        return new RONObjectNameImpl(node);
       }
       else if (type == OPTION) {
         return new RONOptionImpl(node);

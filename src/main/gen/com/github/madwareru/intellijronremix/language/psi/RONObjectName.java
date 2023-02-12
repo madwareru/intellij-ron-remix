@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface RONObject extends PsiElement {
+public interface RONObjectName extends PsiElement {
 
-  @Nullable
-  RONObjectBody getObjectBody();
-
-  @Nullable
-  RONObjectName getObjectName();
-
-  @Nullable
-  RONTupleBody getTupleBody();
+  @NotNull
+  PsiElement getIdent();
 
 }

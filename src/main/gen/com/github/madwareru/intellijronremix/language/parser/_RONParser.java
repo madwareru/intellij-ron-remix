@@ -292,7 +292,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [IDENT] (object_body | tuple_body)
+  // [object_name] (object_body | tuple_body)
   public static boolean object(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object")) return false;
     if (!nextTokenIs(b, "<object>", IDENT, PARENTHESISL)) return false;
@@ -304,10 +304,10 @@ public class _RONParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [IDENT]
+  // [object_name]
   private static boolean object_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_0")) return false;
-    consumeToken(b, IDENT);
+    object_name(b, l + 1);
     return true;
   }
 
@@ -391,6 +391,18 @@ public class _RONParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = named_field(b, l + 1);
     exit_section_(b, m, OBJECT_ENTRY, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean object_name(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_name")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, OBJECT_NAME, r);
     return r;
   }
 
