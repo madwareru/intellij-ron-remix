@@ -28,9 +28,9 @@ public class RONExtImpl extends ASTWrapperPsiElement implements RONExt {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdent() {
-    return findNotNullChildByType(IDENT);
+    return findChildByType(IDENT);
   }
 
 }

@@ -83,13 +83,14 @@ public class _RONParser implements PsiParser, LightPsiParser {
   public static boolean ext(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ext")) return false;
     if (!nextTokenIs(builder_, EXT_PREFIX)) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, EXT, null);
     result_ = consumeToken(builder_, EXT_PREFIX);
-    result_ = result_ && ext_body(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BRACKETR);
-    exit_section_(builder_, marker_, EXT, result_);
-    return result_;
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, ext_body(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, BRACKETR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -211,65 +212,18 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER
+  // BRACEL map_inner_body BRACER
   public static boolean map(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "map")) return false;
     if (!nextTokenIs(builder_, BRACEL)) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, MAP, null);
     result_ = consumeToken(builder_, BRACEL);
-    result_ = result_ && map_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BRACER);
-    exit_section_(builder_, marker_, MAP, result_);
-    return result_;
-  }
-
-  // [map_entry (COMMA map_entry)* [COMMA]]
-  private static boolean map_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "map_1")) return false;
-    map_1_0(builder_, level_ + 1);
-    return true;
-  }
-
-  // map_entry (COMMA map_entry)* [COMMA]
-  private static boolean map_1_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "map_1_0")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = map_entry(builder_, level_ + 1);
-    result_ = result_ && map_1_0_1(builder_, level_ + 1);
-    result_ = result_ && map_1_0_2(builder_, level_ + 1);
-    exit_section_(builder_, marker_, null, result_);
-    return result_;
-  }
-
-  // (COMMA map_entry)*
-  private static boolean map_1_0_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "map_1_0_1")) return false;
-    while (true) {
-      int pos_ = current_position_(builder_);
-      if (!map_1_0_1_0(builder_, level_ + 1)) break;
-      if (!empty_element_parsed_guard_(builder_, "map_1_0_1", pos_)) break;
-    }
-    return true;
-  }
-
-  // COMMA map_entry
-  private static boolean map_1_0_1_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "map_1_0_1_0")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && map_entry(builder_, level_ + 1);
-    exit_section_(builder_, marker_, null, result_);
-    return result_;
-  }
-
-  // [COMMA]
-  private static boolean map_1_0_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "map_1_0_2")) return false;
-    consumeToken(builder_, COMMA);
-    return true;
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, map_inner_body(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, BRACER) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -283,6 +237,57 @@ public class _RONParser implements PsiParser, LightPsiParser {
     result_ = result_ && value(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, _RONParser::recoverBraceOrComma);
     return result_;
+  }
+
+  /* ********************************************************** */
+  // [map_entry (COMMA map_entry)* [COMMA]]
+  static boolean map_inner_body(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "map_inner_body")) return false;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    map_inner_body_0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, true, false, _RONParser::recoverBrace);
+    return true;
+  }
+
+  // map_entry (COMMA map_entry)* [COMMA]
+  private static boolean map_inner_body_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "map_inner_body_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = map_entry(builder_, level_ + 1);
+    result_ = result_ && map_inner_body_0_1(builder_, level_ + 1);
+    result_ = result_ && map_inner_body_0_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // (COMMA map_entry)*
+  private static boolean map_inner_body_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "map_inner_body_0_1")) return false;
+    while (true) {
+      int pos_ = current_position_(builder_);
+      if (!map_inner_body_0_1_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "map_inner_body_0_1", pos_)) break;
+    }
+    return true;
+  }
+
+  // COMMA map_entry
+  private static boolean map_inner_body_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "map_inner_body_0_1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && map_entry(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // [COMMA]
+  private static boolean map_inner_body_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "map_inner_body_0_2")) return false;
+    consumeToken(builder_, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -448,6 +453,17 @@ public class _RONParser implements PsiParser, LightPsiParser {
     result_ = pinned_ && consumeToken(builder_, PARENTHESISR) && result_;
     exit_section_(builder_, level_, marker_, result_, pinned_, null);
     return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // !BRACER
+  static boolean recoverBrace(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "recoverBrace")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !consumeToken(builder_, BRACER);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */

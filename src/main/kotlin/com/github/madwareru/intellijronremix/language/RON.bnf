@@ -52,7 +52,7 @@ extensions ::= ext+;
 
 private recoverBracket ::= !BRACKETR
 private ext_body ::= ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR {recoverWhile=recoverBracket}
-ext ::= EXT_PREFIX ext_body BRACKETR
+ext ::= EXT_PREFIX ext_body BRACKETR {pin=1}
 
 value ::= bool | integer | float | string | char | option | list | map | object | tuple | enum_variant_or_unit_struct;
 
@@ -74,7 +74,9 @@ option ::= option_some | NONE;
 private list_body ::= [value (COMMA value)* [COMMA]] {recoverWhile=recoverBracket}
 list ::= BRACKETL list_body BRACKETR {pin=1}
 
-map ::= BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER;
+private recoverBrace ::= !BRACER
+private map_inner_body ::= [map_entry (COMMA map_entry)* [COMMA]] {recoverWhile=recoverBrace}
+map ::= BRACEL map_inner_body BRACER {pin=1}
 
 map_key ::= value
 
