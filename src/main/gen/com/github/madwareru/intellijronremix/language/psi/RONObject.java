@@ -10,7 +10,7 @@ public interface RONObject extends PsiElement {
   @NotNull
   RONObjectBody getObjectBody();
 
-  @NotNull
+  @Nullable
   RONObjectName getObjectName();
 
 }

@@ -34,9 +34,9 @@ public class RONObjectImpl extends ASTWrapperPsiElement implements RONObject {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public RONObjectName getObjectName() {
-    return findNotNullChildByClass(RONObjectName.class);
+    return findChildByClass(RONObjectName.class);
   }
 
 }

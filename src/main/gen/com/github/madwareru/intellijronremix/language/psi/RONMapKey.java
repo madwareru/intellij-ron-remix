@@ -7,16 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface RONMapKey extends PsiElement {
 
-  @Nullable
-  RONEnumVariantOrUnitStruct getEnumVariantOrUnitStruct();
-
-  @Nullable
-  PsiElement getBoolean();
-
-  @Nullable
-  PsiElement getFloat();
-
-  @Nullable
-  PsiElement getInteger();
+  @NotNull
+  RONValue getValue();
 
 }

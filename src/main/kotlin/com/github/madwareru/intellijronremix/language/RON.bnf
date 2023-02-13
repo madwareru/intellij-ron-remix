@@ -76,9 +76,9 @@ list ::= BRACKETL list_body BRACKETR {pin=1}
 
 map ::= BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER;
 
-map_key ::= bool | integer | float | string | char | enum_variant_or_unit_struct;
+map_key ::= value
 
-private recoverBraceOrComma ::= !(COMMA | BRACKETR)
+private recoverBraceOrComma ::= !(COMMA | BRACER)
 map_entry ::= map_key COLON value {recoverWhile=recoverBraceOrComma}
 
 field_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin"}
@@ -100,4 +100,4 @@ object_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceH
 // we require at least one object entry, so we can pin the object, because only after seeing the first entry, we know for sure, this is no tuple
 private object_inner_body ::= named_field (COMMA object_entry)* [COMMA] {recoverWhile=recoverParen pin=1}
 object_body ::= PARENTHESISL object_inner_body PARENTHESISR
-object ::= object_name object_body
+object ::= [object_name] object_body
