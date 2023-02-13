@@ -8,11 +8,7 @@ import com.intellij.model.psi.PsiExternalReferenceHost;
 
 public class RONVisitor extends PsiElementVisitor {
 
-  public void visitBool(@NotNull RONBool o) {
-    visitPsiElement(o);
-  }
-
-  public void visitEnum(@NotNull RONEnum o) {
+  public void visitEnumVariantOrUnitStruct(@NotNull RONEnumVariantOrUnitStruct o) {
     visitPsiElement(o);
   }
 

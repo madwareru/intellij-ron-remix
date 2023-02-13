@@ -11,14 +11,14 @@ import static com.github.madwareru.intellijronremix.language.psi.RONTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.madwareru.intellijronremix.language.psi.*;
 
-public class RONEnumImpl extends ASTWrapperPsiElement implements RONEnum {
+public class RONEnumVariantOrUnitStructImpl extends ASTWrapperPsiElement implements RONEnumVariantOrUnitStruct {
 
-  public RONEnumImpl(@NotNull ASTNode node) {
+  public RONEnumVariantOrUnitStructImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull RONVisitor visitor) {
-    visitor.visitEnum(this);
+    visitor.visitEnumVariantOrUnitStruct(this);
   }
 
   @Override

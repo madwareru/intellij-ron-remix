@@ -8,10 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface RONValue extends PsiElement {
 
   @Nullable
-  RONBool getBool();
-
-  @Nullable
-  RONEnum getEnum();
+  RONEnumVariantOrUnitStruct getEnumVariantOrUnitStruct();
 
   @Nullable
   RONList getList();
@@ -27,6 +24,9 @@ public interface RONValue extends PsiElement {
 
   @Nullable
   RONTuple getTuple();
+
+  @Nullable
+  PsiElement getBoolean();
 
   @Nullable
   PsiElement getFloat();

@@ -1,7 +1,7 @@
 package com.github.madwareru.intellijronremix.ide.annotator
 
 import com.github.madwareru.intellijronremix.ide.colors.RONColor
-import com.github.madwareru.intellijronremix.language.psi.RONEnum
+import com.github.madwareru.intellijronremix.language.psi.RONEnumVariantOrUnitStruct
 import com.github.madwareru.intellijronremix.language.psi.RONExt
 import com.github.madwareru.intellijronremix.language.psi.RONNamedField
 import com.github.madwareru.intellijronremix.language.psi.RONObject
@@ -27,7 +27,7 @@ class RONHighlightingAnnotator : AnnotatorBase() {
                     .textAttributes(RONColor.OBJECT_NAME.textAttributesKey)
                     .create()
             }
-            is RONEnum -> if (parent.ident == element) {
+            is RONEnumVariantOrUnitStruct -> if (parent.ident == element) {
                 holder
                     .newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .textAttributes(RONColor.OBJECT_NAME.textAttributesKey)

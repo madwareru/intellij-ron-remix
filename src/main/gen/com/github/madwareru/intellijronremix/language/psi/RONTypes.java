@@ -8,8 +8,7 @@ import com.github.madwareru.intellijronremix.language.psi.impl.*;
 
 public interface RONTypes {
 
-  IElementType BOOL = new RONElementType("BOOL");
-  IElementType ENUM = new RONElementType("ENUM");
+  IElementType ENUM_VARIANT_OR_UNIT_STRUCT = new RONElementType("ENUM_VARIANT_OR_UNIT_STRUCT");
   IElementType EXT = new RONElementType("EXT");
   IElementType EXTENSIONS = new RONElementType("EXTENSIONS");
   IElementType FIELD_NAME = new RONElementType("FIELD_NAME");
@@ -51,11 +50,8 @@ public interface RONTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BOOL) {
-        return new RONBoolImpl(node);
-      }
-      else if (type == ENUM) {
-        return new RONEnumImpl(node);
+      if (type == ENUM_VARIANT_OR_UNIT_STRUCT) {
+        return new RONEnumVariantOrUnitStructImpl(node);
       }
       else if (type == EXT) {
         return new RONExtImpl(node);

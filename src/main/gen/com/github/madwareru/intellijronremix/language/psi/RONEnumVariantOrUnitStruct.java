@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface RONBool extends PsiElement {
+public interface RONEnumVariantOrUnitStruct extends PsiElement {
 
   @NotNull
-  PsiElement getBoolean();
+  PsiElement getIdent();
 
 }

@@ -29,14 +29,8 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
 
   @Override
   @Nullable
-  public RONBool getBool() {
-    return findChildByClass(RONBool.class);
-  }
-
-  @Override
-  @Nullable
-  public RONEnum getEnum() {
-    return findChildByClass(RONEnum.class);
+  public RONEnumVariantOrUnitStruct getEnumVariantOrUnitStruct() {
+    return findChildByClass(RONEnumVariantOrUnitStruct.class);
   }
 
   @Override
@@ -67,6 +61,12 @@ public class RONValueImpl extends ASTWrapperPsiElement implements RONValue {
   @Nullable
   public RONTuple getTuple() {
     return findChildByClass(RONTuple.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getBoolean() {
+    return findChildByType(BOOLEAN);
   }
 
   @Override
