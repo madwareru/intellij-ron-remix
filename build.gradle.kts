@@ -23,6 +23,9 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
+    // me.ffl.intellijDirectoryTests isn't publish on any maven repo yet,
+    // so you have to build it locally
+    mavenLocal()
 }
 
 // Set the JVM language level used to build project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -46,6 +49,10 @@ intellij {
 changelog {
     version.set(properties("pluginVersion"))
     groups.set(emptyList())
+}
+
+dependencies {
+    testImplementation("me.ffl", "intellijDirectoryTests", "0.1.0")
 }
 
 tasks.buildSearchableOptions {
@@ -73,6 +80,12 @@ val generateRonParser = task<GenerateParserTask>("generateRonParser") {
     pathToParser.set("/com/github/madwareru/intellijronremix/language/parser/_RONParser.java")
     pathToPsiRoot.set("/com/github/madwareru/intellijronremix/language/psi")
     purgeOldFiles.set(true)
+}
+
+val unitTestTask = task<Test>("unitTest") {
+    isScanForTestClasses = false
+    include("com/github/madwareru/intellijronremix/*Test.class")
+    useJUnitPlatform()
 }
 
 tasks {

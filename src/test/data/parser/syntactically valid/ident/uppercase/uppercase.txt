@@ -1,0 +1,4 @@
+RON File(0,5)
+  RONValueImpl(VALUE)(0,5)
+    RONEnumVariantOrUnitStructImpl(ENUM_VARIANT_OR_UNIT_STRUCT)(0,5)
+      PsiElement(RONTokenType.IDENT)('IDENT')(0,5)

@@ -1,0 +1,8 @@
+RON File(0,6)
+  RONValueImpl(VALUE)(0,6)
+    RONTupleImpl(TUPLE)(0,6)
+      RONObjectNameImpl(OBJECT_NAME)(0,4)
+        PsiElement(RONTokenType.IDENT)('Name')(0,4)
+      RONTupleBodyImpl(TUPLE_BODY)(4,6)
+        PsiElement(RONTokenType.()('(')(4,5)
+        PsiElement(RONTokenType.))(')')(5,6)

@@ -1,0 +1,5 @@
+RON File(0,2)
+  RONValueImpl(VALUE)(0,2)
+    RONListImpl(LIST)(0,2)
+      PsiElement(RONTokenType.[)('[')(0,1)
+      PsiElement(RONTokenType.])(']')(1,2)
