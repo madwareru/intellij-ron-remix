@@ -67,18 +67,6 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
-  public static boolean enum_variant_or_unit_struct(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "enum_variant_or_unit_struct")) return false;
-    if (!nextTokenIs(builder_, IDENT)) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, IDENT);
-    exit_section_(builder_, marker_, ENUM_VARIANT_OR_UNIT_STRUCT, result_);
-    return result_;
-  }
-
-  /* ********************************************************** */
   // EXT_PREFIX ext_body BRACKETR
   public static boolean ext(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ext")) return false;
@@ -626,7 +614,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // bool | integer | float | string | char | option | list | map | object | tuple | enum_variant_or_unit_struct
+  // bool | integer | float | string | char | option | list | map | object | tuple | object_name
   public static boolean value(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "value")) return false;
     boolean result_;
@@ -641,7 +629,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = map(builder_, level_ + 1);
     if (!result_) result_ = object(builder_, level_ + 1);
     if (!result_) result_ = tuple(builder_, level_ + 1);
-    if (!result_) result_ = enum_variant_or_unit_struct(builder_, level_ + 1);
+    if (!result_) result_ = object_name(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, null);
     return result_;
   }

@@ -54,7 +54,7 @@ private recoverBracket ::= !BRACKETR
 private ext_body ::= ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR {recoverWhile=recoverBracket}
 ext ::= EXT_PREFIX ext_body BRACKETR {pin=1}
 
-value ::= bool | integer | float | string | char | option | list | map | object | tuple | enum_variant_or_unit_struct;
+value ::= bool | integer | float | string | char | option | list | map | object | tuple | object_name;
 
 private bool ::= BOOLEAN;
 
@@ -95,8 +95,6 @@ private object_entry ::= named_field | value {recoverWhile=recoverParenOrComma}
 private tuple_inner_body ::= [value (COMMA value)* [COMMA]] {recoverWhile=recoverParen}
 tuple_body ::= PARENTHESISL tuple_inner_body PARENTHESISR {pin=1}
 tuple ::= [object_name] tuple_body
-
-enum_variant_or_unit_struct ::= IDENT
 
 object_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONObjectNameMixin"}
 // we require at least one object entry, so we can pin the object, because only after seeing the first entry, we know for sure, this is no tuple

@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface RONValue extends PsiElement {
 
   @Nullable
-  RONEnumVariantOrUnitStruct getEnumVariantOrUnitStruct();
-
-  @Nullable
   RONList getList();
 
   @Nullable
@@ -18,6 +15,9 @@ public interface RONValue extends PsiElement {
 
   @Nullable
   RONObject getObject();
+
+  @Nullable
+  RONObjectName getObjectName();
 
   @Nullable
   RONOption getOption();
