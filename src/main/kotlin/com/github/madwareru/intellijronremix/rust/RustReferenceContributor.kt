@@ -1,5 +1,6 @@
 package com.github.madwareru.intellijronremix.rust
 
+import com.github.madwareru.intellijronremix.language.psi.RONFieldName
 import com.github.madwareru.intellijronremix.language.psi.RONObjectName
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.PsiReferenceContributor
@@ -10,5 +11,6 @@ import com.intellij.psi.PsiReferenceRegistrar
 class RustReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(PlatformPatterns.psiElement(RONObjectName::class.java), RustReferenceProvider)
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(RONFieldName::class.java), RustReferenceProvider)
     }
 }
