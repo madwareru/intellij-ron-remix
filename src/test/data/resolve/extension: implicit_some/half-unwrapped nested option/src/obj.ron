@@ -1,0 +1,4 @@
+MyRonStruct(
+    foo: 32,
+    bar: Some((<caret>foo: 64)),
+)
