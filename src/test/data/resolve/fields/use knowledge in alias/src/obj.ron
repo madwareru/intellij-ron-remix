@@ -1,0 +1,4 @@
+MyRonAlias (
+    foo: 32,
+    bar: (<caret>baz: 64),
+)
