@@ -1,0 +1,4 @@
+MyRonStruct(
+    foo: 32,
+    bar: NamedTuple((<caret>foo: 64), 16),
+)

@@ -111,13 +111,14 @@ private class InferenceBuilder(
     }
 
     private fun infer(value: RONValue, possibleTypes: List<RsType>) {
+        val adaptedTypes = possibleTypes.deref().flatMap { it.unwrapNewTypes() }
         when (val child = value.children.singleOrNull()) {
-            is RONOption -> infer(child, possibleTypes.deref())
-            is RONList -> infer(child, possibleTypes.deref())
-            is RONMap -> infer(child, possibleTypes.deref())
-            is RONObject -> infer(child, possibleTypes.deref())
-            is RONTuple -> infer(child, possibleTypes.deref())
-            is RONObjectName -> infer(child, possibleTypes.deref())
+            is RONOption -> infer(child, adaptedTypes)
+            is RONList -> infer(child, adaptedTypes)
+            is RONMap -> infer(child, adaptedTypes)
+            is RONObject -> infer(child, adaptedTypes)
+            is RONTuple -> infer(child, adaptedTypes)
+            is RONObjectName -> infer(child, adaptedTypes)
         }
     }
 
@@ -237,6 +238,19 @@ private class InferenceBuilder(
                 return RsInferredField(decl, rawType, normType)
             }
         }
+    }
+
+    private fun RsType.unwrapNewTypes(): List<RsType> {
+        if (this is RsTypeAdt) {
+            val item = this.item as? RsStructItem
+            if (item != null && item.namedFields.isEmpty()) {
+                val innerType = item.fields.singleOrNull()?.typeReference
+                if (innerType != null) {
+                    return listOf(this) + innerType.normType.substitute(this.typeParameterValues).deref().unwrapNewTypes()
+                }
+            }
+        }
+        return listOf(this)
     }
 
     /**
