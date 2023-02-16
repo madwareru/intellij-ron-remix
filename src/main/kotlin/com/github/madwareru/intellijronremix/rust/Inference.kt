@@ -97,7 +97,7 @@ private class InferenceBuilder(
             is RsTypeRef -> this.referenced.substitute(this.typeParameterValues).deref()
             is RsTypeAdt -> {
                 if (this.item == this.item.knownItems.Box) {
-                    this.typeArguments.single().substitute(this.typeParameterValues).deref()
+                    this.typeArguments.first().substitute(this.typeParameterValues).deref()
                 } else {
                     this
                 }
