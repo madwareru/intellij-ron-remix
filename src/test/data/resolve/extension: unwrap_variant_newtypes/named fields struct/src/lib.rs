@@ -1,6 +1,6 @@
 struct MyRonStruct {
     foo: u32,
-    bar: NewType,
+    bar: MyRonEnum,
 }
 
 enum MyRonEnum {

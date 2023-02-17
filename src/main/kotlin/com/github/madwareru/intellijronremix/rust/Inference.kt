@@ -184,10 +184,30 @@ private class InferenceBuilder(
         }
     }
 
+    /**
+     * Unwraps the extension unwrap_variant_newtypes
+     */
+    private fun TypeWithFieldOwner.unwrapVariantNewType(): TypeWithFieldOwner? {
+        // don't unwrap options, as this is already done by unwrapNewTypes, and we want to avoid getting the same reference twice
+        val isOption = type is RsTypeAdt && type.item == fieldOwner.knownItems.Option
+        if (fieldOwner !is RsEnumVariant || isOption || fieldOwner.namedFields.isNotEmpty()) return null
+        val variantUnwrappedNames = fieldOwner.fields.singleOrNull() ?: return null
+        val innerType = variantUnwrappedNames.typeReference?.normType?.substitute(type.typeParameterValues)
+        val innerTypeAdt = innerType as? RsTypeAdt ?: return null
+        val innerItem = innerTypeAdt.item as? RsStructItem ?: return null
+        return TypeWithFieldOwner(innerTypeAdt, innerItem)
+    }
+
+    private fun TypeWithFieldOwner.hasFieldNamesByVariantNewType(fieldNames: Collection<String>): Boolean {
+        val unwrapped = unwrapVariantNewType() ?: return false
+        val allowedInnerFieldNames = unwrapped.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.name }
+        return allowedInnerFieldNames.containsAll(fieldNames)
+    }
+
     private fun Iterable<TypeWithFieldOwner>.filterByFieldNames(fieldNames: Collection<String>): List<TypeWithFieldOwner> {
         return filter {
             val allowedFieldNames = it.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.name }
-            allowedFieldNames.containsAll(fieldNames)
+            allowedFieldNames.containsAll(fieldNames) || it.hasFieldNamesByVariantNewType(fieldNames)
         }
     }
 
@@ -325,6 +345,8 @@ private class InferenceBuilder(
             objects[name] = TypeInferenceResult(bestMatchingFieldOwners.map { it.getAliasOrSelf(name.text) })
         }
         val fieldNameToDecl = bestMatchingFieldOwners.flatMap {
+            setOfNotNull(it, it.unwrapVariantNewType())
+        }.flatMap {
             it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
         }.groupBy { it.decl.identifier.text }
         obj.objectBody.namedFieldList.forEach { ronNamedField ->
