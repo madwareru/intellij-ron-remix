@@ -84,7 +84,7 @@ private class InferenceBuilder(
 
     fun infer(file: RONFile) {
         val value = file.childOfType<RONValue>() ?: return
-        infer(value, emptyList())
+        infer(value, emptySet())
     }
 
     /**
@@ -110,8 +110,8 @@ private class InferenceBuilder(
         return map { it.deref() }
     }
 
-    private fun infer(value: RONValue, possibleTypes: List<RsType>) {
-        val adaptedTypes = possibleTypes.deref().flatMap { it.unwrapNewTypes() }
+    private fun infer(value: RONValue, possibleTypes: Set<RsType>) {
+        val adaptedTypes = possibleTypes.deref().flatMap { it.unwrapNewTypes() }.toSet()
         when (val child = value.children.singleOrNull()) {
             is RONOption -> infer(child, adaptedTypes)
             is RONList -> infer(child, adaptedTypes)
@@ -122,18 +122,18 @@ private class InferenceBuilder(
         }
     }
 
-    private fun infer(option: RONOption, possibleTypes: List<RsType>) {
+    private fun infer(option: RONOption, possibleTypes: Set<RsType>) {
         val someBody = option.value ?: return
         val possibleInnerTypes = possibleTypes.mapNotNull {
             val adt = it as? RsTypeAdt ?: return@mapNotNull null
             if (adt.item != adt.item.knownItems.Option) return@mapNotNull null
             val innerType = adt.typeArguments.single()
             innerType.substitute(adt.typeParameterValues)
-        }
+        }.toSet()
         infer(someBody, possibleInnerTypes)
     }
 
-    private fun infer(list: RONList, possibleTypes: List<RsType>) {
+    private fun infer(list: RONList, possibleTypes: Set<RsType>) {
         val values = list.valueList
         // We just assume, that the inner type is the first type argument.
         // This is true for all std::collection elements, that are serialized as lists,
@@ -153,13 +153,13 @@ private class InferenceBuilder(
 
                 else -> null
             }
-        }
+        }.toSet()
         values.forEach {
             infer(it, possibleInnerTypes)
         }
     }
 
-    private fun infer(map: RONMap, possibleTypes: List<RsType>) {
+    private fun infer(map: RONMap, possibleTypes: Set<RsType>) {
         val entries = map.mapEntryList
 
         // We just assume, that the key type is the first type argument and the value type is the second type argument.
@@ -170,13 +170,13 @@ private class InferenceBuilder(
             val adt = it as? RsTypeAdt ?: return@mapNotNull null
             val keyType = adt.typeArguments.firstOrNull() ?: return@mapNotNull null
             keyType.substitute(adt.typeParameterValues)
-        }
+        }.toSet()
         val possibleValueTypes = possibleTypes.mapNotNull {
             val adt = it as? RsTypeAdt ?: return@mapNotNull null
             val valueType =
                 adt.typeArguments.drop(1).firstOrNull() ?: return@mapNotNull null
             valueType.substitute(adt.typeParameterValues)
-        }
+        }.toSet()
 
         entries.forEach {
             infer(it.mapKey.value, possibleKeyTypes)
@@ -240,17 +240,25 @@ private class InferenceBuilder(
         }
     }
 
-    private fun RsType.unwrapNewTypes(): List<RsType> {
+    /**
+     * Unwrap types to handle the extensions implicit_some and unwrap_newtypes
+     */
+    private fun RsType.unwrapNewTypes(): Set<RsType> {
         if (this is RsTypeAdt) {
-            val item = this.item as? RsStructItem
-            if (item != null && item.namedFields.isEmpty()) {
+            val item = this.item
+            if (item is RsStructItem && item.namedFields.isEmpty()) {
+                // extension: unwrap_newtypes
                 val innerType = item.fields.singleOrNull()?.typeReference
                 if (innerType != null) {
-                    return listOf(this) + innerType.normType.substitute(this.typeParameterValues).deref().unwrapNewTypes()
+                    return setOf(this) + innerType.normType.substitute(this.typeParameterValues).deref().unwrapNewTypes()
                 }
+            } else if (item == item.knownItems.Option) {
+                // extension: implicit_some
+                val innerType = this.typeArguments.single().substitute(this.typeParameterValues)
+                return setOf(this) + innerType.deref().unwrapNewTypes()
             }
         }
-        return listOf(this)
+        return setOf(this)
     }
 
     /**
@@ -278,9 +286,9 @@ private class InferenceBuilder(
         }
     }
 
-    private fun infer(obj: RONObject, possibleTypes: List<RsType>) {
+    private fun infer(obj: RONObject, possibleTypes: Set<RsType>) {
         obj.objectBody.valueList.forEach {
-            infer(it, emptyList())
+            infer(it, emptySet())
         }
         val fieldNameTexts = obj.objectBody.namedFieldList.map { it.fieldName }.map { it.text }
         val name = obj.objectName
@@ -323,7 +331,7 @@ private class InferenceBuilder(
             val fieldName = ronNamedField.fieldName
             val decls = fieldNameToDecl[fieldName.text].orEmpty()
             fields[fieldName] = FieldInferenceResult(decls.map { it.decl })
-            val possibleFieldTypes = decls.map { it.normType }
+            val possibleFieldTypes = decls.map { it.normType }.toSet()
             infer(ronNamedField.value, possibleFieldTypes)
         }
     }
@@ -353,11 +361,11 @@ private class InferenceBuilder(
         return rawType?.substitute(typeParameterValues)
     }
 
-    private fun infer(tuple: RONTuple, possibleTypes: List<RsType>) {
+    private fun infer(tuple: RONTuple, possibleTypes: Set<RsType>) {
         when (val name = tuple.objectName) {
             null -> {
                 tuple.tupleBody.valueList.forEachIndexed { index, ronValue ->
-                    val possibleElementTypes = possibleTypes.mapNotNull { it.getTupleElement(index) }
+                    val possibleElementTypes = possibleTypes.mapNotNull { it.getTupleElement(index) }.toSet()
                     infer(ronValue, possibleElementTypes)
                 }
             }
@@ -376,14 +384,14 @@ private class InferenceBuilder(
                 }
                 objects[name] = TypeInferenceResult(fieldOwner.map { it.getAliasOrSelf(name.text) })
                 tuple.tupleBody.valueList.forEachIndexed { index, ronValue ->
-                    val possibleElementTypes = fieldOwner.mapNotNull { it[index] }
+                    val possibleElementTypes = fieldOwner.mapNotNull { it[index] }.toSet()
                     infer(ronValue, possibleElementTypes)
                 }
             }
         }
     }
 
-    private fun infer(objName: RONObjectName, possibleTypes: List<RsType>) {
+    private fun infer(objName: RONObjectName, possibleTypes: Set<RsType>) {
         val objNameText = objName.text
         val types = possibleTypes.filterFieldOwner().filter {
             it.hasName(objNameText)
