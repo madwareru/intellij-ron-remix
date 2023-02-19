@@ -18,6 +18,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.*
 import org.rust.lang.core.psi.RsEnumItem
 import org.rust.lang.core.psi.RsEnumVariant
+import org.rust.lang.core.psi.RsModItem
 import org.rust.lang.core.psi.RsNamedFieldDecl
 import org.rust.lang.core.psi.RsStructItem
 import org.rust.lang.core.psi.ext.*
@@ -246,7 +247,7 @@ private class InferenceBuilder(
             name,
             project,
             GlobalSearchScope.allScope(project)
-        )
+        ).filter(RsNamedElement::isVisibleToRON)
     }
 
     private data class RsInferredField(val decl: RsNamedFieldDecl, val rawType: RsType, val normType: RsType) {
@@ -302,7 +303,7 @@ private class InferenceBuilder(
         fun getAliasOrSelf(name: String): RsNamedElement {
             if (fieldOwner is RsEnumVariant) return fieldOwner
             val aliases = RsTypeAliasIndex.findPotentialAliases(fieldOwner.project, TyFingerprint.create(type) ?: return fieldOwner)
-            return aliases.find { it.name == name }?.alias ?: fieldOwner
+            return aliases.filter { it.alias.isVisibleToRON() }.find { it.name == name }?.alias ?: fieldOwner
         }
     }
 
@@ -433,4 +434,12 @@ private class InferenceBuilder(
         }
         objects[objName] = TypeInferenceResult(types)
     }
+}
+
+fun RsNamedElement.isVisibleToRON(): Boolean {
+    val itemElement = parentOfType<RsItemElement>(true)
+    if (itemElement != null && itemElement.parent.ancestors.any { it is RsItemElement && it !is RsModItem }) return false
+    // We don't check if a public module really is visible here, because we would have to consider re-exports in that case
+    if (ancestorOrSelf<RsVisibilityOwner>()?.isPublic != true && containingFile.virtualFile !in GlobalSearchScope.projectScope(project)) return false
+    return true
 }
