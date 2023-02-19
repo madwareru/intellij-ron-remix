@@ -85,7 +85,7 @@ map_entry ::= map_key COLON value {recoverWhile=recoverBraceOrComma}
 
 field_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin"}
 
-named_field ::= field_name COLON value
+named_field ::= field_name COLON value {pin=2}
 
 private recoverParenOrComma ::= !(COMMA | PARENTHESISR)
 // a value is not valid RON, but we parse this to give a better error message

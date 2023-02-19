@@ -294,13 +294,14 @@ public class _RONParser implements PsiParser, LightPsiParser {
   public static boolean named_field(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "named_field")) return false;
     if (!nextTokenIs(builder_, IDENT)) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NAMED_FIELD, null);
     result_ = field_name(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, COLON);
+    pinned_ = result_; // pin = 2
     result_ = result_ && value(builder_, level_ + 1);
-    exit_section_(builder_, marker_, NAMED_FIELD, result_);
-    return result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */

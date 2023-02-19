@@ -10,7 +10,7 @@ public interface RONNamedField extends PsiElement {
   @NotNull
   RONFieldName getFieldName();
 
-  @NotNull
+  @Nullable
   RONValue getValue();
 
 }

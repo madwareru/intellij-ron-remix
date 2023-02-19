@@ -34,9 +34,9 @@ public class RONNamedFieldImpl extends ASTWrapperPsiElement implements RONNamedF
   }
 
   @Override
-  @NotNull
+  @Nullable
   public RONValue getValue() {
-    return findNotNullChildByClass(RONValue.class);
+    return findChildByClass(RONValue.class);
   }
 
 }

@@ -354,7 +354,7 @@ private class InferenceBuilder(
             val decls = fieldNameToDecl[fieldName.text].orEmpty()
             fields[fieldName] = FieldInferenceResult(decls.map { it.decl })
             val possibleFieldTypes = decls.map { it.normType }.toSet()
-            infer(ronNamedField.value, possibleFieldTypes)
+            infer(ronNamedField.value ?: return@forEach, possibleFieldTypes)
         }
     }
 
