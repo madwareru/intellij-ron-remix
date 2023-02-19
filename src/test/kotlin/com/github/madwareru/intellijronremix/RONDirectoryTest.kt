@@ -27,6 +27,9 @@ class RONDirectoryTest: DirectoryTests(
     DirectoryTestConfig.default.run {
         copy(
             testDataPath = Path("src/test/data"),
+            // required because there were issues,
+            // where intellij-rust's resolve complained about non-backed stubs
+            needsHeavyTestRunner = setOf("completion"),
             externalReferenceToString = { it.findRustPath() },
             projectDescriptor = WithStdlibRustProjectDescriptor
         )

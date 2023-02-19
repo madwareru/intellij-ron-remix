@@ -1,0 +1,3 @@
+MyRonOuterStruct(
+  inner: MyRon<caret>
+)
