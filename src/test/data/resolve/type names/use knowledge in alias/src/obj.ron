@@ -1,4 +1,0 @@
-MyRonAlias (
-    foo: 32,
-    bar: <caret>Bar(baz: 64),
-)

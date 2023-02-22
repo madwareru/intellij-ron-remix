@@ -23,11 +23,9 @@ import org.rust.lang.core.psi.RsNamedFieldDecl
 import org.rust.lang.core.psi.RsStructItem
 import org.rust.lang.core.psi.ext.*
 import org.rust.lang.core.psi.rustStructureModificationTracker
-import org.rust.lang.core.resolve.indexes.RsTypeAliasIndex
 import org.rust.lang.core.resolve.knownItems
 import org.rust.lang.core.stubs.index.RsNamedElementIndex
 import org.rust.lang.core.types.Substitution
-import org.rust.lang.core.types.TyFingerprint
 import org.rust.lang.core.types.infer.substitute
 import org.rust.lang.core.types.normType
 import org.rust.lang.core.types.rawType
@@ -250,7 +248,7 @@ private class InferenceBuilder(
     private fun Iterable<RsNamedElement>.filterTypes(): List<RsType> {
         return this.mapNotNull {
             when (it) {
-                is RsTypeDeclarationElement -> it.declaredType
+                is RsStructItem -> it.declaredType
                 is RsEnumVariant -> it.parentOfType<RsTypeDeclarationElement>(false)?.declaredType
                 else -> null
             }
@@ -316,26 +314,8 @@ private class InferenceBuilder(
             return fieldDecl.typeReference?.normType?.substitute(type.typeParameterValues)
         }
 
-        private fun hasAlias(name: String): Boolean {
-            val aliases = RsTypeAliasIndex.findPotentialAliases(fieldOwner.project, TyFingerprint.create(type) ?: return false)
-            return aliases.any { it.name == name }
-        }
-        
         fun hasName(name: String): Boolean {
-            return fieldOwner.name == name || (fieldOwner !is RsEnumVariant && hasAlias(name))
-        }
-
-        fun getAliasOrSelf(name: String): RsNamedElement {
-            if (fieldOwner is RsEnumVariant) return fieldOwner
-            val aliases = RsTypeAliasIndex.findPotentialAliases(fieldOwner.project, TyFingerprint.create(type) ?: return fieldOwner)
-            return aliases.filter { it.alias.isVisibleToRON() }.find { it.name == name }?.alias ?: fieldOwner
-        }
-
-        val variants: Set<RsNamedElement> get() {
-            if (fieldOwner is RsEnumVariant) return setOf(fieldOwner)
-            val tyFingerprint = TyFingerprint.create(type) ?: return setOf(fieldOwner)
-            val aliases = RsTypeAliasIndex.findPotentialAliases(fieldOwner.project, tyFingerprint)
-            return aliases.map { it.alias }.filter(RsNamedElement::isVisibleToRON).toSet() + fieldOwner
+            return fieldOwner.name == name
         }
     }
 
@@ -376,8 +356,8 @@ private class InferenceBuilder(
         }
         if (name != null) {
             objects[name] = TypeInferenceResult(
-                bestMatchingFieldOwners.map { it.getAliasOrSelf(name.text) },
-                possibleFieldOwner.filterByFieldNames(fieldNameTexts).ifEmpty { possibleFieldOwner }.flatMap { it.variants }.toSet().toTypedArray()
+                bestMatchingFieldOwners.map { it.fieldOwner },
+                possibleFieldOwner.filterByFieldNames(fieldNameTexts).ifEmpty { possibleFieldOwner }.map { it.fieldOwner }.toSet().toTypedArray()
             )
         }
         val fieldNameToDecl = bestMatchingFieldOwners.flatMap {
@@ -442,8 +422,8 @@ private class InferenceBuilder(
                     }
                 }
                 objects[name] = TypeInferenceResult(
-                    fieldOwner.map { it.getAliasOrSelf(name.text) },
-                    possibleFieldOwner.flatMap { it.variants }.toSet().toTypedArray(),
+                    fieldOwner.map { it.fieldOwner },
+                    possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray(),
                 )
                 tuple.tupleBody.valueList.forEachIndexed { index, ronValue ->
                     val possibleElementTypes = fieldOwner.mapNotNull { it[index] }.toSet()
@@ -462,7 +442,7 @@ private class InferenceBuilder(
             when (val fieldOwner = it.fieldOwner) {
                 is RsEnumVariant -> fieldOwner
                 is RsStructItem -> {
-                    if (fieldOwner.blockFields == null && fieldOwner.tupleFields == null) it.getAliasOrSelf(objNameText) else null
+                    if (fieldOwner.blockFields == null && fieldOwner.tupleFields == null) it.fieldOwner else null
                 }
                 else -> error("${fieldOwner.javaClass.simpleName} is neither struct nor enum variant")
             }
@@ -472,7 +452,7 @@ private class InferenceBuilder(
                 findNamesInGlobalScope(objNameText, project).filterIsInstance<RsFieldsOwner>()
             }
         }
-        objects[objName] = TypeInferenceResult(types, possibleFieldOwner.flatMap { it.variants }.toSet().toTypedArray())
+        objects[objName] = TypeInferenceResult(types, possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray())
     }
 }
 
