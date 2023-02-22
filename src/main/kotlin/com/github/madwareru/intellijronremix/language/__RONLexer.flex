@@ -62,7 +62,14 @@ COMMENT="//".*
 BOOLEAN=true|false
 IDENT=[A-Za-z_][A-Za-z0-9_]*
 INTEGER=[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|(0b[0-1][0-1_]*)|(0o[0-7][0-7_]*)|([0-9][0-9_]*))
-FLOAT=([+-]?[0-9]+\.[0-9]*([Ee][0-9]+)?)|(\.[0-9]+([Ee][0-9]+)?)
+
+// translation of https://github.com/ron-rs/ron/blob/master/docs/grammar.md#numbers
+FLOAT_STD=[0-9]+\.[0-9]*
+FLOAT_FRAC=\.[0-9]+
+EXP=[Ee][+-]?[0-9]+
+FLOAT_NUM=({FLOAT_STD}|{FLOAT_FRAC})({EXP})?
+FLOAT=[+-]?({FLOAT_NUM}|NaN|inf)
+
 CHAR='([^\r\n\"] | (\\[\S]))'
 STRING=\"([^\r\n\"]|(\\[\S]))*\"
 
