@@ -32,14 +32,16 @@ class RONOptionCompletionContributor : CompletionContributor() {
                                 }
                         )
                     }
-                    resultSet.addElement(
-                        LookupElementBuilder
-                            .create("Some()")
-                            .withInsertHandler { ctx, _ ->
-                                EditorModificationUtil.moveCaretRelatively(ctx.editor, - 1)
-                            }
-                    )
-                    resultSet.addElement(LookupElementBuilder.create("None"))
+                    if (parameters.position.parent is RONObjectName && parameters.position.parent.parent is RONValue) {
+                        resultSet.addElement(
+                            LookupElementBuilder
+                                .create("Some()")
+                                .withInsertHandler { ctx, _ ->
+                                    EditorModificationUtil.moveCaretRelatively(ctx.editor, - 1)
+                                }
+                        )
+                        resultSet.addElement(LookupElementBuilder.create("None"))
+                    }
                 }
             }
         )
