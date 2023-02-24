@@ -22,7 +22,10 @@ class RonToRustTypeReference(ronObjectName: RONObjectName) : RonToRustReferenceC
     }
 
     override fun getVariants(): Array<LookupElement> {
-        return element.inference.variants.map(::createLookupItem).toTypedArray().ifEmpty {
+        val inference = element.inference
+        val typeVariants = inference.variants.map(::createLookupItem).toTypedArray()
+        val fieldVariants = inference.fieldVariants.map(RonToRustFieldReference::createLookupItem).toTypedArray()
+        return (typeVariants + fieldVariants).ifEmpty {
             val rawText = element.text.removeSuffix(CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED)
             val project = element.project
             val seq: Sequence<RsNamedElement> = if (rawText.isEmpty()) {

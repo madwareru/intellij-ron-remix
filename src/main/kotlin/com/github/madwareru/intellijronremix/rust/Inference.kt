@@ -65,14 +65,40 @@ val RONFile.ronToRustInferenceContext: InferenceResult
             }
         }, false)
 
-data class FieldInferenceResult(val possibleFields: List<RsNamedFieldDecl>)
+data class FieldInferenceResult(
+    val possibleFields: List<RsNamedFieldDecl>,
+    /**
+     * Variants for completion.
+     */
+    val variants: Array<RsInferredField>,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FieldInferenceResult
+
+        if (possibleFields != other.possibleFields) return false
+        if (!variants.contentEquals(other.variants)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = possibleFields.hashCode()
+        result = 31 * result + variants.contentHashCode()
+        return result
+    }
+}
+
 data class TypeInferenceResult(
     val possibleDeclarations: List<RsNamedElement>,
     /**
      * Variants for completion. Should only contain completion options with matching type.
      * Other completion options can be calculated elsewhere, because they don't need knowledge from inference.
      */
-    val variants: Array<RsNamedElement>
+    val variants: Array<RsNamedElement>,
+    val fieldVariants: Set<RsInferredField> = emptySet(),
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -97,6 +123,17 @@ class InferenceResult(
     val fields: Map<RONFieldName, FieldInferenceResult>,
     val objects: Map<RONObjectName, TypeInferenceResult>,
 )
+
+data class RsInferredField(val decl: RsNamedFieldDecl, val rawType: RsType, val normType: RsType) {
+    companion object {
+        fun fromDecl(decl: RsNamedFieldDecl, ownerSubstitution: Substitution): RsInferredField? {
+            val typeReference = decl.typeReference ?: return null
+            val rawType = typeReference.rawType.substitute(ownerSubstitution)
+            val normType = typeReference.normType.substitute(ownerSubstitution)
+            return RsInferredField(decl, rawType, normType)
+        }
+    }
+}
 
 private class InferenceBuilder(
     val fields: MutableMap<RONFieldName, FieldInferenceResult> = mutableMapOf(),
@@ -134,7 +171,11 @@ private class InferenceBuilder(
         return map { it.deref() }
     }
 
-    private fun infer(value: RONValue, possibleTypes: Set<RsType>) {
+    private fun infer(
+        value: RONValue,
+        possibleTypes: Set<RsType>,
+        possibleOwnersForFieldVariants: Set<TypeWithFieldOwner> = emptySet()
+    ) {
         val adaptedTypes = possibleTypes.deref().flatMap { it.unwrapNewTypes() }.toSet()
         when (val child = value.children.singleOrNull()) {
             is RONOption -> infer(child, adaptedTypes)
@@ -142,7 +183,7 @@ private class InferenceBuilder(
             is RONMap -> infer(child, adaptedTypes)
             is RONObject -> infer(child, adaptedTypes)
             is RONTuple -> infer(child, adaptedTypes)
-            is RONObjectName -> infer(child, adaptedTypes)
+            is RONObjectName -> infer(child, adaptedTypes, possibleOwnersForFieldVariants)
         }
     }
 
@@ -273,17 +314,6 @@ private class InferenceBuilder(
         ).filter(RsNamedElement::isVisibleToRON)
     }
 
-    private data class RsInferredField(val decl: RsNamedFieldDecl, val rawType: RsType, val normType: RsType) {
-        companion object {
-            fun fromDecl(decl: RsNamedFieldDecl, ownerSubstitution: Substitution): RsInferredField? {
-                val typeReference = decl.typeReference ?: return null
-                val rawType = typeReference.rawType.substitute(ownerSubstitution)
-                val normType = typeReference.normType.substitute(ownerSubstitution)
-                return RsInferredField(decl, rawType, normType)
-            }
-        }
-    }
-
     /**
      * Unwrap types to handle the extensions implicit_some and unwrap_newtypes
      */
@@ -320,9 +350,6 @@ private class InferenceBuilder(
     }
 
     private fun infer(obj: RONObject, possibleTypes: Set<RsType>) {
-        obj.objectBody.valueList.forEach {
-            infer(it, emptySet())
-        }
         val fieldNameTexts = obj.objectBody.namedFieldList.map { it.fieldName }.map { it.text }
         val name = obj.objectName
         val possibleFieldOwner = possibleTypes.filterFieldOwner()
@@ -354,57 +381,62 @@ private class InferenceBuilder(
                 }
             }
         }
+        obj.objectBody.valueList.forEach {
+            infer(it, emptySet(), bestMatchingFieldOwners.toSet())
+        }
         if (name != null) {
             objects[name] = TypeInferenceResult(
                 bestMatchingFieldOwners.map { it.fieldOwner },
-                possibleFieldOwner.filterByFieldNames(fieldNameTexts).ifEmpty { possibleFieldOwner }.map { it.fieldOwner }.toSet().toTypedArray()
+                possibleFieldOwner.filterByFieldNames(fieldNameTexts).ifEmpty { possibleFieldOwner }.map { it.fieldOwner }.toSet().toTypedArray(),
             )
         }
-        val fieldNameToDecl = bestMatchingFieldOwners.flatMap {
+        val inferredFields = bestMatchingFieldOwners.flatMap {
             setOfNotNull(it, it.unwrapVariantNewType())
         }.flatMap {
             it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
-        }.groupBy { it.decl.identifier.text }
+        }
+        val fieldNameToDecl = inferredFields.groupBy { it.decl.identifier.text }
+        val variants = inferredFields.toTypedArray()
         obj.objectBody.namedFieldList.forEach { ronNamedField ->
             val fieldName = ronNamedField.fieldName
             val decls = fieldNameToDecl[fieldName.text].orEmpty()
-            fields[fieldName] = FieldInferenceResult(decls.map { it.decl })
+            fields[fieldName] = FieldInferenceResult(decls.map { it.decl }, variants)
             val possibleFieldTypes = decls.map { it.normType }.toSet()
             infer(ronNamedField.value ?: return@forEach, possibleFieldTypes)
         }
     }
 
-    private fun Iterable<RsNamedElement>.filterNamedTuple(): List<TypeWithFieldOwner> {
-        return filterTypes().filterFieldOwner().filter { it.fieldOwner.namedFields.isEmpty() }
-    }
 
-
-    private fun RsType.getTupleElement(index: Int): RsType? {
+    private fun RsType.getTupleElement(index: Int): List<RsType> {
         val rawType = when (this) {
             is RsTypeTuple -> {
-                this.types.getOrNull(index)
+                listOfNotNull(this.types.getOrNull(index))
             }
 
             is RsTypeArray -> {
-                this.base
+                listOf(this.base)
             }
 
             is RsTypeAdt -> {
-                // this is only called, when the tuple has no name, so we know it cannot be an enum variant
-                (this.item as RsStructItem).fields.getOrNull(index)?.typeReference?.normType
+                when (val item = this.item) {
+                    is RsStructItem -> listOfNotNull(item.fields.getOrNull(index)?.typeReference?.normType)
+                    is RsEnumItem -> item.variants.mapNotNull { it.fields.getOrNull(index)?.typeReference?.normType }
+                    else -> error("Rust ADT item was neither struct nor enum")
+                }
             }
 
-            else -> null
+            else -> emptyList()
         }
-        return rawType?.substitute(typeParameterValues)
+        return rawType.map { it.substitute(typeParameterValues) }
     }
 
     private fun infer(tuple: RONTuple, possibleTypes: Set<RsType>) {
         when (val name = tuple.objectName) {
             null -> {
+                val possibleOwnersForFieldVariants = possibleTypes.filterFieldOwner().toSet()
                 tuple.tupleBody.valueList.forEachIndexed { index, ronValue ->
-                    val possibleElementTypes = possibleTypes.mapNotNull { it.getTupleElement(index) }.toSet()
-                    infer(ronValue, possibleElementTypes)
+                    val possibleElementTypes = possibleTypes.flatMap { it.getTupleElement(index) }.toSet()
+                    infer(ronValue, possibleElementTypes, possibleOwnersForFieldVariants)
                 }
             }
 
@@ -416,8 +448,10 @@ private class InferenceBuilder(
                 val matchByNameAndIsTuple = matchByName.filter { it.fieldOwner.namedFields.isEmpty() }
                 val fieldOwner = matchByNameAndIsTuple.ifEmpty {
                     matchByName.ifEmpty {
-                        findNamesInProject(nameText, project).filterNamedTuple().ifEmpty {
-                            findNamesInGlobalScope(nameText, project).filterNamedTuple()
+                        // We don't test, if these are tuples, because it might be an object,
+                        // and the user, just didn't type the fields yet.
+                        findNamesInProject(nameText, project).filterTypes().filterFieldOwner().ifEmpty {
+                            findNamesInGlobalScope(nameText, project).filterTypes().filterFieldOwner()
                         }
                     }
                 }
@@ -425,15 +459,16 @@ private class InferenceBuilder(
                     fieldOwner.map { it.fieldOwner },
                     possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray(),
                 )
+                val possibleOwnersForFieldVariants = fieldOwner.toSet()
                 tuple.tupleBody.valueList.forEachIndexed { index, ronValue ->
                     val possibleElementTypes = fieldOwner.mapNotNull { it[index] }.toSet()
-                    infer(ronValue, possibleElementTypes)
+                    infer(ronValue, possibleElementTypes, possibleOwnersForFieldVariants)
                 }
             }
         }
     }
 
-    private fun infer(objName: RONObjectName, possibleTypes: Set<RsType>) {
+    private fun infer(objName: RONObjectName, possibleTypes: Set<RsType>, possibleOwnersForFieldVariants: Set<TypeWithFieldOwner>) {
         val objNameText = objName.text
         val possibleFieldOwner = possibleTypes.filterFieldOwner()
         val types = possibleFieldOwner.filter {
@@ -452,7 +487,15 @@ private class InferenceBuilder(
                 findNamesInGlobalScope(objNameText, project).filterIsInstance<RsFieldsOwner>()
             }
         }
-        objects[objName] = TypeInferenceResult(types, possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray())
+        objects[objName] = TypeInferenceResult(
+            types,
+            possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray(),
+            possibleOwnersForFieldVariants.flatMap {
+                setOfNotNull(it, it.unwrapVariantNewType())
+            }.flatMap {
+                it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
+            }.toSet()
+        )
     }
 }
 
