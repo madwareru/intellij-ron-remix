@@ -336,7 +336,7 @@ private class InferenceBuilder(
     }
 
     /**
-     * @param fieldOwner May be the type item itself or an enum variant of it
+     * @param fieldOwner Can be the type item itself or an enum variant of it
      */
     private data class TypeWithFieldOwner(val type: RsType, val fieldOwner: RsFieldsOwner) {
         operator fun get(index: Int): RsType? {
