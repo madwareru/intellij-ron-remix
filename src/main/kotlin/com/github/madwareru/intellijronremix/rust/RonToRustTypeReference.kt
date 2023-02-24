@@ -4,6 +4,7 @@ import com.github.madwareru.intellijronremix.language.psi.RONObjectName
 import com.intellij.codeInsight.completion.CompletionUtilCore
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
@@ -22,6 +23,7 @@ class RonToRustTypeReference(ronObjectName: RONObjectName) : RonToRustReferenceC
     }
 
     override fun getVariants(): Array<LookupElement> {
+        if (DumbService.isDumb(element.project)) return emptyArray()
         val inference = element.inference
         val typeVariants = inference.variants.map(::createLookupItem).toTypedArray()
         val fieldVariants = inference.fieldVariants.map(RonToRustFieldReference::createLookupItem).toTypedArray()

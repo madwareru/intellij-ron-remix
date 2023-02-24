@@ -3,6 +3,7 @@ package com.github.madwareru.intellijronremix.rust
 import com.github.madwareru.intellijronremix.language.psi.RONFieldName
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.util.parentOfType
 import org.rust.lang.core.psi.ext.RsMod
@@ -23,6 +24,7 @@ class RonToRustFieldReference(ronFieldName: RONFieldName) : RonToRustReferenceCa
     }
 
     override fun getVariants(): Array<LookupElement> {
+        if (DumbService.isDumb(element.project)) return emptyArray()
         return element.inference.variants.map(::createLookupItem).toTypedArray()
     }
 
