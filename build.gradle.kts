@@ -8,13 +8,13 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.13.0"
+    id("org.jetbrains.intellij") version "1.13.3"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // see https://plugins.jetbrains.com/docs/intellij/tools-gradle-grammar-kit-plugin.html
-    id("org.jetbrains.grammarkit") version "2021.2.2"
+    id("org.jetbrains.grammarkit") version "2022.3.1"
 }
 
 group = properties("pluginGroup")
@@ -59,9 +59,14 @@ tasks.buildSearchableOptions {
     enabled = false
 }
 
+configure<JavaPluginExtension> {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 val generateRonLexer = task<GenerateLexerTask>("generateRonLexer") {
     // source flex file
-    source.set("src/main/kotlin/com/github/madwareru/intellijronremix/language/__RONLexer.flex")
+    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/__RONLexer.flex"))
 
     // target directory for lexer
     targetDir.set("src/main/gen/com/github/madwareru/intellijronremix/language/")
@@ -75,7 +80,7 @@ val generateRonLexer = task<GenerateLexerTask>("generateRonLexer") {
 
 val generateRonParser = task<GenerateParserTask>("generateRonParser") {
     dependsOn(generateRonLexer)
-    source.set("src/main/kotlin/com/github/madwareru/intellijronremix/language/RON.bnf")
+    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/RON.bnf"))
     targetRoot.set("src/main/gen")
     pathToParser.set("/com/github/madwareru/intellijronremix/language/parser/_RONParser.java")
     pathToPsiRoot.set("/com/github/madwareru/intellijronremix/language/psi")
