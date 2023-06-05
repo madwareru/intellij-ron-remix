@@ -60,7 +60,8 @@ WHITE_SPACE=\s+
 
 COMMENT="//".*
 BOOLEAN=true|false
-IDENT=[A-Za-z_][A-Za-z0-9_]*
+RAW_IDENT="r#"[A-Za-z_0-9\.+-]+ // See IDENT_RAW_CHAR in https://github.com/ron-rs/ron/blob/8fa9995ea9d9288cb68bf90a9ddc6821e71d0158/src/parse.rs
+IDENT={RAW_IDENT}|[A-Za-z_][A-Za-z0-9_]*
 INTEGER=[+-]?((0x[0-9A-Fa-f][0-9A-Fa-f_]*)|(0b[0-1][0-1_]*)|(0o[0-7][0-7_]*)|([0-9][0-9_]*))
 
 // translation of https://github.com/ron-rs/ron/blob/master/docs/grammar.md#numbers
