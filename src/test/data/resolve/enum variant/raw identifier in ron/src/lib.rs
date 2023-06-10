@@ -1,0 +1,3 @@
+enum MyRonEnum {
+    <ref>MyRonVariant,
+}

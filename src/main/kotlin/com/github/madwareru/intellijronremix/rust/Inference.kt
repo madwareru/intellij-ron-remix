@@ -37,6 +37,31 @@ import org.rust.lang.core.types.ty.Ty as RsType
 import org.rust.lang.core.types.ty.TyAdt as RsTypeAdt
 import org.rust.lang.core.types.ty.TyArray as RsTypeArray
 
+private val RONObjectName.normalizedName: NormalizedName get() = NormalizedName(text.removePrefix("r#"))
+private val RONFieldName.normalizedName: NormalizedName get() = NormalizedName(text.removePrefix("r#"))
+private val RsNamedFieldDecl.normalizedName: NormalizedName? get() = name?.removePrefix("r#")?.let(::NormalizedName)
+private val RsFieldsOwner.normalizedName: NormalizedName? get() = name?.removePrefix("r#")?.let(::NormalizedName)
+
+class NormalizedName(private val name: String) {
+    /**
+     * Name as it would occur in [RsNamedElementIndex]
+     */
+    val indexedName: String = name
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as NormalizedName
+
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+}
+
 @Suppress("PrivatePropertyName")
 private val INFERENCE_KEY: Key<CachedValue<InferenceResult>> = Key.create("RON_TO_RUST_INFERENCE_KEY")
 
@@ -263,15 +288,15 @@ private class InferenceBuilder(
         return TypeWithFieldOwner(innerTypeAdt, innerItem)
     }
 
-    private fun TypeWithFieldOwner.hasFieldNamesByVariantNewType(fieldNames: Collection<String>): Boolean {
+    private fun TypeWithFieldOwner.hasFieldNamesByVariantNewType(fieldNames: Collection<NormalizedName>): Boolean {
         val unwrapped = unwrapVariantNewType() ?: return false
-        val allowedInnerFieldNames = unwrapped.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.name }
+        val allowedInnerFieldNames = unwrapped.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.normalizedName }
         return allowedInnerFieldNames.containsAll(fieldNames)
     }
 
-    private fun Iterable<TypeWithFieldOwner>.filterByFieldNames(fieldNames: Collection<String>): List<TypeWithFieldOwner> {
+    private fun Iterable<TypeWithFieldOwner>.filterByFieldNames(fieldNames: Collection<NormalizedName>): List<TypeWithFieldOwner> {
         return filter {
-            val allowedFieldNames = it.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.name }
+            val allowedFieldNames = it.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.normalizedName }
             allowedFieldNames.containsAll(fieldNames) || it.hasFieldNamesByVariantNewType(fieldNames)
         }
     }
@@ -296,22 +321,13 @@ private class InferenceBuilder(
         }
     }
 
-    private fun findNamesInProject(name: String, project: Project): Collection<RsNamedElement> {
-        return getElements(
-            RsNamedElementIndex.KEY,
-            name,
-            project,
-            GlobalSearchScope.projectScope(project)
-        )
+    private fun findNamesInProject(name: NormalizedName, project: Project): Collection<RsNamedElement> {
+        return RsNamedElementIndex.findElementsByName(project, name.indexedName, GlobalSearchScope.projectScope(project))
     }
 
-    private fun findNamesInGlobalScope(name: String, project: Project): Collection<RsNamedElement> {
-        return getElements(
-            RsNamedElementIndex.KEY,
-            name,
-            project,
-            GlobalSearchScope.allScope(project)
-        ).filter(RsNamedElement::isVisibleToRON)
+    private fun findNamesInGlobalScope(name: NormalizedName, project: Project): Collection<RsNamedElement> {
+        return RsNamedElementIndex.findElementsByName(project, name.indexedName, GlobalSearchScope.allScope(project))
+                    .filter(RsNamedElement::isVisibleToRON)
     }
 
     /**
@@ -344,13 +360,13 @@ private class InferenceBuilder(
             return fieldDecl.typeReference?.normType?.substitute(type.typeParameterValues)
         }
 
-        fun hasName(name: String): Boolean {
-            return fieldOwner.name == name
+        fun hasName(name: NormalizedName): Boolean {
+            return fieldOwner.normalizedName == name
         }
     }
 
     private fun infer(obj: RONObject, possibleTypes: Set<RsType>) {
-        val fieldNameTexts = obj.objectBody.namedFieldList.map { it.fieldName }.map { it.text }
+        val fieldNameTexts = obj.objectBody.namedFieldList.map { it.fieldName.normalizedName }
         val name = obj.objectName
         val possibleFieldOwner = possibleTypes.filterFieldOwner()
         val bestMatchingFieldOwners: List<TypeWithFieldOwner> = when (name) {
@@ -363,14 +379,14 @@ private class InferenceBuilder(
             }
 
             else -> {
-                val matchByName = possibleFieldOwner.filter { it.hasName(name.text) }
+                val matchByName = possibleFieldOwner.filter { it.hasName(name.normalizedName) }
                 val matchingByNameAndFields = matchByName.filterByFieldNames(fieldNameTexts)
                 matchingByNameAndFields.ifEmpty {
                     matchByName.ifEmpty {
                         val project = obj.project
-                        val inProject = findNamesInProject(name.text, project).filterTypes().filterFieldOwner()
+                        val inProject = findNamesInProject(name.normalizedName, project).filterTypes().filterFieldOwner()
                         inProject.filterByFieldNames(fieldNameTexts).ifEmpty {
-                            val global = findNamesInGlobalScope(name.text, project).filterTypes().filterFieldOwner()
+                            val global = findNamesInGlobalScope(name.normalizedName, project).filterTypes().filterFieldOwner()
                             global.filterByFieldNames(fieldNameTexts).ifEmpty {
                                 inProject.ifEmpty {
                                     global
@@ -395,11 +411,11 @@ private class InferenceBuilder(
         }.flatMap {
             it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
         }
-        val fieldNameToDecl = inferredFields.groupBy { it.decl.identifier.text }
+        val fieldNameToDecl = inferredFields.groupBy { it.decl.normalizedName }
         val variants = inferredFields.toTypedArray()
         obj.objectBody.namedFieldList.forEach { ronNamedField ->
             val fieldName = ronNamedField.fieldName
-            val decls = fieldNameToDecl[fieldName.text].orEmpty()
+            val decls = fieldNameToDecl[fieldName.normalizedName].orEmpty()
             fields[fieldName] = FieldInferenceResult(decls.map { it.decl }, variants)
             val possibleFieldTypes = decls.map { it.normType }.toSet()
             infer(ronNamedField.value ?: return@forEach, possibleFieldTypes)
@@ -441,7 +457,7 @@ private class InferenceBuilder(
             }
 
             else -> {
-                val nameText = name.text
+                val nameText = name.normalizedName
                 val project = name.project
                 val possibleFieldOwner = possibleTypes.filterFieldOwner()
                 val matchByName = possibleFieldOwner.filter { it.hasName(nameText) }
@@ -469,7 +485,7 @@ private class InferenceBuilder(
     }
 
     private fun infer(objName: RONObjectName, possibleTypes: Set<RsType>, possibleOwnersForFieldVariants: Set<TypeWithFieldOwner>) {
-        val objNameText = objName.text
+        val objNameText = objName.normalizedName
         val possibleFieldOwner = possibleTypes.filterFieldOwner()
         val types = possibleFieldOwner.filter {
             it.hasName(objNameText)
