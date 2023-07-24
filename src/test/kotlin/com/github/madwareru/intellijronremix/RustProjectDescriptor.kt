@@ -1,4 +1,7 @@
 package com.github.madwareru.intellijronremix
+
+// Necessary code from intelli-jrust, to test rust projects with resolution to the standard library
+
 // SPDX-FileCopyrightText: 2015 Aleksey Kladov, Evgeny Kurbatsky, Alexey Kudinkin and contributors
 // SPDX-FileCopyrightText: 2016 JetBrains
 //
@@ -172,8 +175,8 @@ open class RustProjectDescriptorBase : LightProjectDescriptor() {
 }
 
 open class WithRustup(
-    private val delegate: RustProjectDescriptorBase,
-    private val fetchActualStdlibMetadata: Boolean = false
+        private val delegate: RustProjectDescriptorBase,
+        private val fetchActualStdlibMetadata: Boolean = false
 ) : RustProjectDescriptorBase() {
     private val toolchain: RsToolchainBase? by lazy { RsToolchainBase.suggest() }
 
@@ -318,8 +321,8 @@ open class WithProcMacros(
 }
 
 open class WithCustomStdlibRustProjectDescriptor(
-    private val delegate: RustProjectDescriptorBase,
-    private val explicitStdlibPath: () -> String?
+        private val delegate: RustProjectDescriptorBase,
+        private val explicitStdlibPath: () -> String?
 ) : RustProjectDescriptorBase() {
 
     override val skipTestReason: String?
