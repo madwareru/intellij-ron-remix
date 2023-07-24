@@ -62,7 +62,6 @@ class NormalizedName(private val name: String) {
     }
 }
 
-@Suppress("PrivatePropertyName")
 private val INFERENCE_KEY: Key<CachedValue<InferenceResult>> = Key.create("RON_TO_RUST_INFERENCE_KEY")
 
 val PsiElement.ronToRustInferenceContext: InferenceResult
