@@ -87,13 +87,11 @@ val generateRonParser = task<GenerateParserTask>("generateRonParser") {
     purgeOldFiles.set(true)
 }
 
-val unitTestTask = task<Test>("unitTest") {
-    isScanForTestClasses = false
-    include("com/github/madwareru/intellijronremix/*Test.class")
-    useJUnitPlatform()
-}
-
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
         dependsOn(generateRonParser)
