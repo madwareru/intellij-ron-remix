@@ -67,6 +67,21 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // field_name COLON value
+  public static boolean early_pinned_named_field(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "early_pinned_named_field")) return false;
+    if (!nextTokenIs(builder_, IDENT)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, NAMED_FIELD, null);
+    result_ = field_name(builder_, level_ + 1);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, consumeToken(builder_, COLON));
+    result_ = pinned_ && value(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
   // EXT_PREFIX ext_body BRACKETR
   public static boolean ext(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ext")) return false;
@@ -339,13 +354,13 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // named_field | value
+  // named_field | early_pinned_named_field
   static boolean object_entry(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "object_entry")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_);
     result_ = named_field(builder_, level_ + 1);
-    if (!result_) result_ = value(builder_, level_ + 1);
+    if (!result_) result_ = early_pinned_named_field(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, _RONParser::recoverParenOrComma);
     return result_;
   }

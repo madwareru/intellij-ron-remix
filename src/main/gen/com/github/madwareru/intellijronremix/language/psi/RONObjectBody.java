@@ -10,7 +10,4 @@ public interface RONObjectBody extends PsiElement {
   @NotNull
   List<RONNamedField> getNamedFieldList();
 
-  @NotNull
-  List<RONValue> getValueList();
-
 }

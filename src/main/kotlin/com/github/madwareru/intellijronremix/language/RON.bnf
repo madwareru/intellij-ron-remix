@@ -86,10 +86,11 @@ map_entry ::= map_key COLON value {recoverWhile=recoverBraceOrComma}
 field_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin"}
 
 named_field ::= field_name COLON value {pin=2}
+early_pinned_named_field ::= field_name COLON value {pin=1 elementType=named_field}
 
 private recoverParenOrComma ::= !(COMMA | PARENTHESISR)
-// a value is not valid RON, but we parse this to give a better error message
-private object_entry ::= named_field | value {recoverWhile=recoverParenOrComma}
+// Just a field_name here is not valid RON, but we parse this to give a better error message
+private object_entry ::= named_field | early_pinned_named_field {recoverWhile=recoverParenOrComma}
 
 
 private tuple_inner_body ::= [value (COMMA value)* [COMMA]] {recoverWhile=recoverParen}

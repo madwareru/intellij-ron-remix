@@ -1,1 +1,1 @@
-MyRonStruct(bar: "abc", f<caret>)
+MyRonStruct(bar: "abc", f<caret><parse-error>)

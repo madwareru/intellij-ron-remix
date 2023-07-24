@@ -399,9 +399,6 @@ private class InferenceBuilder(
                 }
             }
         }
-        obj.objectBody.valueList.forEach {
-            infer(it, emptySet(), bestMatchingFieldOwners.toSet())
-        }
         val used = obj.objectBody.namedFieldList.map { it.fieldName.normalizedName }
         if (name != null) {
             objects[name] = TypeInferenceResult(
