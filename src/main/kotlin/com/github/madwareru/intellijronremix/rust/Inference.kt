@@ -5,6 +5,7 @@ import com.github.madwareru.intellijronremix.language.psi.RONFile
 import com.github.madwareru.intellijronremix.language.psi.RONList
 import com.github.madwareru.intellijronremix.language.psi.RONMap
 import com.github.madwareru.intellijronremix.language.psi.RONObject
+import com.github.madwareru.intellijronremix.language.psi.RONObjectBody
 import com.github.madwareru.intellijronremix.language.psi.RONObjectName
 import com.github.madwareru.intellijronremix.language.psi.RONOption
 import com.github.madwareru.intellijronremix.language.psi.RONTuple
@@ -32,14 +33,13 @@ import org.rust.lang.core.types.rawType
 import org.rust.lang.core.types.ty.TyReference as RsTypeRef
 import org.rust.lang.core.types.ty.TyTuple as RsTypeTuple
 import org.rust.lang.core.types.ty.TySlice as RsTypeSlice
-import org.rust.openapiext.getElements
 import org.rust.lang.core.types.ty.Ty as RsType
 import org.rust.lang.core.types.ty.TyAdt as RsTypeAdt
 import org.rust.lang.core.types.ty.TyArray as RsTypeArray
 
 private val RONObjectName.normalizedName: NormalizedName get() = NormalizedName(text.removePrefix("r#"))
 private val RONFieldName.normalizedName: NormalizedName get() = NormalizedName(text.removePrefix("r#"))
-private val RsNamedFieldDecl.normalizedName: NormalizedName? get() = name?.removePrefix("r#")?.let(::NormalizedName)
+private val RsNamedFieldDecl.normalizedName: NormalizedName get() = identifier.text.removePrefix("r#").let(::NormalizedName)
 private val RsFieldsOwner.normalizedName: NormalizedName? get() = name?.removePrefix("r#")?.let(::NormalizedName)
 
 class NormalizedName(private val name: String) {
@@ -150,6 +150,8 @@ class InferenceResult(
 )
 
 data class RsInferredField(val decl: RsNamedFieldDecl, val rawType: RsType, val normType: RsType) {
+    val name: NormalizedName = decl.normalizedName
+
     companion object {
         fun fromDecl(decl: RsNamedFieldDecl, ownerSubstitution: Substitution): RsInferredField? {
             val typeReference = decl.typeReference ?: return null
@@ -290,13 +292,13 @@ private class InferenceBuilder(
 
     private fun TypeWithFieldOwner.hasFieldNamesByVariantNewType(fieldNames: Collection<NormalizedName>): Boolean {
         val unwrapped = unwrapVariantNewType() ?: return false
-        val allowedInnerFieldNames = unwrapped.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.normalizedName }
+        val allowedInnerFieldNames = unwrapped.fieldOwner.namedFields.map { fieldDecl -> fieldDecl.normalizedName }
         return allowedInnerFieldNames.containsAll(fieldNames)
     }
 
     private fun Iterable<TypeWithFieldOwner>.filterByFieldNames(fieldNames: Collection<NormalizedName>): List<TypeWithFieldOwner> {
         return filter {
-            val allowedFieldNames = it.fieldOwner.namedFields.mapNotNull { fieldDecl -> fieldDecl.normalizedName }
+            val allowedFieldNames = it.fieldOwner.namedFields.map { fieldDecl -> fieldDecl.normalizedName }
             allowedFieldNames.containsAll(fieldNames) || it.hasFieldNamesByVariantNewType(fieldNames)
         }
     }
@@ -400,10 +402,15 @@ private class InferenceBuilder(
         obj.objectBody.valueList.forEach {
             infer(it, emptySet(), bestMatchingFieldOwners.toSet())
         }
+        val used = obj.objectBody.namedFieldList.map { it.fieldName.normalizedName }
         if (name != null) {
             objects[name] = TypeInferenceResult(
                 bestMatchingFieldOwners.map { it.fieldOwner },
-                possibleFieldOwner.filterByFieldNames(fieldNameTexts).ifEmpty { possibleFieldOwner }.map { it.fieldOwner }.toSet().toTypedArray(),
+                possibleFieldOwner.filterByFieldNames(fieldNameTexts)
+                        .ifEmpty { possibleFieldOwner }
+                        .map { it.fieldOwner }
+                        .filter { it.normalizedName !in used }
+                        .toSet().toTypedArray(),
             )
         }
         val inferredFields = bestMatchingFieldOwners.flatMap {
@@ -411,11 +418,12 @@ private class InferenceBuilder(
         }.flatMap {
             it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
         }
-        val fieldNameToDecl = inferredFields.groupBy { it.decl.normalizedName }
-        val variants = inferredFields.toTypedArray()
+        val fieldNameToDecl = inferredFields.groupBy { it.name }
         obj.objectBody.namedFieldList.forEach { ronNamedField ->
             val fieldName = ronNamedField.fieldName
             val decls = fieldNameToDecl[fieldName.normalizedName].orEmpty()
+            // Propose unused fields or the currently matching fields
+            val variants = inferredFields.filter { it.name !in used || it.name in decls.map { it.name } }.toTypedArray()
             fields[fieldName] = FieldInferenceResult(decls.map { it.decl }, variants)
             val possibleFieldTypes = decls.map { it.normType }.toSet()
             infer(ronNamedField.value ?: return@forEach, possibleFieldTypes)
@@ -503,13 +511,19 @@ private class InferenceBuilder(
                 findNamesInGlobalScope(objNameText, project).filterIsInstance<RsFieldsOwner>()
             }
         }
+        val usedFieldNames = objName.parentOfType<RONObjectBody>(false)
+                ?.namedFieldList.orEmpty()
+                .map { it.fieldName.normalizedName }
+
         objects[objName] = TypeInferenceResult(
             types,
             possibleFieldOwner.map { it.fieldOwner }.toSet().toTypedArray(),
             possibleOwnersForFieldVariants.flatMap {
                 setOfNotNull(it, it.unwrapVariantNewType())
             }.flatMap {
-                it.fieldOwner.namedFields.mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
+                it.fieldOwner.namedFields
+                        .mapNotNull { decl -> RsInferredField.fromDecl(decl, it.type.typeParameterValues) }
+                        .filter { it.name !in usedFieldNames }
             }.toSet()
         )
     }
