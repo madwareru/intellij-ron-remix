@@ -67,7 +67,20 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // field_name COLON value
+  // COLON value
+  static boolean colon_value_helper(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "colon_value_helper")) return false;
+    if (!nextTokenIs(builder_, COLON)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, COLON);
+    result_ = result_ && value(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // field_name colon_value_helper
   public static boolean early_pinned_named_field(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "early_pinned_named_field")) return false;
     if (!nextTokenIs(builder_, IDENT)) return false;
@@ -75,8 +88,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
     Marker marker_ = enter_section_(builder_, level_, _NONE_, NAMED_FIELD, null);
     result_ = field_name(builder_, level_ + 1);
     pinned_ = result_; // pin = 1
-    result_ = result_ && report_error_(builder_, consumeToken(builder_, COLON));
-    result_ = pinned_ && value(builder_, level_ + 1) && result_;
+    result_ = result_ && colon_value_helper(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, pinned_, null);
     return result_ || pinned_;
   }
@@ -361,7 +373,7 @@ public class _RONParser implements PsiParser, LightPsiParser {
     Marker marker_ = enter_section_(builder_, level_, _NONE_);
     result_ = named_field(builder_, level_ + 1);
     if (!result_) result_ = early_pinned_named_field(builder_, level_ + 1);
-    exit_section_(builder_, level_, marker_, result_, false, _RONParser::recoverParenOrComma);
+    exit_section_(builder_, level_, marker_, result_, false, _RONParser::recoverField);
     return result_;
   }
 
@@ -502,6 +514,44 @@ public class _RONParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // !(COMMA | PARENTHESISR) [object_entry]
+  static boolean recoverField(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "recoverField")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = recoverField_0(builder_, level_ + 1);
+    result_ = result_ && recoverField_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // !(COMMA | PARENTHESISR)
+  private static boolean recoverField_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "recoverField_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !recoverField_0_0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  // COMMA | PARENTHESISR
+  private static boolean recoverField_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "recoverField_0_0")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, COMMA);
+    if (!result_) result_ = consumeToken(builder_, PARENTHESISR);
+    return result_;
+  }
+
+  // [object_entry]
+  private static boolean recoverField_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "recoverField_1")) return false;
+    object_entry(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // !PARENTHESISR
   static boolean recoverParen(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "recoverParen")) return false;
@@ -509,26 +559,6 @@ public class _RONParser implements PsiParser, LightPsiParser {
     Marker marker_ = enter_section_(builder_, level_, _NOT_);
     result_ = !consumeToken(builder_, PARENTHESISR);
     exit_section_(builder_, level_, marker_, result_, false, null);
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // !(COMMA | PARENTHESISR)
-  static boolean recoverParenOrComma(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "recoverParenOrComma")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_, level_, _NOT_);
-    result_ = !recoverParenOrComma_0(builder_, level_ + 1);
-    exit_section_(builder_, level_, marker_, result_, false, null);
-    return result_;
-  }
-
-  // COMMA | PARENTHESISR
-  private static boolean recoverParenOrComma_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "recoverParenOrComma_0")) return false;
-    boolean result_;
-    result_ = consumeToken(builder_, COMMA);
-    if (!result_) result_ = consumeToken(builder_, PARENTHESISR);
     return result_;
   }
 
