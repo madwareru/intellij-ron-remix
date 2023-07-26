@@ -85,10 +85,10 @@ map_entry ::= map_key COLON value {recoverWhile=recoverBraceOrComma}
 
 field_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin"}
 
-named_field ::= field_name COLON value {pin=2}
+named_field ::= field_name COLON value &(COMMA | PARENTHESISR) {pin=2}
 // used to avoid parsing the next field name as value if the colon is missing
 private colon_value_helper ::= COLON value
-early_pinned_named_field ::= field_name colon_value_helper {pin=1 elementType=named_field}
+early_pinned_named_field ::= field_name colon_value_helper &(COMMA | PARENTHESISR) {pin=1 elementType=named_field}
 
 private recoverField ::= !(COMMA | PARENTHESISR) [object_entry]
 // Separate early_pinned_named_field to gracefully handle where colon and value are missing
