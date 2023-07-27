@@ -10,7 +10,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.15.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // see https://plugins.jetbrains.com/docs/intellij/tools-gradle-grammar-kit-plugin.html
@@ -52,7 +52,7 @@ changelog {
 }
 
 dependencies {
-    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.1.0")
+    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.0-dev")
 }
 
 tasks.buildSearchableOptions {
