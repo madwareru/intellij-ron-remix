@@ -40,19 +40,14 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
 
-      # Check out intellij-directory-tests
-      - name: Fetch test framework
-        run: |
-          git clone https://github.com/flash-freezing-lava/intellij-directory-tests.git
-          cd intellij-directory-tests
-          git checkout v0.2.0
-          gradle wrapper
-          ./gradlew publishToLocalMaven
-          cd ..
-
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v3
+
+      # Check out intellij-directory-tests
+      - name: Fetch test framework
+        run: |
+          ./build-test-framework-locally.sh
 
       # Validate wrapper
       - name: Gradle Wrapper Validation
