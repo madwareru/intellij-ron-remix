@@ -52,7 +52,7 @@ changelog {
 }
 
 dependencies {
-    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.0-dev")
+    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.0")
 }
 
 tasks.buildSearchableOptions {
