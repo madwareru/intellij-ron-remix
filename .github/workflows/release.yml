@@ -22,11 +22,6 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name }}
 
-      # Check out intellij-directory-tests
-      - name: Fetch test framework
-        run: |
-          ./build-test-framework-locally.sh
-
       # Setup Java 17 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3

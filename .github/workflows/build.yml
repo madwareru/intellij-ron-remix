@@ -44,11 +44,6 @@ jobs:
       - name: Fetch Sources
         uses: actions/checkout@v3
 
-      # Check out intellij-directory-tests
-      - name: Fetch test framework
-        run: |
-          ./build-test-framework-locally.sh
-
       # Validate wrapper
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1.0.4

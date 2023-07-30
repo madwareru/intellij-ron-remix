@@ -23,9 +23,6 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
-    // me.ffl.intellijDirectoryTests isn't publish on any maven repo yet,
-    // so you have to build it locally
-    mavenLocal()
 }
 
 // Set the JVM language level used to build project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -52,7 +49,7 @@ changelog {
 }
 
 dependencies {
-    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.0")
+    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.1")
 }
 
 tasks.buildSearchableOptions {
