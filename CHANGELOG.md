@@ -10,6 +10,9 @@
 ### Fixed
 - Make parser more resilient on incomplete files
 
+### Changed
+- Updated supported intellij platform to `2023.2`
+
 ### Internal
 - Start testing much of the functionality
 
