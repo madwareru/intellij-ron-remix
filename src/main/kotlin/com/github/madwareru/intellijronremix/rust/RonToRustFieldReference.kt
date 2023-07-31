@@ -11,29 +11,27 @@ import org.rust.lang.core.psi.ext.RsNamedElement
 
 class RonToRustFieldReference(ronFieldName: RONFieldName) : RonToRustReferenceCached<RONFieldName>(ronFieldName) {
     companion object {
-        fun createLookupItem(element: RsInferredField): LookupElement {
-            val nameElement = element.decl.parentOfType<RsMod>()
-                ?: return LookupElementBuilder.create(element.decl).withTypeText(element.normType.toString(), true)
-            val crate = nameElement.containingCrate.normName
-            val path = nameElement.crateRelativePath
-            val fullPath = " in $crate$path"
-            return LookupElementBuilder.create(element.decl)
+        fun createLookupItem(element: RsInferredField) =
+            element.decl.parentOfType<RsMod>()?.let { nameElement ->
+                val crate = nameElement.containingCrate.normName
+                val path = nameElement.crateRelativePath
+                val fullPath = " in $crate$path"
+                LookupElementBuilder.create(element.decl)
+                    .withTypeText(element.normType.toString(), true)
+                    .withTailText(fullPath, true)
+            }
+            ?: LookupElementBuilder
+                .create(element.decl)
                 .withTypeText(element.normType.toString(), true)
-                .withTailText(fullPath, true)
-        }
     }
 
-    override fun getVariants(): Array<LookupElement> {
-        if (DumbService.isDumb(element.project)) return emptyArray()
-        return element.inference.variants.map(::createLookupItem).toTypedArray()
+    override fun getVariants(): Array<LookupElement> = when {
+        DumbService.isDumb(element.project) -> emptyArray()
+        else -> element.inference.variants.map(::createLookupItem).toTypedArray()
     }
 
-    override fun calculateDefaultRangeInElement(): TextRange {
-        return TextRange(0, element.textLength)
-    }
+    override fun calculateDefaultRangeInElement() = TextRange(0, element.textLength)
 
     // if existing, we assume a type from your own project is meant, even if a type of the same name exists in other projects
-    override fun resolveInner(): Collection<RsNamedElement> {
-        return element.inference.possibleFields
-    }
+    override fun resolveInner() = element.inference.possibleFields
 }
