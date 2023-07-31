@@ -28,27 +28,9 @@ public class RONMapKeyImpl extends ASTWrapperPsiElement implements RONMapKey {
   }
 
   @Override
-  @Nullable
-  public RONBool getBool() {
-    return findChildByClass(RONBool.class);
-  }
-
-  @Override
-  @Nullable
-  public RONEnum getEnum() {
-    return findChildByClass(RONEnum.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getFloat() {
-    return findChildByType(FLOAT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getInteger() {
-    return findChildByType(INTEGER);
+  @NotNull
+  public RONValue getValue() {
+    return findNotNullChildByClass(RONValue.class);
   }
 
 }

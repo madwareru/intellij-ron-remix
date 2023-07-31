@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface RONTuple extends PsiElement {
 
+  @Nullable
+  RONObjectName getObjectName();
+
   @NotNull
-  List<RONValue> getValueList();
+  RONTupleBody getTupleBody();
 
 }

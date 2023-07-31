@@ -1,0 +1,8 @@
+RON File(0,3)
+  RONValueImpl(VALUE)(0,3)
+    RONTupleImpl(TUPLE)(0,3)
+      RONTupleBodyImpl(TUPLE_BODY)(0,3)
+        PsiElement(RONTokenType.()('(')(0,1)
+        RONValueImpl(VALUE)(1,2)
+          PsiElement(RONTokenType.INTEGER)('5')(1,2)
+        PsiElement(RONTokenType.))(')')(2,3)

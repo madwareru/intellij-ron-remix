@@ -1,3 +1,4 @@
 .gradle
 .idea
 build
+src/test/data/only.txt

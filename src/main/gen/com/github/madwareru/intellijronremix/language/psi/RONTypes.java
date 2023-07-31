@@ -8,10 +8,9 @@ import com.github.madwareru.intellijronremix.language.psi.impl.*;
 
 public interface RONTypes {
 
-  IElementType BOOL = new RONElementType("BOOL");
-  IElementType ENUM = new RONElementType("ENUM");
   IElementType EXT = new RONElementType("EXT");
   IElementType EXTENSIONS = new RONElementType("EXTENSIONS");
+  IElementType FIELD_NAME = new RONElementType("FIELD_NAME");
   IElementType LIST = new RONElementType("LIST");
   IElementType MAP = new RONElementType("MAP");
   IElementType MAP_ENTRY = new RONElementType("MAP_ENTRY");
@@ -19,8 +18,9 @@ public interface RONTypes {
   IElementType NAMED_FIELD = new RONElementType("NAMED_FIELD");
   IElementType OBJECT = new RONElementType("OBJECT");
   IElementType OBJECT_BODY = new RONElementType("OBJECT_BODY");
-  IElementType OBJECT_ENTRY = new RONElementType("OBJECT_ENTRY");
+  IElementType OBJECT_NAME = new RONElementType("OBJECT_NAME");
   IElementType OPTION = new RONElementType("OPTION");
+  IElementType TUPLE = new RONElementType("TUPLE");
   IElementType TUPLE_BODY = new RONElementType("TUPLE_BODY");
   IElementType VALUE = new RONElementType("VALUE");
 
@@ -49,17 +49,14 @@ public interface RONTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BOOL) {
-        return new RONBoolImpl(node);
-      }
-      else if (type == ENUM) {
-        return new RONEnumImpl(node);
-      }
-      else if (type == EXT) {
+      if (type == EXT) {
         return new RONExtImpl(node);
       }
       else if (type == EXTENSIONS) {
         return new RONExtensionsImpl(node);
+      }
+      else if (type == FIELD_NAME) {
+        return new RONFieldNameImpl(node);
       }
       else if (type == LIST) {
         return new RONListImpl(node);
@@ -82,11 +79,14 @@ public interface RONTypes {
       else if (type == OBJECT_BODY) {
         return new RONObjectBodyImpl(node);
       }
-      else if (type == OBJECT_ENTRY) {
-        return new RONObjectEntryImpl(node);
+      else if (type == OBJECT_NAME) {
+        return new RONObjectNameImpl(node);
       }
       else if (type == OPTION) {
         return new RONOptionImpl(node);
+      }
+      else if (type == TUPLE) {
+        return new RONTupleImpl(node);
       }
       else if (type == TUPLE_BODY) {
         return new RONTupleBodyImpl(node);

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface RONExt extends PsiElement {
 
-  @NotNull
+  @Nullable
   PsiElement getIdent();
 
 }

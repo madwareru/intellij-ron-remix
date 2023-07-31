@@ -7,13 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface RONObject extends PsiElement {
 
-  @Nullable
+  @NotNull
   RONObjectBody getObjectBody();
 
   @Nullable
-  RONTupleBody getTupleBody();
-
-  @Nullable
-  PsiElement getIdent();
+  RONObjectName getObjectName();
 
 }

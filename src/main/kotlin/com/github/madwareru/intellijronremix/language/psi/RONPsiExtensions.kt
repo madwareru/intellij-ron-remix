@@ -11,13 +11,13 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.prevLeaf
 import com.intellij.util.SmartList
 
-val RONObjectEntry?.keyText get() = this?.namedField?.ident?.text
-fun RONObjectEntry?.keyTextMatches(other: CharSequence?) =
-    other != null && this?.namedField?.ident?.textMatches(other) ?: false
+val RONNamedField?.keyText get() = this?.fieldName?.text
+fun RONNamedField?.keyTextMatches(other: CharSequence?) =
+    other != null && this?.fieldName?.textMatches(other) ?: false
 val RONMapEntry?.keyAsText get() = this?.mapKey?.text
 fun RONMapEntry?.keyAsTextMatches(other: CharSequence?) =
     other != null && this?.mapKey?.textMatches(other) ?: false
-val RONObjectEntry?.isTuple get() = this?.namedField == null
+val RONTuple?.isUnnamedTuple get() = this?.objectName == null
 
 val PsiFileSystemItem.sourceRoot: VirtualFile?
     get() = virtualFile.let { ProjectRootManager.getInstance(project).fileIndex.getSourceRootForFile(it) }

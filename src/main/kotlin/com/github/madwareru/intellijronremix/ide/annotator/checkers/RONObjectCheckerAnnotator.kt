@@ -10,23 +10,33 @@ class RONObjectCheckerAnnotator : CheckerAnnotator()  {
             CheckerAnnotatorResult.Ok
         } else {
             when (element) {
-                is RONObjectEntry -> checkObjectEntry(element)
+                is RONNamedField -> checkObjectEntry(element)
+                is RONValue -> checkValue(element)
                 else -> CheckerAnnotatorResult.Ok
             }
         }
 
-    private fun checkObjectEntry(objectEntry: RONObjectEntry): CheckerAnnotatorResult {
+    private fun checkValue(value: RONValue): CheckerAnnotatorResult {
+        if (value.parent is RONObjectBody) {
+            return CheckerAnnotatorResult.Error("Object entry must have a field name", value.textRange)
+        }
+        return CheckerAnnotatorResult.Ok
+    }
+
+    private fun checkObjectEntry(objectEntry: RONNamedField): CheckerAnnotatorResult {
         val filteredEntries = (objectEntry.parent as RONObjectBody)
-            .objectEntryList
+            .namedFieldList
             .asSequence()
             .filterNot { it == objectEntry }
 
-        val duplicatesFound = filteredEntries.any { it.keyTextMatches(objectEntry.keyText) }
+        val namedField = objectEntry.fieldName
+        val keyText = namedField.text
+        val duplicatesFound = filteredEntries.any { it.keyTextMatches(keyText) }
 
         return if (duplicatesFound) {
             CheckerAnnotatorResult.Error(
                 "Duplicate keys found in an object",
-                objectEntry.namedField.ident.textRange
+                namedField.textRange
             )
         } else {
             CheckerAnnotatorResult.Ok

@@ -1,0 +1,3 @@
+RON File(0,5)
+  RONValueImpl(VALUE)(0,5)
+    PsiElement(RONTokenType.FLOAT)('-2.25')(0,5)

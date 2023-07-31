@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+### Added
+- Resolve references to rust types and fields. Note that this can only be done probabilistic, because serde's Serialize and Deserialize traits can be implemented with arbitrary code.
+
+### Fixed
+- Make parser more resilient on incomplete files
+
+### Changed
+- Updated supported intellij platform to `2023.2`
+
+### Internal
+- Start testing much of the functionality
+
 ## [0.2.11]
 ### Fixed
 - Updated plugin to support new versions of IDE.

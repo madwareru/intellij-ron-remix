@@ -1,0 +1,5 @@
+MyRonStruct(
+  r#kebab-case: r#my-identifier,
+  r#all+allowed: r#my-+strange.identifier,
+  _start_with_underscore: _underscore,
+)

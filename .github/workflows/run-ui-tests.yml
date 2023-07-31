@@ -30,7 +30,6 @@ jobs:
             runIde: ./gradlew runIdeForUiTests &
 
     steps:
-
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v3

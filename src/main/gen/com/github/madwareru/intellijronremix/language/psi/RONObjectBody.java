@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface RONObjectBody extends PsiElement {
 
   @NotNull
-  List<RONObjectEntry> getObjectEntryList();
+  List<RONNamedField> getNamedFieldList();
 
 }

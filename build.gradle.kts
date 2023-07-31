@@ -1,4 +1,6 @@
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -6,11 +8,13 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.22"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.15.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.0.0"
+    // see https://plugins.jetbrains.com/docs/intellij/tools-gradle-grammar-kit-plugin.html
+    id("org.jetbrains.grammarkit") version "2022.3.1"
 }
 
 group = properties("pluginGroup")
@@ -44,11 +48,52 @@ changelog {
     groups.set(emptyList())
 }
 
+dependencies {
+    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.1")
+}
+
 tasks.buildSearchableOptions {
     enabled = false
 }
 
+configure<JavaPluginExtension> {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+val generateRonLexer = task<GenerateLexerTask>("generateRonLexer") {
+    // source flex file
+    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/__RONLexer.flex"))
+
+    // target directory for lexer
+    targetDir.set("src/main/gen/com/github/madwareru/intellijronremix/language/")
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass.set("__RONLexer")
+
+    // if set, plugin will remove a lexer output file before generating new one. Default: false
+    purgeOldFiles.set(true)
+}
+
+val generateRonParser = task<GenerateParserTask>("generateRonParser") {
+    dependsOn(generateRonLexer)
+    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/RON.bnf"))
+    targetRoot.set("src/main/gen")
+    pathToParser.set("/com/github/madwareru/intellijronremix/language/parser/_RONParser.java")
+    pathToPsiRoot.set("/com/github/madwareru/intellijronremix/language/psi")
+    purgeOldFiles.set(true)
+}
+
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+        dependsOn(generateRonParser)
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
@@ -78,9 +123,7 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes.set(
             provider {
-                val changeLogText = changelog
-                    .getLatest()
-                    .toText()
+                val changeLogText = changelog.run { renderItem(getLatest()) }
 
                 val fullLog = "[Full Changelog](https://github.com/madwareru/intellij-ron-remix/blob/main/CHANGELOG.md)"
 

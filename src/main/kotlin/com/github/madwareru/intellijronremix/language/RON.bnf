@@ -50,11 +50,13 @@ RON ::= [extensions] value;
 
 extensions ::= ext+;
 
-ext ::= EXT_PREFIX ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR BRACKETR;
+private recoverBracket ::= !BRACKETR
+private ext_body ::= ENABLE_KEYWORD PARENTHESISL IDENT PARENTHESISR {recoverWhile=recoverBracket}
+ext ::= EXT_PREFIX ext_body BRACKETR {pin=1}
 
-value ::= bool | integer | float | string | char | option | list | map | object | enum;
+value ::= bool | integer | float | string | char | option | list | map | object | tuple | object_name;
 
-bool ::= BOOLEAN;
+private bool ::= BOOLEAN;
 
 private integer ::= INTEGER;
 
@@ -64,24 +66,41 @@ private string ::= STRING | RAW_STRING;
 
 private char ::= CHAR;
 
-option ::= SOME PARENTHESISL value PARENTHESISR | NONE;
+private recoverParen ::= !PARENTHESISR
+private option_body ::= value {recoverWhile=recoverParen}
+private option_some ::= SOME PARENTHESISL option_body PARENTHESISR {pin=2}
+option ::= option_some | NONE;
 
-list ::= BRACKETL [value (COMMA value)* [COMMA]] BRACKETR;
+private list_body ::= [value (COMMA value)* [COMMA]] {recoverWhile=recoverBracket}
+list ::= BRACKETL list_body BRACKETR {pin=1}
 
-map ::= BRACEL [map_entry (COMMA map_entry)* [COMMA]] BRACER;
+private recoverBrace ::= !BRACER
+private map_inner_body ::= [map_entry (COMMA map_entry)* [COMMA]] {recoverWhile=recoverBrace}
+map ::= BRACEL map_inner_body BRACER {pin=1}
 
-map_key ::= bool | integer | float | string | char | enum;
+map_key ::= value
 
-map_entry ::= map_key COLON value;
+private recoverBraceOrComma ::= !(COMMA | BRACER)
+map_entry ::= map_key COLON value {recoverWhile=recoverBraceOrComma}
 
-named_field ::= IDENT COLON value;
+field_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONFieldNameMixin"}
 
-object_entry ::= named_field;
+named_field ::= field_name COLON value &(COMMA | PARENTHESISR) {pin=2}
+// used to avoid parsing the next field name as value if the colon is missing
+private colon_value_helper ::= COLON value
+early_pinned_named_field ::= field_name colon_value_helper &(COMMA | PARENTHESISR) {pin=1 elementType=named_field}
 
-object_body ::= PARENTHESISL [object_entry (COMMA object_entry)* [COMMA]] PARENTHESISR;
+private recoverField ::= !(COMMA | PARENTHESISR) [object_entry]
+// Separate early_pinned_named_field to gracefully handle where colon and value are missing
+private object_entry ::= named_field | early_pinned_named_field {recoverWhile=recoverField}
 
-tuple_body ::= PARENTHESISL [value (COMMA value)* [COMMA]] PARENTHESISR;
 
-enum ::= IDENT;
+private tuple_inner_body ::= [value (COMMA value)* [COMMA]] {recoverWhile=recoverParen}
+tuple_body ::= PARENTHESISL tuple_inner_body PARENTHESISR {pin=1}
+tuple ::= [object_name] tuple_body
 
-object ::= [IDENT] (object_body | tuple_body);
+object_name ::= IDENT {implements=["com.intellij.model.psi.PsiExternalReferenceHost"] mixin="com.github.madwareru.intellijronremix.language.psi.RONObjectNameMixin"}
+// we require at least one object entry, so we can pin the object, because only after seeing the first entry, we know for sure, this is no tuple
+private object_inner_body ::= named_field (COMMA object_entry)* [COMMA] {recoverWhile=recoverParen pin=1}
+object_body ::= PARENTHESISL object_inner_body PARENTHESISR
+object ::= [object_name] object_body

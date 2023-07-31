@@ -1,0 +1,3 @@
+RON File(0,4)
+  RONValueImpl(VALUE)(0,4)
+    PsiElement(RONTokenType.FLOAT)('-NaN')(0,4)

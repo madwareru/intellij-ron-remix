@@ -1,0 +1,4 @@
+MyRonStruct(
+    foo: 32,
+    bar: InnerNewType((<caret>foo: 64)),
+)

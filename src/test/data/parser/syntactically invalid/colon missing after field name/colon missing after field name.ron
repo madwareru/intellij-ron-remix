@@ -1,0 +1,5 @@
+MyStruct(
+  first: 1,
+  second<parse-error>
+  third: 3,
+)
