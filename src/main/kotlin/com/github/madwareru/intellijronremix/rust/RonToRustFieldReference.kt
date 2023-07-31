@@ -7,7 +7,6 @@ import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.util.parentOfType
 import org.rust.lang.core.psi.ext.RsMod
-import org.rust.lang.core.psi.ext.RsNamedElement
 
 class RonToRustFieldReference(ronFieldName: RONFieldName) : RonToRustReferenceCached<RONFieldName>(ronFieldName) {
     companion object {
