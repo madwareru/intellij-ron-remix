@@ -1,6 +1,4 @@
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.grammarkit.tasks.GenerateLexerTask
-import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -57,29 +55,6 @@ configure<JavaPluginExtension> {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-val generateRonLexer = task<GenerateLexerTask>("generateRonLexer") {
-    // source flex file
-    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/__RONLexer.flex"))
-
-    // target directory for lexer
-    targetDir.set("src/main/gen/com/github/madwareru/intellijronremix/language/")
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass.set("__RONLexer")
-
-    // if set, plugin will remove a lexer output file before generating new one. Default: false
-    purgeOldFiles.set(true)
-}
-
-val generateRonParser = task<GenerateParserTask>("generateRonParser") {
-    dependsOn(generateRonLexer)
-    sourceFile.set(file("src/main/kotlin/com/github/madwareru/intellijronremix/language/RON.bnf"))
-    targetRoot.set("src/main/gen")
-    pathToParser.set("/com/github/madwareru/intellijronremix/language/parser/_RONParser.java")
-    pathToPsiRoot.set("/com/github/madwareru/intellijronremix/language/psi")
-    purgeOldFiles.set(true)
-}
-
 tasks {
     test {
         useJUnitPlatform()
@@ -87,7 +62,6 @@ tasks {
 
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
-        dependsOn(generateRonParser)
     }
 
     wrapper {
