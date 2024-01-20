@@ -48,10 +48,6 @@ changelog {
     groups.set(emptyList())
 }
 
-dependencies {
-    testImplementation("io.github.flash-freezing-lava", "intellij-directory-tests", "0.2.1")
-}
-
 tasks.buildSearchableOptions {
     enabled = false
 }

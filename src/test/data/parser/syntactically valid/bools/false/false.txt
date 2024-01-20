@@ -1,3 +1,0 @@
-RON File(0,5)
-  RONValueImpl(VALUE)(0,5)
-    PsiElement(RONTokenType.BOOLEAN)('false')(0,5)

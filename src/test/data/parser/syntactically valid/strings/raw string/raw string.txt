@@ -1,3 +1,0 @@
-RON File(0,76)
-  RONValueImpl(VALUE)(0,76)
-    PsiElement(RONTokenType.RAW STRING)('r##"This is a "raw string". It can contain quotations or\nbackslashes (\)!"##')(0,76)

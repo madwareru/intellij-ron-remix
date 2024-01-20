@@ -1,3 +1,0 @@
-RON File(0,6)
-  RONValueImpl(VALUE)(0,6)
-    PsiElement(RONTokenType.RAW STRING)('r"foo"')(0,6)

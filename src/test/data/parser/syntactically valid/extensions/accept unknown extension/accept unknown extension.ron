@@ -1,2 +1,0 @@
-#![enable(slightly_forward_compatible_parser)]
-(name: "World")

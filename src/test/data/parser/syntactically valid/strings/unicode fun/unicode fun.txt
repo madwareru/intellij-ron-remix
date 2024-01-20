@@ -1,3 +1,0 @@
-RON File(0,7)
-  RONValueImpl(VALUE)(0,7)
-    PsiElement(RONTokenType.STRING)('"ῼ᚜⋲😀"')(0,7)

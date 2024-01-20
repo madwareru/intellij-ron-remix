@@ -1,1 +1,0 @@
-[[],[[],],[[],[[],]]] // This only syntactically correct and tested to check, that the parser doesn't break. Semantically lists must be homogenous.

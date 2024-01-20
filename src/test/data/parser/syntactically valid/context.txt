@@ -1,3 +1,0 @@
-Checks, that grammar structures from
-https://github.com/ron-rs/ron/blob/d15baccd13f6c815c84f2c973c7d6bf727f47fb9/docs/grammar.md
-are accepted and parsed correctly.

@@ -1,5 +1,0 @@
-RON File(0,41)
-  RONValueImpl(VALUE)(0,3)
-    PsiElement(RONTokenType.CHAR)(''᚜'')(0,3)
-  PsiWhiteSpace(' ')(3,4)
-  PsiComment(RONTokenType.COMMENT)('// U+169C OGHAM REVERSED FEATHER MARK')(4,41)

@@ -1,4 +1,0 @@
-#![enable(unwrap_newtypes)]
-#![enable(implicit_some)]
-#![enable(unwrap_variant_newtypes)]
-(name: "World")

@@ -1,3 +1,0 @@
-RON File(0,16)
-  RONValueImpl(VALUE)(0,16)
-    PsiElement(RONTokenType.INTEGER)('0xABCDEF09abcdef')(0,16)

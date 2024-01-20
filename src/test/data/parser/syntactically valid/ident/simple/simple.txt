@@ -1,4 +1,0 @@
-RON File(0,5)
-  RONValueImpl(VALUE)(0,5)
-    RONObjectNameImpl(OBJECT_NAME)(0,5)
-      PsiElement(RONTokenType.IDENT)('Ident')(0,5)

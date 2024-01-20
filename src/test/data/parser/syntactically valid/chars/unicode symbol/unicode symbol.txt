@@ -1,5 +1,0 @@
-RON File(0,52)
-  RONValueImpl(VALUE)(0,3)
-    PsiElement(RONTokenType.CHAR)(''⋲'')(0,3)
-  PsiWhiteSpace(' ')(3,4)
-  PsiComment(RONTokenType.COMMENT)('// U+22F2 ELEMENT OF WITH LONG HORIZONTAL STROKE')(4,52)

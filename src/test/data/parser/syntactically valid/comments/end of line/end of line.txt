@@ -1,5 +1,0 @@
-RON File(0,38)
-  RONValueImpl(VALUE)(0,1)
-    PsiElement(RONTokenType.INTEGER)('5')(0,1)
-  PsiWhiteSpace(' ')(1,2)
-  PsiComment(RONTokenType.COMMENT)('// comment at the end of the 1. line')(2,38)

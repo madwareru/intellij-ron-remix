@@ -1,5 +1,0 @@
-MyRonStruct(
-  first: 3,
-  <caret>
-  third: 5,
-)

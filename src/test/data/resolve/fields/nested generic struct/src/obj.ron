@@ -1,3 +1,0 @@
-OuterStruct(
-  inner: (bar: (bar: (bar: (<caret>foo: 32)))),
-)

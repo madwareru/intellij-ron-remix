@@ -1,4 +1,0 @@
-MyRonStruct (
-    foo: 32,
-    <caret>bar: "baz",
-)

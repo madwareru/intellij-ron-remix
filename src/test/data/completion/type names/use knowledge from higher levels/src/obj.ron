@@ -1,3 +1,0 @@
-MyRonOuterStruct(
-  inner: MyRon<caret>
-)

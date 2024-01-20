@@ -1,5 +1,0 @@
-RON File(0,29)
-  RONValueImpl(VALUE)(0,4)
-    PsiElement(RONTokenType.CHAR)(''😀'')(0,4)
-  PsiWhiteSpace(' ')(4,5)
-  PsiComment(RONTokenType.COMMENT)('// U+1F600 Grinning Face')(5,29)

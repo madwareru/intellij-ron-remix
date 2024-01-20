@@ -1,5 +1,0 @@
-RON File(0,60)
-  RONValueImpl(VALUE)(0,3)
-    PsiElement(RONTokenType.CHAR)(''ῼ'')(0,3)
-  PsiWhiteSpace(' ')(3,4)
-  PsiComment(RONTokenType.COMMENT)('// U+1FFC GREEK CAPITAL LETTER OMEGA WITH PROSGEGRAMMENI')(4,60)

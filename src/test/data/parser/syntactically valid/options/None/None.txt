@@ -1,4 +1,0 @@
-RON File(0,4)
-  RONValueImpl(VALUE)(0,4)
-    RONOptionImpl(OPTION)(0,4)
-      PsiElement(RONTokenType.None)('None')(0,4)
