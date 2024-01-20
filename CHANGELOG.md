@@ -9,7 +9,6 @@
 ### Changed
 - Updated supported intellij platform to `2023.3`
 
-
 ## 0.3.1 - 2023-07-31
 
 ### Added
